@@ -13,7 +13,7 @@ function App() {
     <div>
       <GoogleLogin 
       clientId="582713087977-59mpjc19jph6a912mbsb4l41ak8msu56.apps.googleusercontent.com"
-      buttonText=""
+      buttonText="Login, buddy"
       onSuccess={responseGoogle}
       onFailure={responseGoogle}
       cookiePolicy={'single_host_origin'}

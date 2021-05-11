@@ -1,25 +1,26 @@
-import React, { Component } from "react";
-import GoogleLogin from 'react-google-login'
-
+import React, { useState } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Welcome from "./pages/welcome"
+import Profile from "./pages/profile"
+import ArticleContext from "./utils/ArticleContext";
 
 function App() {
 
-  function responseGoogle(response) {
-    console.log(response)
-    console.log(response.profileObj)
+  const [userState, setUserState] = useState([]);
+
+  function handleSetUser(userData) {
+    setUserState(userData)
   }
 
   return (
-    <div>
-      <GoogleLogin 
-      clientId="582713087977-59mpjc19jph6a912mbsb4l41ak8msu56.apps.googleusercontent.com"
-      buttonText="Login, buddy"
-      onSuccess={responseGoogle}
-      onFailure={responseGoogle}
-      cookiePolicy={'single_host_origin'}
-      
-      />
-    </div>
+    <Router>
+      <ArticleContext.Provider value={[userState, handleSetUser]}>
+        <div>
+          <Route exact path="/" component={Welcome} />
+          <Route exact path="/profile" component={Profile} />
+        </div>
+      </ArticleContext.Provider>
+    </Router>
   );
 }
 

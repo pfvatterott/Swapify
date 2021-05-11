@@ -13,7 +13,6 @@ function Welcome() {
     const { handleSetUser } = useContext(ArticleContext);
 
     const googleSuccess = async (response) => {
-        console.log(response)
         const userObj = response.profileObj
         const user = {
             email: userObj.email,
@@ -24,7 +23,6 @@ function Welcome() {
             listedItems: []
         }
         API.getUser(userObj.googleId).then(res => {
-            console.log(res.data)
             if (res.data.length > 0) {
                 console.log('user exists')
                 handleSetUser(user)
@@ -41,7 +39,6 @@ function Welcome() {
     }
 
     const googleFailure = (response) => {
-        console.log(response)
         console.log("Google Sign in was unsuccessful")
         alert('please try logging in again')
     }

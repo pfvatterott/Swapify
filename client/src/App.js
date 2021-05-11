@@ -14,7 +14,7 @@ function App() {
 
   return (
     <Router>
-      <ArticleContext.Provider value={[userState, handleSetUser]}>
+      <ArticleContext.Provider value={{userState, handleSetUser}}>
         <div>
           <Route exact path="/" component={Welcome} />
           <Route exact path="/profile" component={Profile} />

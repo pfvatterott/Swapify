@@ -45,7 +45,7 @@ function Welcome() {
 
     return (
         <div>
-            { redirect ? (<Redirect push to="/profile"/>) : null };
+            { redirect ? (<Redirect push to="/profile"/>) : null }
             <GoogleLogin 
                 clientId={googleClientId}
                 buttonText="Login, buddy"

@@ -15,9 +15,10 @@ const itemsSchema = new mongoose.Schema({
       type: Number,
   },
 
-  image: {
-      type: String
-  },
+  // image: {
+  //     type: Buffer,
+  //     contentType: String
+  // },
 
   owner: {
       type: String

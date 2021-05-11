@@ -36,11 +36,13 @@ const upload = multer({
 router.route("/")
   .get(itemsController.findAll)
 
+  // posts a new item and saves image to public folder
   .post(upload.single('productImage'), (req, res, next) => {
     console.log(req.file)
     const item = ({
       name: req.body.name,
-      price: req.body.price
+      price: req.body.price,
+      productImage: req.file.path
     })
     db.Items.create(item)
     .then(dbModel => res.json(dbModel))

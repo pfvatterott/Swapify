@@ -15,10 +15,10 @@ const itemsSchema = new mongoose.Schema({
       type: Number,
   },
 
-  // image: {
-  //     type: Buffer,
-  //     contentType: String
-  // },
+  productImage: {
+    type: String,
+    required: true
+  },
 
   owner: {
       type: String

@@ -4,14 +4,16 @@ import { Link } from "react-router-dom";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import axios from 'axios';
 import { FilePond, registerPlugin } from 'react-filepond';
-
-
-// Import FilePond styles
-
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
+import FilePondPluginImageResize from "filepond-plugin-image-resize";
+import FilePondPluginFileEncode from 'filepond-plugin-file-encode';
+
+
+
+
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginImageResize, FilePondPluginFileEncode);
 
 
 
@@ -76,10 +78,11 @@ function Item() {
                 onupdatefiles={setFiles}
                 allowMultiple={true}
                 maxFiles={3}
-                server="/api"
+                // server="/api"
                 name="files" 
                 labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
-              
+                imageResizeTargetWidth={100}
+                imageResizeTargetHeight={150}
             ></FilePond>
             </form>
          

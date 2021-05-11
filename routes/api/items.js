@@ -1,8 +1,37 @@
 const router = require("express").Router();
 const itemsController = require("../../controllers/itemsController");
 const multer = require('multer');
-const upload = multer({dest: "client/public/images"})
 const db = require("../../models")
+
+// storage location and name for multer images
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'client/public/images')
+  },
+  filename: function(req, file, cb) {
+    cb(null, new Date().toISOString() + file.originalname)
+  }
+})
+
+const fileFilter = (req, file, cb) => {
+  // reject a file if not right format
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  }
+  else {
+    cb(null, false);
+  }
+}
+
+// creating upload file, limiting image size
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
+  fileFilter: fileFilter
+})
+
 
 router.route("/")
   .get(itemsController.findAll)

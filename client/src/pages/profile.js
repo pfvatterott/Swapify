@@ -16,7 +16,7 @@ function Profile() {
     })
     return (
         <div>
-            { redirect ? (<Redirect push to="/"/>) : null };
+            { redirect ? (<Redirect push to="/"/>) : null }
             <h2>Profile Page</h2>
         </div>
     )

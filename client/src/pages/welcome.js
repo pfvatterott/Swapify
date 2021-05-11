@@ -1,11 +1,16 @@
-import React from "react";
+import React, {useState, useContext} from "react";
 import API from "../utils/API";
 import GoogleLogin from 'react-google-login'
+import {Redirect} from 'react-router-dom';
+import ArticleContext from "../utils/ArticleContext";
 
 
 function Welcome() {
 
-    const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
+    const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    const [redirect, setRedirect] = useState(false);
+
+    const { handleSetUser } = useContext(ArticleContext);
 
     const googleSuccess = async (response) => {
         console.log(response)
@@ -22,10 +27,14 @@ function Welcome() {
             console.log(res.data)
             if (res.data.length > 0) {
                 console.log('user exists')
+                handleSetUser(user)
+                setRedirect(true)
             }
             else {
                 console.log('new user logged')
                 API.saveUser(user)
+                handleSetUser(user)
+                setRedirect(true)
             }
         }).catch(error => console.log(error))
 
@@ -34,10 +43,12 @@ function Welcome() {
     const googleFailure = (response) => {
         console.log(response)
         console.log("Google Sign in was unsuccessful")
+        alert('please try logging in again')
     }
 
     return (
         <div>
+            { redirect ? (<Redirect push to="/profile"/>) : null };
             <GoogleLogin 
                 clientId={googleClientId}
                 buttonText="Login, buddy"

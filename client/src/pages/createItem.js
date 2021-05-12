@@ -53,13 +53,15 @@ function Item() {
   };
 
   function saveToDatabase(url) {
-    console.log(userState)
+    console.log(url)
     const newItem = {
       itemName: "",
       itemDescription: descriptionState.description,
       itemPrice: 45,
-      imageURL: {url}
+      imageURL: `${url}`
     }
+    API.saveItem(newItem)
+
   }
 
     return (

@@ -13,7 +13,6 @@ function Item() {
     console.log(userState)
     if (userState.length === 0) {
         console.log('no user')
-        
     }
 })
 
@@ -22,7 +21,6 @@ function Item() {
     if (e.target.files[0]) {  
       setImage(e.target.files[0])
     }
-    // setSelectedFile({...selectedFile, files: files[0]})
   };
 
   function handleDescriptionChange(event) {

@@ -9,6 +9,7 @@ import {Redirect} from 'react-router-dom';
 function Item() {
   const {userState} = useContext(ArticleContext);
   const [descriptionState, setDescriptionState]= useState([]);
+  const [nameState, setNameState]= useState([]);
   const [image, setImage] = useState(null)
   const [redirect, setRedirect] = useState(false);
 
@@ -31,6 +32,11 @@ function Item() {
     const desc = event.target.value;
     setDescriptionState({...descriptionState, description: desc})
   };
+
+  function handleNameChange(event) {
+    const name = event.target.value;
+    setNameState({...nameState, name: name})
+  }
 
   
   function fileUploadHandler() {
@@ -56,7 +62,7 @@ function Item() {
   function saveToDatabase(url) {
     console.log(url)
     const newItem = {
-      itemName: "",
+      itemName: nameState.name,
       itemDescription: descriptionState.description,
       itemPrice: 45,
       imageURL: `${url}`,
@@ -76,6 +82,11 @@ function Item() {
           onChange={handleFileChange}
           type="file"
         />
+        <TextArea
+          onChange={handleNameChange}
+          name="namen"
+          placeholder="Add a name for your item"
+        /> 
         <TextArea
           onChange={handleDescriptionChange}
           name="description"

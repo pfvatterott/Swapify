@@ -3,18 +3,22 @@ import API from "../utils/API";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import { storage } from "../utils/firebase"
 import ArticleContext from "../utils/ArticleContext"
+import {Redirect} from 'react-router-dom';
+
 
 function Item() {
   const {userState} = useContext(ArticleContext);
   const [descriptionState, setDescriptionState]= useState([]);
   const [image, setImage] = useState(null)
+  const [redirect, setRedirect] = useState(false);
+
 
   useEffect(() => {
-    console.log(userState)
     if (userState.length === 0) {
         console.log('no user')
+        setRedirect(true)
     }
-})
+  })
 
   //sets the selectedFile state when a a user drops in a file.
   function handleFileChange(e) {
@@ -26,7 +30,6 @@ function Item() {
   function handleDescriptionChange(event) {
     const desc = event.target.value;
     setDescriptionState({...descriptionState, description: desc})
-    console.log(desc)
   };
 
   
@@ -56,7 +59,9 @@ function Item() {
       itemName: "",
       itemDescription: descriptionState.description,
       itemPrice: 45,
-      imageURL: `${url}`
+      imageURL: `${url}`,
+      itemOwner: userState.googleId,
+      itemLikes: []
     }
     API.saveItem(newItem)
 
@@ -66,6 +71,7 @@ function Item() {
 
       // this cant be a form for some reason?
       <div>
+        { redirect ? (<Redirect push to="/"/>) : null }
         <Input
           onChange={handleFileChange}
           type="file"

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import ArticleContext from "../utils/ArticleContext"
-import {Redirect} from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom'
 
 
 function Profile() {
@@ -19,7 +19,7 @@ function Profile() {
         <div>
             { redirect ? (<Redirect push to="/"/>) : null }
             <h2>Profile Page</h2>
-            <a href="/createItem" user={userState}><button>Create Item</button></a>
+            <a><Link to="/createItem">Create Item</Link></a>
         </div>
     )
 }

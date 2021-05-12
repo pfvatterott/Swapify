@@ -21,7 +21,11 @@ const itemsSchema = new mongoose.Schema({
 
   itemOwner: {
       type: Number
-  }
+  },
+
+  itemLikes: [{
+    type: Number
+  }]
 
 });
 

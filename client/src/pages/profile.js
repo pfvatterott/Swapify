@@ -9,6 +9,7 @@ function Profile() {
 
 
     useEffect(() => {
+        console.log(userState)
         if (userState.length === 0) {
             console.log('no user')
             setRedirect(true)
@@ -18,6 +19,7 @@ function Profile() {
         <div>
             { redirect ? (<Redirect push to="/"/>) : null }
             <h2>Profile Page</h2>
+            <a href="/createItem" user={userState}><button>Create Item</button></a>
         </div>
     )
 }

@@ -68,7 +68,7 @@ function Item() {
 
       // this cant be a form for some reason?
       <div>
-        <input
+        <Input
           onChange={handleFileChange}
           type="file"
         />
@@ -77,12 +77,12 @@ function Item() {
           name="description"
           placeholder="Add a description"
         /> 
-        <button
+        <FormBtn
           // disabled={!(formObject.author && formObject.title)}
           onClick={fileUploadHandler}
         >
           Upload
-        </button>
+        </FormBtn>
       </div>
     );
   }

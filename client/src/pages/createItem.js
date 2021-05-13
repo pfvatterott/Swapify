@@ -10,7 +10,6 @@ function Item() {
   const [nameState, setNameState]= useState([]);
   const [image, setImage] = useState(null)
   const [redirect, setRedirect] = useState(false);
-  const userData = '';
 
 
   useEffect(() => {
@@ -40,7 +39,7 @@ function Item() {
 
   
   function fileUploadHandler() {
-    const uploadTask = storage.ref(`images/${image.lastModified + image.name}`).put(image)
+    const uploadTask = storage.ref(`images/${Math.floor(Math.random() * 100000000) + image.name}`).put(image)
     uploadTask.on(
       "state_changed",
       snapshot => {},
@@ -60,7 +59,7 @@ function Item() {
   };
 
   function saveToDatabase(url) {
-    console.log(url)
+    const userData = JSON.parse(localStorage.getItem('userData'))
     const newItem = {
       itemName: nameState.name,
       itemDescription: descriptionState.description,

@@ -20,5 +20,13 @@ export default {
 
   saveItem: function(itemData) {
     return axios.post("/api/items", itemData)
+  },
+
+  getUserItems: function(userID) {
+    return axios.get("/api/items/" + userID)
+  },
+
+  getAllItems: function() {
+    return axios.get("/api/items/")
   }
 };

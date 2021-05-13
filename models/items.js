@@ -25,7 +25,14 @@ const itemsSchema = new mongoose.Schema({
 
   itemLikes: [{
     type: Number
-  }]
+  }],
+
+  dateCreated: {
+    type: Date,
+    require: true,
+    default: Date.now
+  }
+  
 
 });
 

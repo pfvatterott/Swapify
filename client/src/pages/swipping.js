@@ -21,12 +21,22 @@ function Swipping() {
             const notUserItemsArray = res.data.filter(item => (
                 item.itemOwner !== +userId
             ))
-            setNotUserItems(notUserItemsArray)
-            setCurrentItem(notUserItemsArray[imageNumber])
+            API.getUser(userData.googleId).then((res) => {
+                const userSeenItems = res.data[0].seenItems
+                for (let i = 0; i < userSeenItems.length; i++) {
+                    for (let p = 0; p < notUserItemsArray.length; p++) {
+                        if (userSeenItems[i] === notUserItemsArray[p]._id) {
+                            notUserItemsArray.splice(p, 1)
+                        }
+                    }
+                }
+                setNotUserItems(notUserItemsArray)
+                setCurrentItem(notUserItemsArray[imageNumber])
+            })
         })    
     }, [])
 
-    function handleItemLike() {
+    function handleItemNotLike() {
         const userData = JSON.parse(localStorage.getItem('userData'))
         API.getUser(userData.googleId).then((res) => {
             const updatedUserData = {
@@ -34,11 +44,11 @@ function Swipping() {
             }
             updatedUserData.seenItems.push(currentItem._id)
             API.updateUser(userData.googleId, updatedUserData).then((res) => {
-                console.log(res)
+                imageNumber++
+                setCurrentItem(notUserItems[imageNumber])
             })
         })
-        imageNumber++
-        setCurrentItem(notUserItems[imageNumber])
+        
     }
 
 
@@ -49,7 +59,7 @@ function Swipping() {
             <h4>{currentItem.itemName}</h4>
             <h5>{currentItem.itemDescription}</h5>
             <img class="itemImage" src={currentItem.imageURL}/>
-            <button onClick={handleItemLike}>Not Interested</button>
+            <button onClick={handleItemNotLike}>Not Interested</button>
             <button>Interested</button>
 
           

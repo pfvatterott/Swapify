@@ -1,67 +1,108 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import API from "../utils/API";
-import { Link } from "react-router-dom";
 import { Input, TextArea, FormBtn } from "../components/Form";
-import axios from 'axios';
+import { storage } from "../utils/firebase"
+import ArticleContext from "../utils/ArticleContext"
+import {Redirect} from 'react-router-dom';
+
 
 function Item() {
-  // Setting our component's initial state
-  const [selectedFile, setFile] = useState([])
-  const [desciption, setDescription]= useState([]);
-  const [formObject, setFormObject] = useState({})
+  const {userState} = useContext(ArticleContext);
+  const [descriptionState, setDescriptionState]= useState([]);
+  const [nameState, setNameState]= useState([]);
+  const [image, setImage] = useState(null)
+  const [redirect, setRedirect] = useState(false);
 
-  // 
+
   useEffect(() => {
-   
-  }, [])
+    if (userState.length === 0) {
+        console.log('no user')
+        setRedirect(true)
+    }
+  })
 
   //sets the selectedFile state when a a user drops in a file.
-  handleFileChange=(event)=> {
-    console.log(event);
-    const { name, value } = event.target.files[0];
-    this.setState({selectedFile:event.target.files[0]});
-
+  function handleFileChange(e) {
+    if (e.target.files[0]) {  
+      setImage(e.target.files[0])
+    }
   };
 
-
-  handleDescriptionChange=(event)=> {
-    console.log(event.value);
-    this.setState({description:event.target.value});
-   
+  function handleDescriptionChange(event) {
+    const desc = event.target.value;
+    setDescriptionState({...descriptionState, description: desc})
   };
+
+  function handleNameChange(event) {
+    const name = event.target.value;
+    setNameState({...nameState, name: name})
+  }
 
   
   function fileUploadHandler() {
-    event.preventDefault();
-   //This is where we post to a DB axios.post()- or we need to put it into the API and call that.
-
-   
+    const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    uploadTask.on(
+      "state_changed",
+      snapshot => {},
+      error => {
+        console.log(error)
+      },
+      () => {
+        storage
+          .ref("images")
+          .child(image.name)
+          .getDownloadURL()
+          .then(url => {
+            saveToDatabase(url)
+          })
+      }
+    )
   };
+
+  function saveToDatabase(url) {
+    console.log(url)
+    const newItem = {
+      itemName: nameState.name,
+      itemDescription: descriptionState.description,
+      itemPrice: 45,
+      imageURL: `${url}`,
+      itemOwner: userState.googleId,
+      itemLikes: []
+    }
+    API.saveItem(newItem)
+
+  }
 
     return (
 
-            <form>
-              <Input
-                onChange={handleFileChange}
-                type="file"
-                placeholder="Upload a photo"
-              />
-              <TextArea
-                onChange={handleDescriptionChange}
-                name="description"
-                placeholder="Add a description"
-              /> 
-              <FormBtn
-                disabled={!(formObject.author && formObject.title)}
-                onClick={fileUploadHandler}
-              >
-                Upload
-              </FormBtn>
-            </form>
-         
-  
+      // this cant be a form for some reason?
+      <div>
+        { redirect ? (<Redirect push to="/"/>) : null }
+        <Input
+          onChange={handleFileChange}
+          type="file"
+        />
+        <TextArea
+          onChange={handleNameChange}
+          name="namen"
+          placeholder="Add a name for your item"
+        /> 
+        <TextArea
+          onChange={handleDescriptionChange}
+          name="description"
+          placeholder="Add a description"
+        /> 
+        <FormBtn
+          // disabled={!(formObject.author && formObject.title)}
+          onClick={fileUploadHandler}
+        >
+          Upload
+        </FormBtn>
+      </div>
     );
   }
+
+
 
 
 export default Item;

@@ -2,21 +2,20 @@ import React, { useState, useContext, useEffect } from "react";
 import API from "../utils/API";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import { storage } from "../utils/firebase"
-import ArticleContext from "../utils/ArticleContext"
 import {Redirect} from 'react-router-dom';
 
 
 function Item() {
-  const {userState} = useContext(ArticleContext);
   const [descriptionState, setDescriptionState]= useState([]);
   const [nameState, setNameState]= useState([]);
   const [image, setImage] = useState(null)
   const [redirect, setRedirect] = useState(false);
+  const userData = '';
 
 
   useEffect(() => {
-    if (userState.length === 0) {
-        console.log('no user')
+    const userData = JSON.parse(localStorage.getItem('userData'))
+    if (userData === null) {
         setRedirect(true)
     }
   })
@@ -24,6 +23,7 @@ function Item() {
   //sets the selectedFile state when a a user drops in a file.
   function handleFileChange(e) {
     if (e.target.files[0]) {  
+      console.log(e.target.files[0])
       setImage(e.target.files[0])
     }
   };
@@ -40,7 +40,7 @@ function Item() {
 
   
   function fileUploadHandler() {
-    const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    const uploadTask = storage.ref(`images/${image.lastModified + image.name}`).put(image)
     uploadTask.on(
       "state_changed",
       snapshot => {},
@@ -66,7 +66,7 @@ function Item() {
       itemDescription: descriptionState.description,
       itemPrice: 45,
       imageURL: `${url}`,
-      itemOwner: userState.googleId,
+      itemOwner: userData.googleId,
       itemLikes: []
     }
     API.saveItem(newItem)

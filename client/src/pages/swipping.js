@@ -17,26 +17,27 @@ function Swipping() {
             setRedirect(true)
         }
         const userId = userData.googleId
-        API.getAllItems().then((res) => {
-            const notUserItemsArray = res.data.filter(item => (
-                item.itemOwner !== +userId
-            ))
-            API.getUser(userData.googleId).then((res) => {
-                const userSeenItems = res.data[0].seenItems
-                for (let i = 0; i < userSeenItems.length; i++) {
-                    for (let p = 0; p < notUserItemsArray.length; p++) {
-                        if (userSeenItems[i] === notUserItemsArray[p]._id) {
-                            notUserItemsArray.splice(p, 1)
-                        }
-                    }
-                }
-                setNotUserItems(notUserItemsArray)
-                setCurrentItem(notUserItemsArray[imageNumber])
-            })
-        })    
+        // API.getAllItems().then((res) => {
+        //     const notUserItemsArray = res.data.filter(item => (
+        //         item.itemOwner !== +userId
+        //     ))
+        //     API.getUser(userData.googleId).then((res) => {
+        //         const userSeenItems = res.data[0].seenItems
+        //         for (let i = 0; i < userSeenItems.length; i++) {
+        //             for (let p = 0; p < notUserItemsArray.length; p++) {
+        //                 if (userSeenItems[i] === notUserItemsArray[p]._id) {
+        //                     notUserItemsArray.splice(p, 1)
+        //                 }
+        //             }
+        //         }
+        //         setNotUserItems(notUserItemsArray)
+        //         setCurrentItem(notUserItemsArray[imageNumber])
+        //     })
+        // })    
     }, [])
 
     function handleItemNotLike() {
+
         const userData = JSON.parse(localStorage.getItem('userData'))
         API.getUser(userData.googleId).then((res) => {
             const updatedUserData = {

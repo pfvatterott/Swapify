@@ -6,6 +6,7 @@ import API from "../utils/API";
 
 function Swipping() {
     const [redirect, setRedirect] = useState(false);
+    const [notUserItems, setNotUserItems] = useState([])
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('userData'))
@@ -14,10 +15,10 @@ function Swipping() {
         }
         const userId = userData.googleId
         API.getAllItems().then((res) => {
-            const notUserItems = res.data.filter(item => (
+            const notUserItemsArray = res.data.filter(item => (
                 item.itemOwner !== +userId
             ))
-            console.log(notUserItems)
+            setNotUserItems(notUserItemsArray)
         })
         
     })
@@ -25,6 +26,11 @@ function Swipping() {
         <div>
             { redirect ? (<Redirect push to="/"/>) : null }
             <h2>Swipping</h2>
+            <ol>
+                {notUserItems.map(item => (
+                    <a href={item.imageURL}><li>{item.itemName}</li></a>
+                ))}
+            </ol>
         </div>
     )
 }

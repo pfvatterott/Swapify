@@ -34,7 +34,6 @@ module.exports = {
         .catch(err => res.status(422).json(err));
     },
     findByGoogleId: function(req, res) {
-      console.log(req.params)
         db.Users
           .find({
               googleId: req.params.id

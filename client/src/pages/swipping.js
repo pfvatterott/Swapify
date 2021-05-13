@@ -27,6 +27,16 @@ function Swipping() {
     }, [])
 
     function handleItemLike() {
+        const userData = JSON.parse(localStorage.getItem('userData'))
+        API.getUser(userData.googleId).then((res) => {
+            const updatedUserData = {
+                seenItems: res.data[0].seenItems
+            }
+            updatedUserData.seenItems.push(currentItem._id)
+            API.updateUser(userData.googleId, updatedUserData).then((res) => {
+                console.log(res)
+            })
+        })
         imageNumber++
         setCurrentItem(notUserItems[imageNumber])
     }

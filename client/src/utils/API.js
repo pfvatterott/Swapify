@@ -28,5 +28,9 @@ export default {
 
   getAllItems: function() {
     return axios.get("/api/items/")
+  },
+
+  updateUser: function(userId, userData) {
+    return axios.put("/api/users/" + userId, userData)
   }
 };

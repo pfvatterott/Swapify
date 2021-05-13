@@ -20,10 +20,14 @@ const usersSchema = new mongoose.Schema({
   },
 
   googleId: {
-      type: String
+      type: Number
   },
 
-  listedItems: [Number],
+  listedItems: [String],
+
+  likedItems: [String],
+
+  seenItems: [String]
 
 });
 

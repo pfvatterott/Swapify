@@ -47,8 +47,28 @@ function Swipping() {
                 imageNumber++
                 setCurrentItem(notUserItems[imageNumber])
             })
+        })  
+    }
+
+    function handleItemLike() {
+        const userData = JSON.parse(localStorage.getItem('userData'))
+        API.getUser(userData.googleId).then((res) => {
+            const updatedUserData = {
+                seenItems: res.data[0].seenItems,
+                likedItems: res.data[0].likedItems
+            }
+            updatedUserData.seenItems.push(currentItem._id)
+            updatedUserData.likedItems.push(currentItem._id)
+            API.updateUser(userData.googleId, updatedUserData).then((res) => {
+                imageNumber++
+                setCurrentItem(notUserItems[imageNumber])
+                const updatedItem = {
+                    itemLikes: currentItem.itemLikes
+                }
+                updatedItem.itemLikes.push(userData.googleId)
+                API.updateItem(currentItem._id, updatedItem)
+            })
         })
-        
     }
 
 
@@ -60,7 +80,7 @@ function Swipping() {
             <h5>{currentItem.itemDescription}</h5>
             <img class="itemImage" src={currentItem.imageURL}/>
             <button onClick={handleItemNotLike}>Not Interested</button>
-            <button>Interested</button>
+            <button onClick={handleItemLike}>Interested</button>
 
           
         </div>

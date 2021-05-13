@@ -32,5 +32,9 @@ export default {
 
   updateUser: function(userId, userData) {
     return axios.put("/api/users/" + userId, userData)
+  },
+
+  updateItem: function(itemId, itemData) {
+    return axios.put("/api/items/" + itemId, itemData)
   }
 };

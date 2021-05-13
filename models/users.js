@@ -23,11 +23,7 @@ const usersSchema = new mongoose.Schema({
       type: Number
   },
 
-  listedItems: [String],
-
-  likedItems: [String],
-
-  seenItems: [String]
+  listedItems: [String]
 
 });
 

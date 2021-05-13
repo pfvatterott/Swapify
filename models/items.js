@@ -23,8 +23,12 @@ const itemsSchema = new mongoose.Schema({
       type: Number
   },
 
-  itemLikes: [{
-    type: Number
+  likesFromItems: [{
+    type: String
+  }],
+
+  likesItems: [{
+    type: String
   }],
 
   dateCreated: {

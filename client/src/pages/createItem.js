@@ -39,7 +39,8 @@ function Item() {
 
   
   function fileUploadHandler() {
-    const uploadTask = storage.ref(`images/${Math.floor(Math.random() * 100000000) + image.name}`).put(image)
+    const randomNumber = Math.floor(Math.random() * 100000000)
+    const uploadTask = storage.ref(`images/${randomNumber + image.name}`).put(image)
     uploadTask.on(
       "state_changed",
       snapshot => {},
@@ -49,7 +50,7 @@ function Item() {
       () => {
         storage
           .ref("images")
-          .child(image.name)
+          .child(randomNumber + image.name)
           .getDownloadURL()
           .then(url => {
             saveToDatabase(url)
@@ -66,9 +67,19 @@ function Item() {
       itemPrice: 45,
       imageURL: `${url}`,
       itemOwner: userData.googleId,
-      itemLikes: []
+      likesFromItems: [],
+      likesItems: [],
     }
-    API.saveItem(newItem)
+    API.saveItem(newItem).then((itemResponse) => {
+      const itemId = itemResponse.data._id
+      API.getUser(userData.googleId).then((res) => {
+        const updatedUser = {
+          listedItems: res.data[0].listedItems
+        }
+        updatedUser.listedItems.push(itemId)
+        API.updateUser(userData.googleId, updatedUser)
+      })
+    })
 
   }
 

@@ -52,22 +52,16 @@ function Swipping() {
     }
 
     function handleItemLike() {
-        const userData = JSON.parse(localStorage.getItem('userData'))
-        API.getUser(userData.googleId).then((res) => {
-            const updatedUserData = {
-                seenItems: res.data[0].seenItems,
-                likedItems: res.data[0].likedItems
+        API.getItem(itemData).then((res) => {
+            const updatedItemData = {
+                seenItems: res.data.seenItems,
+                likesItems: res.data.likesItems
             }
-            updatedUserData.seenItems.push(currentItem._id)
-            updatedUserData.likedItems.push(currentItem._id)
-            API.updateUser(userData.googleId, updatedUserData).then((res) => {
+            updatedItemData.seenItems.push(currentItem._id)
+            updatedItemData.likesItems.push(currentItem._id)
+            API.updateItem(itemData, updatedItemData).then((res) => {
                 imageNumber++
                 setCurrentItem(notUserItems[imageNumber])
-                const updatedItem = {
-                    itemLikes: currentItem.itemLikes
-                }
-                updatedItem.itemLikes.push(userData.googleId)
-                API.updateItem(currentItem._id, updatedItem)
             })
         })
     }

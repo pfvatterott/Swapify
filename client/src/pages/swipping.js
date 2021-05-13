@@ -9,6 +9,7 @@ function Swipping() {
     const [redirect, setRedirect] = useState(false);
     const [notUserItems, setNotUserItems] = useState([])
     const [currentItem, setCurrentItem] = useState([])
+    const itemData = JSON.parse(localStorage.getItem('itemData'))
     let imageNumber = 0;
 
     useEffect(() => {
@@ -16,35 +17,34 @@ function Swipping() {
         if (userData === null) {
             setRedirect(true)
         }
-        const userId = userData.googleId
-        // API.getAllItems().then((res) => {
-        //     const notUserItemsArray = res.data.filter(item => (
-        //         item.itemOwner !== +userId
-        //     ))
-        //     API.getUser(userData.googleId).then((res) => {
-        //         const userSeenItems = res.data[0].seenItems
-        //         for (let i = 0; i < userSeenItems.length; i++) {
-        //             for (let p = 0; p < notUserItemsArray.length; p++) {
-        //                 if (userSeenItems[i] === notUserItemsArray[p]._id) {
-        //                     notUserItemsArray.splice(p, 1)
-        //                 }
-        //             }
-        //         }
-        //         setNotUserItems(notUserItemsArray)
-        //         setCurrentItem(notUserItemsArray[imageNumber])
-        //     })
-        // })    
+        API.getAllItems().then((res) => {
+            // filters out selected item so it cant see itself
+            const notUserItemsArray = res.data.filter(item => (
+                item._id !== itemData
+            ))
+            // filters out already seen items
+            API.getItem(itemData).then((response) => {
+                const seenItems = response.data.seenItems
+                for (let i = 0; i < seenItems.length; i++) {
+                    for (let p = 0; p < notUserItemsArray.length; p++) {
+                        if (seenItems[i] === notUserItemsArray[p]._id) {
+                            notUserItemsArray.splice(p, 1)
+                        }
+                    }
+                }
+                setNotUserItems(notUserItemsArray)
+                setCurrentItem(notUserItemsArray[imageNumber])
+            })
+        })    
     }, [])
 
     function handleItemNotLike() {
-
-        const userData = JSON.parse(localStorage.getItem('userData'))
-        API.getUser(userData.googleId).then((res) => {
-            const updatedUserData = {
-                seenItems: res.data[0].seenItems
+        API.getItem(itemData).then((res) => {
+            const updatedItemData = {
+                seenItems: res.data.seenItems
             }
-            updatedUserData.seenItems.push(currentItem._id)
-            API.updateUser(userData.googleId, updatedUserData).then((res) => {
+            updatedItemData.seenItems.push(currentItem._id)
+            API.updateItem(itemData, updatedItemData).then((res) => {
                 imageNumber++
                 setCurrentItem(notUserItems[imageNumber])
             })

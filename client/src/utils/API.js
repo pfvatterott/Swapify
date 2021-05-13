@@ -23,7 +23,7 @@ export default {
   },
 
   getUserItems: function(userID) {
-    return axios.get("/api/items/" + userID)
+    return axios.get("/api/items/user/" + userID)
   },
 
   getAllItems: function() {
@@ -36,5 +36,9 @@ export default {
 
   updateItem: function(itemId, itemData) {
     return axios.put("/api/items/" + itemId, itemData)
+  },
+
+  getItem: function(itemId) {
+    return axios.put("/api/items/" + itemId)
   }
 };

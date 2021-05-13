@@ -13,8 +13,11 @@ function Swipping() {
             setRedirect(true)
         }
         const userId = userData.googleId
-        API.getUserItems(userId).then((res) => {
-            console.log(res)
+        API.getAllItems().then((res) => {
+            const notUserItems = res.data.filter(item => (
+                item.itemOwner !== +userId
+            ))
+            console.log(notUserItems)
         })
         
     })

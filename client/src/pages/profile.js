@@ -1,17 +1,14 @@
 import React, { useState, useContext, useEffect } from "react";
-import ArticleContext from "../utils/ArticleContext"
 import { Link, Redirect } from 'react-router-dom'
 
 
 function Profile() {
-    const {userState, handleSetUser } = useContext(ArticleContext);
     const [redirect, setRedirect] = useState(false);
 
 
     useEffect(() => {
-        console.log(userState)
-        if (userState.length === 0) {
-            console.log('no user')
+        const userData = JSON.parse(localStorage.getItem('userData'))
+        if (userData === null) {
             setRedirect(true)
         }
     })

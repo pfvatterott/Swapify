@@ -22,7 +22,6 @@ function Item() {
   //sets the selectedFile state when a a user drops in a file.
   function handleFileChange(e) {
     if (e.target.files[0]) {  
-      console.log(e.target.files[0])
       setImage(e.target.files[0])
     }
   };
@@ -69,6 +68,7 @@ function Item() {
       itemOwner: userData.googleId,
       likesFromItems: [],
       likesItems: [],
+      seenItems: []
     }
     API.saveItem(newItem).then((itemResponse) => {
       const itemId = itemResponse.data._id

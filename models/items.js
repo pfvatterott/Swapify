@@ -27,6 +27,10 @@ const itemsSchema = new mongoose.Schema({
     type: String
   }],
 
+  seenItems: [{
+    type: String
+  }],
+
   likesItems: [{
     type: String
   }],

@@ -93,10 +93,7 @@ function Swipping() {
                     })
                   })
                 setImageNumber(imageNumber + 1)
-            })
-
-            // setup API to update that current item has a like
-            
+            }) 
         })
     }
 

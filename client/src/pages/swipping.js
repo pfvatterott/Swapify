@@ -12,6 +12,8 @@ function Swipping() {
     const [noMoreItems, setNoMoreItems] = useState(false)
     const [imageNumber, setImageNumber] = useState(0)
     const itemData = JSON.parse(localStorage.getItem('itemData'))
+    const userData = JSON.parse(localStorage.getItem('userData'))
+
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('userData'))
@@ -96,14 +98,22 @@ function Swipping() {
                     }
                     updatedItemData1.likesFromItems.push(itemData)
                     API.updateItem(currentItem._id, updatedItemData).then((res) => {
-                        console.log(updatedItemData)
                         for (let i = 0; i < updatedItemData.likesItems.length; i++) {
                             for (let p = 0; p < updatedItemData1.likesFromItems.length; p++) {
                                 if (updatedItemData.likesItems[i] === updatedItemData1.likesFromItems[p]) {
                                     alert("its a match!!")
 
                                     // START HERE
-                                    // API.postMatch()
+                                    const matchData = {
+                                        item1Id: itemData,
+                                        item1Owner: userData.googleId,
+                                        item2Id: currentItem._id,
+                                        item2Owner: currentItemResponse.data.itemOwner, //item2Owner not working
+                                        item2Read: false
+                                    }
+                                    API.postMatch(matchData).then((matchRes) => {
+                                        console.log(matchRes)
+                                    })
                                 }
                                 
                             }

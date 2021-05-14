@@ -11,7 +11,7 @@ const matchesSchema = new mongoose.Schema({
     type: Number
  },
 
- item2: {
+ item2Id: {
     type: String
  },
 

@@ -4,7 +4,6 @@ import API from "../utils/API";
 import "./style.css"
 let preventFirstRender = false
 
-
 function Swipping() {
     const [redirect, setRedirect] = useState(false);
     const [notUserItems, setNotUserItems] = useState([])
@@ -12,9 +11,10 @@ function Swipping() {
     const [noMoreItems, setNoMoreItems] = useState(false)
     const [imageNumber, setImageNumber] = useState(0)
     const itemData = JSON.parse(localStorage.getItem('itemData'))
+    const userData = JSON.parse(localStorage.getItem('userData'))
+
 
     useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem('userData'))
         if (userData === null) {
             setRedirect(true)
         }
@@ -33,7 +33,7 @@ function Swipping() {
                         }
                     }
                 }
-                if (notUserItemsArray.length === 0 ) {
+                if (notUserItemsArray.length === 0) {
                     alert('no more items')
                 }
                 else {
@@ -41,17 +41,27 @@ function Swipping() {
                     setNotUserItems(notUserItemsArray)
                     setCurrentItem(notUserItemsArray[imageNumber])
                 }
-                
             })
         })
 
         // checks if there are any matches. Needs to be in UseEffect
-        setInterval(function(){
-            API.getAllMatches().then((response) => {
-                console.log(response)
+        setInterval(function () {
+            API.getUserMatches(userData.googleId).then((response) => {
+                // checks if matches have been read or not by user2 (the user that was not swipping when the match was made)
+                for (let i = 0; i < response.data.length; i++) {
+                    if ((response.data[i].item2Owner == userData.googleId) && (response.data[i].item2Read === false)) {
+                        const matchData = {
+                            item2Read: true
+                        }
+                        API.updateUserMatch(response.data[i]._id, matchData).then((matchPutResponse) => {
+                            console.log(matchPutResponse)
+                            alert('You have a new matched Item!')
+                        })
+                    }
+                }
             })
-        }, 10000)
-         
+        }, 5000)
+
     }, [])
 
 
@@ -77,11 +87,12 @@ function Swipping() {
             API.updateItem(itemData, updatedItemData).then((res) => {
                 setImageNumber(imageNumber + 1)
             })
-        })  
+        })
     }
 
     function handleItemLike() {
         preventFirstRender = true
+        // get item data, add to it, then do a put. Then do it for second item
         API.getItem(itemData).then((userItemResponse) => {
             const updatedItemData = {
                 seenItems: userItemResponse.data.seenItems,
@@ -91,31 +102,31 @@ function Swipping() {
             updatedItemData.likesItems.push(currentItem._id)
             API.updateItem(itemData, updatedItemData).then((res) => {
                 API.getItem(currentItem._id).then((currentItemResponse) => {
+                    console.log(currentItemResponse)
                     const updatedItemData1 = {
                         likesFromItems: currentItemResponse.data.likesFromItems
                     }
                     updatedItemData1.likesFromItems.push(itemData)
-                    API.updateItem(currentItem._id, updatedItemData).then((res) => {
-                        console.log(updatedItemData)
-                        for (let i = 0; i < updatedItemData.likesItems.length; i++) {
-                            for (let p = 0; p < updatedItemData1.likesFromItems.length; p++) {
-                                if (updatedItemData.likesItems[i] === updatedItemData1.likesFromItems[p]) {
-                                    alert("its a match!!")
-
-                                    // START HERE
-                                    // API.postMatch()
+                    API.updateItem(currentItem._id, updatedItemData1).then((res) => {
+                        // once updated, check if there is a match
+                        for (let i = 0; i < userItemResponse.data.likesFromItems.length; i++) {
+                            if (userItemResponse.data.likesFromItems[i] === currentItem._id) {
+                                alert("its a match!!")
+                                const matchData = {
+                                    item1Id: itemData,
+                                    item1Owner: userData.googleId,
+                                    item2Id: currentItem._id,
+                                    item2Owner: currentItemResponse.data.itemOwner,
+                                    item2Read: false
                                 }
-                                
+                                API.postMatch(matchData).then((matchRes) => {
+                                })
                             }
-                            
                         }
-
-
-
                         setImageNumber(imageNumber + 1)
                     })
-                  })
-            }) 
+                })
+            })
         })
     }
 
@@ -126,14 +137,14 @@ function Swipping() {
 
     return (
         <div>
-            { redirect ? (<Redirect push to="/"/>) : null }
+            { redirect ? (<Redirect push to="/" />) : null}
             <h2>Swipping</h2>
             <h4>{currentItem.itemName}</h4>
             <h5>{currentItem.itemDescription}</h5>
-            <img class="itemImage" src={currentItem.imageURL}/>
+            <img class="itemImage" src={currentItem.imageURL} />
             <button onClick={handleItemNotLike}>Not Interested</button>
             <button onClick={handleItemLike}>Interested</button>
-            
+
         </div>
     )
 }

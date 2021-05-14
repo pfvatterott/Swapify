@@ -1,6 +1,6 @@
 import React, {useState, useContext} from "react";
 import API from "../utils/API";
-import GoogleLogin from 'react-google-login'
+import {GoogleLogin} from 'react-google-login';
 import {Redirect} from 'react-router-dom';
 
 

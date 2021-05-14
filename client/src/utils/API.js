@@ -48,5 +48,13 @@ export default {
 
   postMatch: function(matchInfo) {
     return axios.post("/api/matches", matchInfo)
+  },
+
+  getUserMatches: function(id) {
+    return axios.get("/api/matches/" + id)
+  },
+
+  updateUserMatch: function(id, matchData) {
+    return axios.put("/api/matches/" + id, matchData)
   }
 };

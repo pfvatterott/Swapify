@@ -32,10 +32,10 @@ module.exports = {
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
     },
-    findByGoogleId: function(req, res) {
+    findUsersMatches: function(req, res) {
         db.Matches
           .find({
-              itemOwner: req.params.id
+              item2Owner: req.params.id,
           })
           .then(dbModel => res.json(dbModel))
           .catch(err => res.status(422).json(err));

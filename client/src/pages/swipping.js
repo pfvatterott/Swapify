@@ -16,7 +16,6 @@ function Swipping() {
 
 
     useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem('userData'))
         if (userData === null) {
             setRedirect(true)
         }
@@ -49,10 +48,22 @@ function Swipping() {
 
         // checks if there are any matches. Needs to be in UseEffect
         setInterval(function(){
-            API.getAllMatches().then((response) => {
+            API.getUserMatches(userData.googleId).then((response) => {
                 console.log(response)
+                for (let i = 0; i < response.data.length; i++) {
+                    if ((response.data[i].item2Owner == userData.googleId) && (response.data[i].item2Read === false)) {
+                        const matchData = {
+                            item2Read: true
+                        }
+                        API.updateUserMatch(response.data[i]._id, matchData).then((matchPutResponse) => {
+                            console.log(matchPutResponse)
+                            alert('You have a new matched Item!')
+                        })
+                    }
+                    
+                }
             })
-        }, 10000)
+        }, 5000)
          
     }, [])
 

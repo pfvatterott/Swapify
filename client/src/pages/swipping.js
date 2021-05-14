@@ -47,7 +47,6 @@ function Swipping() {
          
     }, [])
 
-    
 
     useEffect(() => {
         if (preventFirstRender === true) {
@@ -84,10 +83,20 @@ function Swipping() {
             updatedItemData.seenItems.push(currentItem._id)
             updatedItemData.likesItems.push(currentItem._id)
             API.updateItem(itemData, updatedItemData).then((res) => {
+                API.getItem(currentItem._id).then((response) => {
+                    const updatedItemData = {
+                        likesFromItems: response.data.likesFromItems
+                    }
+                    updatedItemData.likesFromItems.push(itemData)
+                    API.updateItem(currentItem._id, updatedItemData).then((res) => {
+                        setImageNumber(imageNumber + 1)
+                    })
+                  })
                 setImageNumber(imageNumber + 1)
             })
 
             // setup API to update that current item has a like
+            
         })
     }
 

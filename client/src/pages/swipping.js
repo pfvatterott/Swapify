@@ -2,15 +2,16 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom'
 import API from "../utils/API";
 import "./style.css"
-
+let preventFirstRender = false
 
 
 function Swipping() {
     const [redirect, setRedirect] = useState(false);
     const [notUserItems, setNotUserItems] = useState([])
     const [currentItem, setCurrentItem] = useState([])
+    const [noMoreItems, setNoMoreItems] = useState(false)
+    const [imageNumber, setImageNumber] = useState(0)
     const itemData = JSON.parse(localStorage.getItem('itemData'))
-    let imageNumber = 0;
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem('userData'))
@@ -32,26 +33,49 @@ function Swipping() {
                         }
                     }
                 }
-                setNotUserItems(notUserItemsArray)
-                setCurrentItem(notUserItemsArray[imageNumber])
+                if (notUserItemsArray.length === 0 ) {
+                    alert('no more items')
+                }
+                else {
+                    console.log(notUserItemsArray)
+                    setNotUserItems(notUserItemsArray)
+                    setCurrentItem(notUserItemsArray[imageNumber])
+                }
+                
             })
-        })    
+        })
+         
     }, [])
 
+    
+
+    useEffect(() => {
+        if (preventFirstRender === true) {
+            if (imageNumber === notUserItems.length) {
+                setNoMoreItems(true)
+            }
+            else {
+                setCurrentItem(notUserItems[imageNumber])
+            }
+        }
+    }, [imageNumber])
+
+
     function handleItemNotLike() {
+        preventFirstRender = true
         API.getItem(itemData).then((res) => {
             const updatedItemData = {
                 seenItems: res.data.seenItems
             }
             updatedItemData.seenItems.push(currentItem._id)
             API.updateItem(itemData, updatedItemData).then((res) => {
-                imageNumber++
-                setCurrentItem(notUserItems[imageNumber])
+                setImageNumber(imageNumber + 1)
             })
         })  
     }
 
     function handleItemLike() {
+        preventFirstRender = true
         API.getItem(itemData).then((res) => {
             const updatedItemData = {
                 seenItems: res.data.seenItems,
@@ -60,10 +84,15 @@ function Swipping() {
             updatedItemData.seenItems.push(currentItem._id)
             updatedItemData.likesItems.push(currentItem._id)
             API.updateItem(itemData, updatedItemData).then((res) => {
-                imageNumber++
-                setCurrentItem(notUserItems[imageNumber])
+                setImageNumber(imageNumber + 1)
             })
+
+            // setup API to update that current item has a like
         })
+    }
+
+    if (noMoreItems === true) {
+        alert('no more items')
     }
 
 
@@ -76,8 +105,7 @@ function Swipping() {
             <img class="itemImage" src={currentItem.imageURL}/>
             <button onClick={handleItemNotLike}>Not Interested</button>
             <button onClick={handleItemLike}>Interested</button>
-
-          
+            
         </div>
     )
 }

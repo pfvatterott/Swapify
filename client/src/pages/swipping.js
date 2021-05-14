@@ -110,7 +110,6 @@ function Swipping() {
                     API.updateItem(currentItem._id, updatedItemData1).then((res) => {
                         // once updated, check if there is a match
                         for (let i = 0; i < userItemResponse.data.likesFromItems.length; i++) {
-                            console.log(userItemResponse.data.likesFromItems[i])
                             if (userItemResponse.data.likesFromItems[i] === currentItem._id) {
                                 alert("its a match!!")
                                 const matchData = {
@@ -121,7 +120,6 @@ function Swipping() {
                                     item2Read: false
                                 }
                                 API.postMatch(matchData).then((matchRes) => {
-                                    console.log(matchRes)
                                 })
                             }
                         }

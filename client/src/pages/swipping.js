@@ -4,7 +4,6 @@ import API from "../utils/API";
 import "./style.css"
 let preventFirstRender = false
 
-
 function Swipping() {
     const [redirect, setRedirect] = useState(false);
     const [notUserItems, setNotUserItems] = useState([])
@@ -42,14 +41,13 @@ function Swipping() {
                     setNotUserItems(notUserItemsArray)
                     setCurrentItem(notUserItemsArray[imageNumber])
                 }
-                
             })
         })
 
         // checks if there are any matches. Needs to be in UseEffect
         setInterval(function(){
             API.getUserMatches(userData.googleId).then((response) => {
-                console.log(response)
+                // checks if matches have been read or not by user2 (the user that was not swipping when the match was made)
                 for (let i = 0; i < response.data.length; i++) {
                     if ((response.data[i].item2Owner == userData.googleId) && (response.data[i].item2Read === false)) {
                         const matchData = {
@@ -60,7 +58,6 @@ function Swipping() {
                             alert('You have a new matched Item!')
                         })
                     }
-                    
                 }
             })
         }, 5000)
@@ -95,6 +92,7 @@ function Swipping() {
 
     function handleItemLike() {
         preventFirstRender = true
+        // get item data, add to it, then do a put. Then do it for second item
         API.getItem(itemData).then((userItemResponse) => {
             const updatedItemData = {
                 seenItems: userItemResponse.data.seenItems,
@@ -109,30 +107,25 @@ function Swipping() {
                     }
                     updatedItemData1.likesFromItems.push(itemData)
                     API.updateItem(currentItem._id, updatedItemData).then((res) => {
+                        // once updated, check if there is a match
                         for (let i = 0; i < updatedItemData.likesItems.length; i++) {
                             for (let p = 0; p < updatedItemData1.likesFromItems.length; p++) {
                                 if (updatedItemData.likesItems[i] === updatedItemData1.likesFromItems[p]) {
                                     alert("its a match!!")
-
-                                    // START HERE
                                     const matchData = {
                                         item1Id: itemData,
                                         item1Owner: userData.googleId,
                                         item2Id: currentItem._id,
-                                        item2Owner: currentItemResponse.data.itemOwner, //item2Owner not working
+                                        item2Owner: currentItemResponse.data.itemOwner,
                                         item2Read: false
                                     }
+                                    // post match to db
                                     API.postMatch(matchData).then((matchRes) => {
                                         console.log(matchRes)
                                     })
                                 }
-                                
                             }
-                            
                         }
-
-
-
                         setImageNumber(imageNumber + 1)
                     })
                   })

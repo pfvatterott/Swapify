@@ -33,6 +33,11 @@ function Swipping() {
                         }
                     }
                 }
+                for (let q = 0; q < notUserItemsArray.length; q++) {
+                    if (notUserItemsArray[q].likesItems.includes(itemData)) {
+                        notUserItemsArray.unshift(notUserItemsArray.splice(q, 1)[0])
+                    }
+                }
                 if (notUserItemsArray.length === 0) {
                     alert('no more items')
                 }

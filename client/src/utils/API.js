@@ -40,5 +40,13 @@ export default {
 
   getItem: function(itemId) {
     return axios.put("/api/items/" + itemId)
+  },
+
+  getAllMatches: function() {
+    return axios.get("/api/matches/")
+  },
+
+  postMatch: function(matchInfo) {
+    return axios.post("/api/matches", matchInfo)
   }
 };

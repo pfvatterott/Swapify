@@ -44,10 +44,18 @@ function Swipping() {
                 
             })
         })
+
+        // checks if there are any matches. Needs to be in UseEffect
+        setInterval(function(){
+            API.getAllMatches().then((response) => {
+                console.log(response)
+            })
+        }, 10000)
          
     }, [])
 
 
+    // runs every time the imageNumber state changes
     useEffect(() => {
         if (preventFirstRender === true) {
             if (imageNumber === notUserItems.length) {
@@ -58,7 +66,6 @@ function Swipping() {
             }
         }
     }, [imageNumber])
-
 
     function handleItemNotLike() {
         preventFirstRender = true
@@ -75,24 +82,39 @@ function Swipping() {
 
     function handleItemLike() {
         preventFirstRender = true
-        API.getItem(itemData).then((res) => {
+        API.getItem(itemData).then((userItemResponse) => {
             const updatedItemData = {
-                seenItems: res.data.seenItems,
-                likesItems: res.data.likesItems
+                seenItems: userItemResponse.data.seenItems,
+                likesItems: userItemResponse.data.likesItems
             }
             updatedItemData.seenItems.push(currentItem._id)
             updatedItemData.likesItems.push(currentItem._id)
             API.updateItem(itemData, updatedItemData).then((res) => {
-                API.getItem(currentItem._id).then((response) => {
-                    const updatedItemData = {
-                        likesFromItems: response.data.likesFromItems
+                API.getItem(currentItem._id).then((currentItemResponse) => {
+                    const updatedItemData1 = {
+                        likesFromItems: currentItemResponse.data.likesFromItems
                     }
-                    updatedItemData.likesFromItems.push(itemData)
+                    updatedItemData1.likesFromItems.push(itemData)
                     API.updateItem(currentItem._id, updatedItemData).then((res) => {
+                        console.log(updatedItemData)
+                        for (let i = 0; i < updatedItemData.likesItems.length; i++) {
+                            for (let p = 0; p < updatedItemData1.likesFromItems.length; p++) {
+                                if (updatedItemData.likesItems[i] === updatedItemData1.likesFromItems[p]) {
+                                    alert("its a match!!")
+
+                                    // START HERE
+                                    // API.postMatch()
+                                }
+                                
+                            }
+                            
+                        }
+
+
+
                         setImageNumber(imageNumber + 1)
                     })
                   })
-                setImageNumber(imageNumber + 1)
             }) 
         })
     }

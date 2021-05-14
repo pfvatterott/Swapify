@@ -23,10 +23,30 @@ export default {
   },
 
   getUserItems: function(userID) {
-    return axios.get("/api/items/" + userID)
+    return axios.get("/api/items/user/" + userID)
   },
 
   getAllItems: function() {
     return axios.get("/api/items/")
+  },
+
+  updateUser: function(userId, userData) {
+    return axios.put("/api/users/" + userId, userData)
+  },
+
+  updateItem: function(itemId, itemData) {
+    return axios.put("/api/items/" + itemId, itemData)
+  },
+
+  getItem: function(itemId) {
+    return axios.put("/api/items/" + itemId)
+  },
+
+  getAllMatches: function() {
+    return axios.get("/api/matches/")
+  },
+
+  postMatch: function(matchInfo) {
+    return axios.post("/api/matches", matchInfo)
   }
 };

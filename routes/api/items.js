@@ -9,9 +9,14 @@ router.route("/")
 // Matches with "/api/books/:id"
 router
   .route("/:id")
-  .get(itemsController.findByGoogleId)
+  .get(itemsController.findById)
   .put(itemsController.update)
   .delete(itemsController.remove);
+
+router
+  .route("/user/:id")
+  .get(itemsController.findByGoogleId)
+
 
 router.get('search/:name', (req, res) => {
   console.log(res)

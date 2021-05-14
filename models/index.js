@@ -1,5 +1,6 @@
 module.exports = {
     Users: require("./users"),
-    Items: require("./items")
+    Items: require("./items"),
+    Matches: require("./matches")
   };
   

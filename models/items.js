@@ -23,8 +23,16 @@ const itemsSchema = new mongoose.Schema({
       type: Number
   },
 
-  itemLikes: [{
-    type: Number
+  likesFromItems: [{
+    type: String
+  }],
+
+  seenItems: [{
+    type: String
+  }],
+
+  likesItems: [{
+    type: String
   }],
 
   dateCreated: {
@@ -35,6 +43,7 @@ const itemsSchema = new mongoose.Schema({
   
 
 });
+
 
 const Items = mongoose.model("Items", itemsSchema);
 

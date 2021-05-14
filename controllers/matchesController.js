@@ -2,41 +2,40 @@ const db = require("../models");
 
 module.exports = {
     findAll: function(req, res) {
-      db.Users
+      db.Matches
         .find(req.query)
-        .sort({ date: -1 })
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
     },
     findById: function(req, res) {
-      db.Users
+      db.Matches
         .findById(req.params.id)
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
     },
     create: function(req, res) {
-      db.Users
+      db.Matches
         .create(req.body)
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
     },
     update: function(req, res) {
-      db.Users
-        .findOneAndUpdate({ googleId: req.params.id }, req.body)
+      db.Matches
+        .findOneAndUpdate({ _id: req.params.id }, req.body)
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
     },
     remove: function(req, res) {
-      db.Users
+      db.Matches
         .findById({ _id: req.params.id })
         .then(dbModel => dbModel.remove())
         .then(dbModel => res.json(dbModel))
         .catch(err => res.status(422).json(err));
     },
     findByGoogleId: function(req, res) {
-        db.Users
+        db.Matches
           .find({
-              googleId: req.params.id
+              itemOwner: req.params.id
           })
           .then(dbModel => res.json(dbModel))
           .catch(err => res.status(422).json(err));

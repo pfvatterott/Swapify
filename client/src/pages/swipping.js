@@ -33,7 +33,7 @@ function Swipping() {
                         }
                     }
                 }
-                if (notUserItemsArray.length === 0 ) {
+                if (notUserItemsArray.length === 0) {
                     alert('no more items')
                 }
                 else {
@@ -45,7 +45,7 @@ function Swipping() {
         })
 
         // checks if there are any matches. Needs to be in UseEffect
-        setInterval(function(){
+        setInterval(function () {
             API.getUserMatches(userData.googleId).then((response) => {
                 // checks if matches have been read or not by user2 (the user that was not swipping when the match was made)
                 for (let i = 0; i < response.data.length; i++) {
@@ -61,7 +61,7 @@ function Swipping() {
                 }
             })
         }, 5000)
-         
+
     }, [])
 
 
@@ -87,7 +87,7 @@ function Swipping() {
             API.updateItem(itemData, updatedItemData).then((res) => {
                 setImageNumber(imageNumber + 1)
             })
-        })  
+        })
     }
 
     function handleItemLike() {
@@ -102,34 +102,33 @@ function Swipping() {
             updatedItemData.likesItems.push(currentItem._id)
             API.updateItem(itemData, updatedItemData).then((res) => {
                 API.getItem(currentItem._id).then((currentItemResponse) => {
+                    console.log(currentItemResponse)
                     const updatedItemData1 = {
                         likesFromItems: currentItemResponse.data.likesFromItems
                     }
                     updatedItemData1.likesFromItems.push(itemData)
-                    API.updateItem(currentItem._id, updatedItemData).then((res) => {
+                    API.updateItem(currentItem._id, updatedItemData1).then((res) => {
                         // once updated, check if there is a match
-                        for (let i = 0; i < updatedItemData.likesItems.length; i++) {
-                            for (let p = 0; p < updatedItemData1.likesFromItems.length; p++) {
-                                if (updatedItemData.likesItems[i] === updatedItemData1.likesFromItems[p]) {
-                                    alert("its a match!!")
-                                    const matchData = {
-                                        item1Id: itemData,
-                                        item1Owner: userData.googleId,
-                                        item2Id: currentItem._id,
-                                        item2Owner: currentItemResponse.data.itemOwner,
-                                        item2Read: false
-                                    }
-                                    // post match to db
-                                    API.postMatch(matchData).then((matchRes) => {
-                                        console.log(matchRes)
-                                    })
+                        for (let i = 0; i < userItemResponse.data.likesFromItems.length; i++) {
+                            console.log(userItemResponse.data.likesFromItems[i])
+                            if (userItemResponse.data.likesFromItems[i] === currentItem._id) {
+                                alert("its a match!!")
+                                const matchData = {
+                                    item1Id: itemData,
+                                    item1Owner: userData.googleId,
+                                    item2Id: currentItem._id,
+                                    item2Owner: currentItemResponse.data.itemOwner,
+                                    item2Read: false
                                 }
+                                API.postMatch(matchData).then((matchRes) => {
+                                    console.log(matchRes)
+                                })
                             }
                         }
                         setImageNumber(imageNumber + 1)
                     })
-                  })
-            }) 
+                })
+            })
         })
     }
 
@@ -140,14 +139,14 @@ function Swipping() {
 
     return (
         <div>
-            { redirect ? (<Redirect push to="/"/>) : null }
+            { redirect ? (<Redirect push to="/" />) : null}
             <h2>Swipping</h2>
             <h4>{currentItem.itemName}</h4>
             <h5>{currentItem.itemDescription}</h5>
-            <img class="itemImage" src={currentItem.imageURL}/>
+            <img class="itemImage" src={currentItem.imageURL} />
             <button onClick={handleItemNotLike}>Not Interested</button>
             <button onClick={handleItemLike}>Interested</button>
-            
+
         </div>
     )
 }

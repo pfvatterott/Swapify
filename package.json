@@ -24,8 +24,10 @@
     "firebase": "^8.6.0",
     "google-oauth": "^0.0.2",
     "if-env": "^1.0.4",
+    "materialize-css": "^1.0.0-rc.2",
     "mongoose": "^5.12.8",
     "react-google-login": "^5.2.2",
+    "react-materialize": "^3.9.8",
     "reducer": "^0.19.2"
   }
 }

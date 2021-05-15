@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom'
 import API from "../utils/API";
 import ItemCard from "../components/ItemCard"
-import { Button, Card, CollectionItem, Collection } from 'react-materialize';
+import { Col, Row, CollectionItem, Collection } from 'react-materialize';
 
 function Profile() {
     const [redirect, setRedirect] = useState(false);
@@ -27,19 +27,26 @@ function Profile() {
     }
     return (
         <div>
-            { redirect ? (<Redirect push to="/"/>) : null }
+            {redirect ? (<Redirect push to="/" />) : null}
             <h2>Profile Page</h2>
             <a><Link to="/createItem">Create Item</Link></a>
             <div>
-            <Collection>
-            {usersItemList.map(item =>(
-                
-                <ItemCard imageURL={item.imageURL} itemName = {item.itemName} id={item._id}/>
-            
-               // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
-            ))}
-             </Collection>
-             </div>
+                <Row>
+                    <Col
+                        m={12}
+                        s={12}>
+                        <Collection>
+                            {usersItemList.map(item => (
+
+                                <ItemCard imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
+
+                                // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
+                            ))}
+                        </Collection>
+
+                    </Col>
+                </Row>
+            </div>
         </div>
     )
 }

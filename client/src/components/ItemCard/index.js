@@ -15,11 +15,14 @@ const ItemCard = (props) => {
             <span className="title">
                 {props.itemName}
             </span>
+            <span className="title">
+                {props.itemDescription}
+            </span>
             <a
                 className="secondary-content"
-                href="/swiping"
+                href="/swipping"
             >
-            <Button onClick={() => API.handleUseItem(props.id)}/>
+            <Button onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#F28705"}}>Swap</Button>
             </a>
 
         </CollectionItem>

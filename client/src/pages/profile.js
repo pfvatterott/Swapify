@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom'
 import API from "../utils/API";
-
+import ItemCard from "../components/ItemCard"
+import { Button, Card, CollectionItem, Collection } from 'react-materialize';
 
 function Profile() {
     const [redirect, setRedirect] = useState(false);
@@ -29,9 +30,16 @@ function Profile() {
             { redirect ? (<Redirect push to="/"/>) : null }
             <h2>Profile Page</h2>
             <a><Link to="/createItem">Create Item</Link></a>
+            <div>
+            <Collection>
             {usersItemList.map(item =>(
-                <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
+                
+                <ItemCard imageURL={item.imageURL} itemName = {item.itemName} id={item._id}/>
+            
+               // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
             ))}
+             </Collection>
+             </div>
         </div>
     )
 }

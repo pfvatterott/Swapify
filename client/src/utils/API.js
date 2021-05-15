@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Link, Redirect } from 'react-router-dom'
 
 export default {
   // Gets all books
@@ -56,5 +57,12 @@ export default {
 
   updateUserMatch: function(id, matchData) {
     return axios.put("/api/matches/" + id, matchData)
-  }
+  },
+
+  handleUseItem: function(id) {
+    console.log(id)
+    localStorage.setItem('itemData', JSON.stringify(id))
+    //setRedirectToSwipping(true)
+}
+
 };

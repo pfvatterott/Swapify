@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom'
 import API from "../utils/API";
 import ItemCard from "../components/ItemCard"
+import MatchCard from '../components/MatchCard'
 import { Col, Row, CollectionItem, Collection } from 'react-materialize';
 
 function Profile() {
@@ -33,7 +34,7 @@ function Profile() {
                             otherItemId: item.item2Id,
                             otherUser: item.item2Owner,
                             otherItemImage: itemResponse.data.imageURL,
-                            otherItemName: itemResponse.data.itemName
+                            otherItemName: itemResponse.data.itemName,
                         }
                         matchArray.push(itemInfo)
                         console.log(matchArray)
@@ -80,7 +81,7 @@ function Profile() {
                         s={12}>
                         <Collection>
                             {matchList.map(match => (
-                                <ItemCard imageURL={match.otherItemImage} itemName={match.otherItemName} id={match.otherItemId} />
+                                <MatchCard imageURL={match.otherItemImage} itemName={match.otherItemName} id1={match.otherItemId} id2={match.userItemId}/>
                             ))}
                         </Collection>
 

@@ -62,7 +62,6 @@ export default {
   handleUseItem: function(id) {
     console.log(id)
     localStorage.setItem('itemData', JSON.stringify(id))
-    //setRedirectToSwipping(true)
-}
+  }
 
 };

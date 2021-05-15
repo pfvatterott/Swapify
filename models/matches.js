@@ -8,7 +8,7 @@ const matchesSchema = new mongoose.Schema({
  },
 
  item1Owner: {
-    type: Number
+    type: String
  },
 
  item2Id: {
@@ -16,7 +16,7 @@ const matchesSchema = new mongoose.Schema({
  },
 
  item2Owner: {
-    type: Number
+    type: String
  },
 
  item2Read: {

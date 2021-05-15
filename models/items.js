@@ -20,7 +20,7 @@ const itemsSchema = new mongoose.Schema({
   },
 
   itemOwner: {
-      type: Number
+      type: String
   },
 
   likesFromItems: [{

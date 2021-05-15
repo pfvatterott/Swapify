@@ -3,6 +3,7 @@ import API from "../utils/API";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import { storage } from "../utils/firebase"
 import {Redirect} from 'react-router-dom';
+import Compressor from 'compressorjs';
 
 
 function Item() {
@@ -38,24 +39,38 @@ function Item() {
 
   
   function fileUploadHandler() {
-    const randomNumber = Math.floor(Math.random() * 100000000)
-    const uploadTask = storage.ref(`images/${randomNumber + image.name}`).put(image)
-    uploadTask.on(
-      "state_changed",
-      snapshot => {},
-      error => {
-        console.log(error)
+
+    // Compress image before uploading to firebase
+    new Compressor(image, {
+      quality: 0.2,
+      success(result) {
+      
+        // uploads image to firebase
+        const randomNumber = Math.floor(Math.random() * 100000000)
+        const uploadTask = storage.ref(`images/${randomNumber + image.name}`).put(result)
+        uploadTask.on(
+          "state_changed",
+          snapshot => {},
+          error => {
+            console.log(error)
+          },
+          () => {
+            storage
+              .ref("images")
+              .child(randomNumber + image.name)
+              .getDownloadURL()
+              .then(url => {
+                saveToDatabase(url)
+              })
+          }
+        )
+       
       },
-      () => {
-        storage
-          .ref("images")
-          .child(randomNumber + image.name)
-          .getDownloadURL()
-          .then(url => {
-            saveToDatabase(url)
-          })
-      }
-    )
+      error(err) {
+        console.log(err.message);
+      },
+    });
+
   };
 
   function saveToDatabase(url) {

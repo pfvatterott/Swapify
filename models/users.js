@@ -20,7 +20,7 @@ const usersSchema = new mongoose.Schema({
   },
 
   googleId: {
-      type: Number
+      type: String
   },
 
   listedItems: [String]

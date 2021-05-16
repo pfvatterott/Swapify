@@ -120,8 +120,12 @@ function Swipping() {
                                 const matchData = {
                                     item1Id: itemData,
                                     item1Owner: userData.googleId,
+                                    item1Photo: userItemResponse.data.imageURL,
+                                    item1Name: userItemResponse.data.itemName,
                                     item2Id: currentItem._id,
                                     item2Owner: currentItemResponse.data.itemOwner,
+                                    item2Photo: currentItemResponse.data.imageURL,
+                                    item2Name: currentItemResponse.data.itemName,
                                     item2Read: false
                                 }
                                 API.postMatch(matchData).then((matchRes) => {

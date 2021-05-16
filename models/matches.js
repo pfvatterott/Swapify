@@ -8,7 +8,15 @@ const matchesSchema = new mongoose.Schema({
  },
 
  item1Owner: {
-    type: Number
+    type: String
+ },
+
+ item1Photo: {
+   type: String
+ },
+
+ item1Name: {
+   type: String
  },
 
  item2Id: {
@@ -16,13 +24,23 @@ const matchesSchema = new mongoose.Schema({
  },
 
  item2Owner: {
-    type: Number
+    type: String
+ },
+
+ item2Photo: {
+   type: String
+ },
+
+ item2Name: {
+   type: String
  },
 
  item2Read: {
      type: Boolean,
      default: false
- }
+ },
+
+
 
 });
 

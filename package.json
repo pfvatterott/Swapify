@@ -27,6 +27,7 @@
     "if-env": "^1.0.4",
     "materialize-css": "^1.0.0-rc.2",
     "mongoose": "^5.12.8",
+    "react-firebase-hooks": "^3.0.4",
     "react-google-login": "^5.2.2",
     "react-materialize": "^3.9.8",
     "reducer": "^0.19.2"

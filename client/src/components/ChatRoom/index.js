@@ -20,7 +20,6 @@ export default function ChatRoom() {
     useEffect(() => { 
         API.getItem(chatData.item1).then((item1Response) => {
             setUserItem({id: chatData.item1, photoURL: item1Response.data.imageURL})
-
             API.getItem(chatData.item2).then((item2Response) => {
                 setOtherItem({id: chatData.item2, photoURL: item2Response.data.imageURL})
             })
@@ -44,22 +43,13 @@ export default function ChatRoom() {
 
     if (messages) {
         console.log(messages)
-        // chatMessages = messages.filter(message => (
-        //     ((message.sentFromid === userItem.id) && (message.sentToid === otherItem.id)) ||  ((message.sentToid === otherItem.id) && (message.sentToid === userItem.id))
-        // ))
         for (let i = 0; i < messages.length; i++) {
-            console.log(userItem.id)
-            console.log(messages[i].sentFromid)
-            console.log(messages[i].sentToid)
-            console.log(otherItem.id)
-
             if ((messages[i].sentFromid === userItem.id) && (messages[i].sentToid === otherItem.id)) {
                 chatMessages.push(messages[i])
             }
             else if ((messages[i].sentFromid === otherItem.id) && (messages[i].sentToid === userItem.id)) {
                 chatMessages.push(messages[i])
             }
-            
         }
     }
 

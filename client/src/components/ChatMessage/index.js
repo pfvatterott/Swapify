@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import "./style.css"
 
 export default function ChatMessage(props) {
-    const userData = JSON.parse(localStorage.getItem('userData'))
-    const { text, sentFromId, sentFromPhoto } = props.message;
-    const messageClass = sentFromId === userData.googleId ? 'sent' : 'received';
+    const chatData = JSON.parse(localStorage.getItem('chatData'))
+    const { text, sentFromid, sentFromPhoto } = props.message;
+    const messageClass = sentFromid === chatData.item1 ? 'sent' : 'received';
+
 
     return (
         <div className={`message ${messageClass}`}>

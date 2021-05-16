@@ -34,9 +34,10 @@ module.exports = {
     },
     findUsersMatches: function(req, res) {
         db.Matches
-          .find({
-              item2Owner: req.params.id,
-          })
+          .find({ $or: [
+              {item2Owner: req.params.id},
+              {item1Owner: req.params.id},
+          ]})
           .then(dbModel => res.json(dbModel))
           .catch(err => res.status(422).json(err));
       },

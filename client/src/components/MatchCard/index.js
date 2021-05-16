@@ -4,11 +4,12 @@ import { Button, Card, CollectionItem } from 'react-materialize';
 import API from "../../utils/API"
 
 const MatchCard = (props) => {
-    console.log(props.id1)
-    console.log(props.id2)
+    console.log(props.matchData)
     const itemIds = {
-        item1: props.id1,
-        item2: props.id2
+        item1: props.matchData.userItemId,
+        item1Owner: props.matchData.userId,
+        item2: props.matchData.otherItemId,
+        item2Owner: props.matchData.otherUser
     }
 
     function handleGoToChat() {

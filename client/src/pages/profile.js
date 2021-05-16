@@ -10,41 +10,56 @@ function Profile() {
     const [redirectToSwipping, setRedirectToSwipping] = useState(false);
     const [usersItemList, setUsersItemList] = useState([]);
     const [matchList, setMatchList] = useState([])
+    const userData = JSON.parse(localStorage.getItem('userData'))
+    let matchArray = []
 
 
     useEffect(() => {
-        const userData = JSON.parse(localStorage.getItem('userData'))
         if (userData === null) {
             setRedirect(true)
         }
         API.getUserItems(userData.googleId).then((response) => {
+            console.log(response.data)
             setUsersItemList(response.data)
         })
         API.getUserMatches(userData.googleId).then((matchResponse) => {
-            let matchArray = []
             matchResponse.data.forEach(item => {
                 if (item.item1Owner === userData.googleId) {
-                    API.getItem(item.item2Id).then((itemResponse) => {
-                        console.log(itemResponse.data.imageURL)
-                        console.log(itemResponse.data.itemOwner)
-                        console.log(itemResponse.data.itemName)
-                        const itemInfo = {
-                            userItemId: item.item1Id,
-                            userId: item.item1Owner,
-                            otherItemId: item.item2Id,
-                            otherUser: item.item2Owner,
-                            otherItemImage: itemResponse.data.imageURL,
-                            otherItemName: itemResponse.data.itemName,
-                        }
-                        matchArray.push(itemInfo)
-                        console.log(matchArray)
+                    const itemInfo = {
+                        userItemId: item.item1Id,
+                        userId: item.item1Owner,
+                        userItemPhoto: item.item1Photo,
+                        userItemName: item.item1Name,
+                        otherItemId: item.item2Id,
+                        otherUser: item.item2Owner,
+                        otherItemImage: item.item2Photo,
+                        otherItemName: item.item2Name,
+                    }
+                    matchArray.push(itemInfo)
+                    if (matchResponse.data.length === matchArray.length) {
                         setMatchList(matchArray)
-                    })
+                    }
                 }
-                
+                else {
+                    const itemInfo = {
+                        userItemId: item.item2Id,
+                        userId: item.item2Owner,
+                        userItemPhoto: item.item2Photo,
+                        userItemName: item.item2Name,
+                        otherItemId: item.item1Id,
+                        otherUser: item.item1Owner,
+                        otherItemImage: item.item1Photo,
+                        otherItemName: item.item1Name,
+                    }
+                    matchArray.push(itemInfo)
+                    if (matchResponse.data.length === matchArray.length) {
+                        setMatchList(matchArray)
+                    }
+                }
             });
         })
     }, [])
+
 
     function handleUseItem(id) {
         console.log(id)
@@ -81,7 +96,7 @@ function Profile() {
                         s={12}>
                         <Collection>
                             {matchList.map(match => (
-                                <MatchCard imageURL={match.otherItemImage} itemName={match.otherItemName} id1={match.otherItemId} id2={match.userItemId}/>
+                                <MatchCard imageURL={match.otherItemImage} itemName={match.otherItemName} matchData={match}/>
                             ))}
                         </Collection>
 

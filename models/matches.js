@@ -11,6 +11,14 @@ const matchesSchema = new mongoose.Schema({
     type: String
  },
 
+ item1Photo: {
+   type: String
+ },
+
+ item1Name: {
+   type: String
+ },
+
  item2Id: {
     type: String
  },
@@ -19,10 +27,20 @@ const matchesSchema = new mongoose.Schema({
     type: String
  },
 
+ item2Photo: {
+   type: String
+ },
+
+ item2Name: {
+   type: String
+ },
+
  item2Read: {
      type: Boolean,
      default: false
- }
+ },
+
+
 
 });
 

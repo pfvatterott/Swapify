@@ -12,14 +12,12 @@ export default function ChatRoom() {
     const [messages] = useCollectionData(query, {idField: 'id'})
     const [formValue, setFormValue] = useState('')
     const dummy = useRef()
-
+    let chatMessages = [];
 
     const [userItem, setUserItem] = useState({})
     const [otherItem, setOtherItem] = useState({})
 
     useEffect(() => { 
-
-
         API.getItem(chatData.item1).then((item1Response) => {
             setUserItem({id: chatData.item1, photoURL: item1Response.data.imageURL})
 
@@ -27,8 +25,6 @@ export default function ChatRoom() {
                 setOtherItem({id: chatData.item2, photoURL: item2Response.data.imageURL})
             })
         })
-        
-        
 
     }, [])
 
@@ -44,14 +40,33 @@ export default function ChatRoom() {
         })
         setFormValue('')
         dummy.current.scrollIntoView({ behavior: 'smooth' })
+    }
 
+    if (messages) {
+        console.log(messages)
+        // chatMessages = messages.filter(message => (
+        //     ((message.sentFromid === userItem.id) && (message.sentToid === otherItem.id)) ||  ((message.sentToid === otherItem.id) && (message.sentToid === userItem.id))
+        // ))
+        for (let i = 0; i < messages.length; i++) {
+            console.log(userItem.id)
+            console.log(messages[i].sentFromid)
+            console.log(messages[i].sentToid)
+            console.log(otherItem.id)
 
+            if ((messages[i].sentFromid === userItem.id) && (messages[i].sentToid === otherItem.id)) {
+                chatMessages.push(messages[i])
+            }
+            else if ((messages[i].sentFromid === otherItem.id) && (messages[i].sentToid === userItem.id)) {
+                chatMessages.push(messages[i])
+            }
+            
+        }
     }
 
     return (
         <div>
             <div>
-                {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+                {chatMessages && chatMessages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
             </div>
             <form onSubmit={sendMessage}>

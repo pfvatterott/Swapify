@@ -52,7 +52,7 @@ export default {
   },
 
   getUserMatches: function(id) {
-    return axios.get("/api/matches/" + id)
+    return axios.get("/api/matches/user/" + id)
   },
 
   updateUserMatch: function(id, matchData) {
@@ -62,6 +62,10 @@ export default {
   handleUseItem: function(id) {
     console.log(id)
     localStorage.setItem('itemData', JSON.stringify(id))
+  },
+
+  getMatch: function(id) {
+    return axios.get("/api/matches/" + id)
   }
 
 };

@@ -8,25 +8,27 @@ import ChatMessage from "../ChatMessage"
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
     const chatData = JSON.parse(localStorage.getItem('chatData'))
-    console.log(chatData.matchId)
     const messagesRef = firestore.collection(`${chatData.matchId}`)
     const query = messagesRef.orderBy('createdAt')
     const [messages] = useCollectionData(query, {idField: 'id'})
     const [formValue, setFormValue] = useState('')
     const dummy = useRef()
-    let chatMessages = [];
 
     const [userItem, setUserItem] = useState({})
     const [otherItem, setOtherItem] = useState({})
 
     useEffect(() => { 
-        API.getItem(chatData.item1).then((item1Response) => {
-            setUserItem({id: chatData.item1, photoURL: item1Response.data.imageURL})
-            API.getItem(chatData.item2).then((item2Response) => {
-                setOtherItem({id: chatData.item2, photoURL: item2Response.data.imageURL})
-            })
+        API.getMatch(chatData.matchId).then((matchResponse) => {
+            console.log(matchResponse)
+            if (matchResponse.data.item1Owner === userData.googleId) {
+                setUserItem({id: matchResponse.data.item1Owner, photoURL: matchResponse.data.item1Photo})
+                setOtherItem({id: matchResponse.data.item2Owner, photoURL: matchResponse.data.item2Photo})
+            }
+            else {
+                setUserItem({id: matchResponse.data.item2Owner, photoURL: matchResponse.data.item2Photo})
+                setOtherItem({id: matchResponse.data.item1Owner, photoURL: matchResponse.data.item1Photo})
+            }
         })
-
     }, [])
 
     const sendMessage = async(e) => {
@@ -34,25 +36,13 @@ export default function ChatRoom() {
         await messagesRef.add({
             text: formValue,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            // sentFromid: userItem.id,
-            // sentToid: otherItem.id,
-            // sentFromPhoto: userItem.photoURL,
-            // setToPhoto: otherItem.photoURL
+            sentFromid: userItem.id,
+            sentToid: otherItem.id,
+            sentFromPhoto: userItem.photoURL,
+            setToPhoto: otherItem.photoURL
         })
         setFormValue('')
         dummy.current.scrollIntoView({ behavior: 'smooth' })
-    }
-
-    if (messages) {
-        console.log(messages)
-        for (let i = 0; i < messages.length; i++) {
-            if ((messages[i].sentFromid === userItem.id) && (messages[i].sentToid === otherItem.id)) {
-                chatMessages.push(messages[i])
-            }
-            else if ((messages[i].sentFromid === otherItem.id) && (messages[i].sentToid === userItem.id)) {
-                chatMessages.push(messages[i])
-            }
-        }
     }
 
     return (

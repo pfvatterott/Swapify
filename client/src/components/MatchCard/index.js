@@ -20,13 +20,13 @@ const MatchCard = (props) => {
             <a><img
                 alt=""
                 className="circle userItemPicture "
-                src={props.imageURL}
+                src={props.yourImageUrl}
             /></a>
             <a><i className="material-icons swapSymbol">autorenew</i></a>
             <a><img
                 alt=""
                 className="circle itemPicture"
-                src={props.yourImageUrl}
+                src={props.imageURL}
             /></a>
             <a className="secondary-content" href="/chat">
                 <Button onClick={handleGoToChat} style= {{backgroundColor:"#F28705"}}>Chat</Button>

@@ -3,7 +3,9 @@ import { Link, Redirect } from 'react-router-dom'
 import API from "../utils/API";
 import ItemCard from "../components/ItemCard"
 import MatchCard from '../components/MatchCard'
-import { Col, Row, CollectionItem, Collection } from 'react-materialize';
+import { Button, Col, Row, CollectionItem, Collection } from 'react-materialize';
+import AddIcon from '@material-ui/icons/Add';
+
 
 function Profile() {
     const [redirect, setRedirect] = useState(false);
@@ -70,7 +72,7 @@ function Profile() {
         <div>
             {redirect ? (<Redirect push to="/" />) : null}
             <h2>Profile Page</h2>
-            <a><Link to="/createItem">Create Item</Link></a>
+
             <div>
                 <Row>
                     <Col
@@ -83,8 +85,18 @@ function Profile() {
 
                                 // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
                             ))}
+                            <CollectionItem className="avatar valign-wrapper">
+                                <a
+                                    className="secondary-content"
+                                    href="/createItem"
+                                >
+                                    <Button className="btn-floating btn-large" style={{ backgroundColor: "#025159", right: "1420px" }}><AddIcon/></Button>
+                                </a>
+                                <span className="title" style={{ height: "70px", lineHeight: "70px", paddingLeft: "20px", fontFamily: "proxima-nova, sans-serif", fontWeight: "700", fontStyle: "normal", fontSize: "20px" }}>
+                                    <a><Link to="/createItem">Create New Item</Link></a>
+                                </span>
+                            </CollectionItem>
                         </Collection>
-
                     </Col>
                 </Row>
             </div>
@@ -96,13 +108,14 @@ function Profile() {
                         s={12}>
                         <Collection>
                             {matchList.map(match => (
-                                <MatchCard imageURL={match.otherItemImage} itemName={match.otherItemName} matchData={match}/>
+                                <MatchCard imageURL={match.otherItemImage} itemName={match.otherItemName} matchData={match} />
                             ))}
                         </Collection>
 
                     </Col>
                 </Row>
             </div>
+            <h2><a><Link to="/createItem">Create New Item</Link></a></h2>
         </div>
     )
 }

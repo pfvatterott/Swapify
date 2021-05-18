@@ -49,12 +49,24 @@ export default function ChatRoom() {
         API.getMatch(chatId.matchId).then((matchResponse) => {
             console.log(matchResponse)
             if (matchResponse.data.item1Owner === userData.googleId) {
-                API.deleteMatchesForItem(matchResponse.data.item1Id)
+                API.deleteMatchesForItem(matchResponse.data.item1Id).then((res) => {
+                    API.deleteItem(matchResponse.data.item1Id).then((delResponse) => {
+                        window.location.reload();
+                    })
+                })
             }
             else {
-                API.deleteMatchesForItem(matchResponse.data.item2Id)
+                API.deleteMatchesForItem(matchResponse.data.item2Id).then((res) => {
+                    API.deleteItem(matchResponse.data.item2Id).then((delResponse) => {
+                        window.location.reload();
+                    })
+                })
             }
         })
+    }
+
+    function deleteMatch() {
+        console.log('hey')
     }
 
     return (

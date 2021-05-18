@@ -1,25 +1,29 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { Button, Col, Row, CollectionItem, Collection } from 'react-materialize';
+import { Col, Row } from 'react-materialize';
 import API from '../../utils/API'
 import { firebase, firestore } from "../../utils/firebase"
 import ChatMessage from "../ChatMessage"
+import chatContext from "../../utils/chatContext"
 
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
-    const chatData = JSON.parse(localStorage.getItem('chatData'))
-    const messagesRef = firestore.collection(`${chatData.matchId}`)
+    const { chatId } = useContext(chatContext)
+    const [messagesRef, setMessagesRef] = useState(firestore.collection("60a0864b732e222f78082e42"))
     const query = messagesRef.orderBy('createdAt')
     const [messages] = useCollectionData(query, {idField: 'id'})
     const [formValue, setFormValue] = useState('')
     const dummy = useRef()
-
     const [userItem, setUserItem] = useState({})
     const [otherItem, setOtherItem] = useState({})
 
     useEffect(() => { 
-        API.getMatch(chatData.matchId).then((matchResponse) => {
-            console.log(matchResponse)
+        
+    })
+
+    useEffect(() => {
+        setMessagesRef(firestore.collection(chatId.matchId || "60a0864b732e222f78082e42"))
+        API.getMatch(chatId.matchId).then((matchResponse) => {
             if (matchResponse.data.item1Owner === userData.googleId) {
                 setUserItem({id: matchResponse.data.item1Owner, photoURL: matchResponse.data.item1Photo})
                 setOtherItem({id: matchResponse.data.item2Owner, photoURL: matchResponse.data.item2Photo})
@@ -29,7 +33,7 @@ export default function ChatRoom() {
                 setOtherItem({id: matchResponse.data.item1Owner, photoURL: matchResponse.data.item1Photo})
             }
         })
-    }, [])
+    }, [chatId])
 
     const sendMessage = async(e) => {
         e.preventDefault();

@@ -1,28 +1,24 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import API from "../../utils/API";
-import { Button, Col, Row, CollectionItem, Collection, SideNav } from 'react-materialize';
+import { Col, Row, Collection, SideNav } from 'react-materialize';
 import MatchCard from '../MatchCard'
 import "./style.css"
 
 
 export default function MatchesSideBar() {
-
-    const [redirect, setRedirect] = useState(false);
-    const [redirectToSwipping, setRedirectToSwipping] = useState(false);
     const [usersItemList, setUsersItemList] = useState([]);
     const [matchList, setMatchList] = useState([])
+    const [allMatches, setAllMatches] = useState([])
     const userData = JSON.parse(localStorage.getItem('userData'))
     let matchArray = []
 
+
     useEffect(() => {
-        if (userData === null) {
-            setRedirect(true)
-        }
         API.getUserItems(userData.googleId).then((response) => {
-            console.log(response.data)
             setUsersItemList(response.data)
         })
         API.getUserMatches(userData.googleId).then((matchResponse) => {
+            setAllMatches(matchResponse)
             matchResponse.data.forEach(item => {
                 if (item.item1Owner === userData.googleId) {
                     const itemInfo = {
@@ -71,7 +67,7 @@ export default function MatchesSideBar() {
                         fixed={true}>
                      <Collection>
                         {matchList.map(match => (
-                            <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} />
+                            <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
                         ))}
                     </Collection>
                     </SideNav>

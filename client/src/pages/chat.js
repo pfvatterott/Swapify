@@ -1,14 +1,20 @@
-import React, {useState, useContext} from "react";
-import { Button, Col, Row, CollectionItem, Collection } from 'react-materialize';
+import React, {useState } from "react";
+import { Col, Row} from 'react-materialize';
 import MatchesSideBar from "../components/MatchesSideBar"
 import ChatRoom from "../components/ChatRoom"
 import "./style.css"
+import chatContext from "../utils/chatContext";
 
 function ChatApp() {
 
+    const [chatId, setChatId] = useState('check')
+
+    function setChat(id) {
+        setChatId(id)
+    }
 
     return (
-        <div>
+        <chatContext.Provider value={{chatId, setChat }}>
             <Row>
                 <Col s={0} m={3}>
                     <MatchesSideBar />
@@ -17,7 +23,7 @@ function ChatApp() {
                     <ChatRoom />
                 </Col>
             </Row>
-        </div>
+        </chatContext.Provider>
     )
 
 }

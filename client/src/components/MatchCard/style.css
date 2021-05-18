@@ -1,0 +1,13 @@
+.userItemPicture {
+    top: 22px !important
+}
+
+.itemPicture {
+    position: relative !important;
+    left: -170px !important
+}
+
+.swapSymbol {
+    position: relative !important;
+    left: -90px !important
+}

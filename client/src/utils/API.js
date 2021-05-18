@@ -65,6 +65,10 @@ export default {
 
   deleteItem: function(id) {
     return axios.delete("/api/items/" + id)
+  },
+
+  deleteMatch: function(id) {
+    return axios.delete("/api/matches/" + id)
   }
 
 };

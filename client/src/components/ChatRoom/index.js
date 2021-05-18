@@ -66,7 +66,9 @@ export default function ChatRoom() {
     }
 
     function deleteMatch() {
-        console.log('hey')
+        API.deleteMatch(chatId.matchId).then((res) => {
+            window.location.reload();
+        })
     }
 
     return (
@@ -97,13 +99,23 @@ export default function ChatRoom() {
                     >
                         <h3>Swap Items?</h3>
                         <br></br>
-                        <div>If you press confirm your item will be no longer listed on Swapify.</div>
+                        <div>If you press confirm your item will be no longer listed on Swapify. Only do this after swapping items.</div>
                         <br></br><br></br>
                         <a><Button onClick={swapItems} modal="close">Confirm</Button></a>
                     </Modal>
                 </Col>
                 <Col s={4} className='center-align'>
-                    <Button>DELETE MATCH</Button>
+                    <Modal
+                        className="center-align"
+                        id="Modal-Swap"
+                        trigger={<Button node="button">DELETE MATCH</Button>}
+                    >
+                        <h3>Delete Match?</h3>
+                        <br></br>
+                        <div>If you press confirm your match will be deleted from Swapify.</div>
+                        <br></br><br></br>
+                        <a><Button onClick={deleteMatch} modal="close">Confirm</Button></a>
+                    </Modal>
                 </Col>
             </Row>
 

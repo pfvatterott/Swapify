@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { Col, Row } from 'react-materialize';
+import { Col, Row, Button, Modal } from 'react-materialize';
 import API from '../../utils/API'
 import { firebase, firestore } from "../../utils/firebase"
 import ChatMessage from "../ChatMessage"
@@ -16,10 +16,6 @@ export default function ChatRoom() {
     const dummy = useRef()
     const [userItem, setUserItem] = useState({})
     const [otherItem, setOtherItem] = useState({})
-
-    useEffect(() => { 
-        
-    })
 
     useEffect(() => {
         setMessagesRef(firestore.collection(chatId.matchId || "60a0864b732e222f78082e42"))
@@ -49,6 +45,18 @@ export default function ChatRoom() {
         dummy.current.scrollIntoView({ behavior: 'smooth' })
     }
 
+    function swapItems() {
+        API.getMatch(chatId.matchId).then((matchResponse) => {
+            console.log(matchResponse)
+            if (matchResponse.data.item1Owner === userData.googleId) {
+                API.deleteMatchesForItem(matchResponse.data.item1Id)
+            }
+            else {
+                API.deleteMatchesForItem(matchResponse.data.item2Id)
+            }
+        })
+    }
+
     return (
         <div className="container">
             <Row>
@@ -65,6 +73,28 @@ export default function ChatRoom() {
                     </Col>
                 </form>
             </Row>
+            <Row>
+                <Col s={4} className='center-align'>
+                    <Button>RATE USER</Button>
+                </Col>
+                <Col s={4} className='center-align'>
+                    <Modal
+                        className="center-align"
+                        id="Modal-Swap"
+                        trigger={<Button node="button">SWAP ITEMS</Button>}
+                    >
+                        <h3>Swap Items?</h3>
+                        <br></br>
+                        <div>If you press confirm your item will be no longer listed on Swapify.</div>
+                        <br></br><br></br>
+                        <a><Button onClick={swapItems} modal="close">Confirm</Button></a>
+                    </Modal>
+                </Col>
+                <Col s={4} className='center-align'>
+                    <Button>DELETE MATCH</Button>
+                </Col>
+            </Row>
+
         </div>
     )
 }

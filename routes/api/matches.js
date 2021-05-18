@@ -15,6 +15,8 @@ router
 
 router.route("/user/:id").get(matchesController.findUsersMatches)
 
+router.route("/all/:id").delete(matchesController.deleteMatchesForItem)
+
 
 router.get('search/:name', (req, res) => {
   console.log(res)

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { Button, Col, Row, CollectionItem, Collection } from 'react-materialize';
 import API from '../../utils/API'
 import { firebase, firestore } from "../../utils/firebase"
 import ChatMessage from "../ChatMessage"
@@ -54,15 +55,21 @@ export default function ChatRoom() {
     }
 
     return (
-        <div>
-            <div>
+        <div className="container">
+            <Row>
                 {chatMessages && chatMessages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
-            </div>
-            <form onSubmit={sendMessage}>
-                <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
-                <button type="submit">submit</button>
-            </form>
+            </Row>
+            <Row>
+                <form onSubmit={sendMessage}>
+                    <Col s={10}>
+                    <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
+                    </Col>
+                    <Col s={2}>
+                    <button type="submit" class="btn-floating btn-large waves-effect waves-light red sendButton"><i class="material-icons">send</i></button>
+                    </Col>
+                </form>
+            </Row>
         </div>
     )
 }

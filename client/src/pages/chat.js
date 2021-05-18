@@ -10,10 +10,10 @@ function ChatApp() {
     return (
         <div>
             <Row>
-                <Col s={0} m={4}>
+                <Col s={0} m={3}>
                     <MatchesSideBar />
                 </Col>
-                <Col s={12} m={8}>
+                <Col s={12} m={9}>
                     <ChatRoom />
                 </Col>
             </Row>

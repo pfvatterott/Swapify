@@ -7,7 +7,7 @@ import chatContext from "../utils/chatContext";
 
 function ChatApp() {
 
-    const [chatId, setChatId] = useState('check')
+    const [chatId, setChatId] = useState('empty')
 
     function setChat(id) {
         setChatId(id)

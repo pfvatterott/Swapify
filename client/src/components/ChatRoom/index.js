@@ -9,7 +9,7 @@ import chatContext from "../../utils/chatContext"
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
     const { chatId } = useContext(chatContext)
-    const [messagesRef, setMessagesRef] = useState(firestore.collection("60a0864b732e222f78082e42"))
+    const [messagesRef, setMessagesRef] = useState(firestore.collection('empty'))
     const query = messagesRef.orderBy('createdAt')
     const [messages] = useCollectionData(query, {idField: 'id'})
     const [formValue, setFormValue] = useState('')
@@ -18,7 +18,7 @@ export default function ChatRoom() {
     const [otherItem, setOtherItem] = useState({})
 
     useEffect(() => {
-        setMessagesRef(firestore.collection(chatId.matchId || "60a0864b732e222f78082e42"))
+        setMessagesRef(firestore.collection(chatId.matchId || 'empty'))
         API.getMatch(chatId.matchId).then((matchResponse) => {
             if (matchResponse.data.item1Owner === userData.googleId) {
                 setUserItem({id: matchResponse.data.item1Owner, photoURL: matchResponse.data.item1Photo})
@@ -51,14 +51,18 @@ export default function ChatRoom() {
             if (matchResponse.data.item1Owner === userData.googleId) {
                 API.deleteMatchesForItem(matchResponse.data.item1Id).then((res) => {
                     API.deleteItem(matchResponse.data.item1Id).then((delResponse) => {
-                        window.location.reload();
+                        API.updateItem(matchResponse.data.item2Id, {deleteItem: true}).then((updateRes) => {
+                            window.location.reload();
+                        })
                     })
                 })
             }
             else {
                 API.deleteMatchesForItem(matchResponse.data.item2Id).then((res) => {
                     API.deleteItem(matchResponse.data.item2Id).then((delResponse) => {
-                        window.location.reload();
+                        API.updateItem(matchResponse.data.item1Id, {deleteItem: true}).then((updateRes) => {
+                            window.location.reload();
+                        })
                     })
                 })
             }
@@ -70,6 +74,7 @@ export default function ChatRoom() {
             window.location.reload();
         })
     }
+
 
     return (
         <div className="container">

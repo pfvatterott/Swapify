@@ -8,8 +8,9 @@ import ChatMessage from "../ChatMessage"
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
     const chatData = JSON.parse(localStorage.getItem('chatData'))
-    const messagesRef = firestore.collection('messages')
-    const query = messagesRef.orderBy('createdAt').limit(25)
+    console.log(chatData.matchId)
+    const messagesRef = firestore.collection(`${chatData.matchId}`)
+    const query = messagesRef.orderBy('createdAt')
     const [messages] = useCollectionData(query, {idField: 'id'})
     const [formValue, setFormValue] = useState('')
     const dummy = useRef()
@@ -33,10 +34,10 @@ export default function ChatRoom() {
         await messagesRef.add({
             text: formValue,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            sentFromid: userItem.id,
-            sentToid: otherItem.id,
-            sentFromPhoto: userItem.photoURL,
-            setToPhoto: otherItem.photoURL
+            // sentFromid: userItem.id,
+            // sentToid: otherItem.id,
+            // sentFromPhoto: userItem.photoURL,
+            // setToPhoto: otherItem.photoURL
         })
         setFormValue('')
         dummy.current.scrollIntoView({ behavior: 'smooth' })
@@ -57,7 +58,7 @@ export default function ChatRoom() {
     return (
         <div className="container">
             <Row>
-                {chatMessages && chatMessages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+                {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
             </Row>
             <Row>

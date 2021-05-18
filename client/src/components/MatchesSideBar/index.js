@@ -34,6 +34,7 @@ export default function MatchesSideBar() {
                         otherUser: item.item2Owner,
                         otherItemImage: item.item2Photo,
                         otherItemName: item.item2Name,
+                        matchId: item._id
                     }
                     matchArray.push(itemInfo)
                     if (matchResponse.data.length === matchArray.length) {
@@ -50,6 +51,7 @@ export default function MatchesSideBar() {
                         otherUser: item.item1Owner,
                         otherItemImage: item.item1Photo,
                         otherItemName: item.item1Name,
+                        matchId: item._id
                     }
                     matchArray.push(itemInfo)
                     if (matchResponse.data.length === matchArray.length) {
@@ -59,11 +61,6 @@ export default function MatchesSideBar() {
             });
         })
     }, [])
-
-
-
-
-
 
 
     return (

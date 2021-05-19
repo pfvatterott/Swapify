@@ -7,6 +7,7 @@ import createItem from "./pages/createItem"
 import Swipping from "./pages/swipping"
 import API from "./utils/API"
 import { Button, Modal } from 'react-materialize';
+import "./appStyle.css"
 
 
 function App() {
@@ -56,6 +57,13 @@ function App() {
     API.deleteItem(modalID)
   }
 
+  function keepItem() {
+    const updatedItem = {
+      deleteItem: false
+    }
+    API.updateItem(modalID, updatedItem)
+  }
+
   return (
     <Router>
       <Route exact path="/" component={Welcome} />
@@ -68,11 +76,15 @@ function App() {
         open={openModal}
         className='center-align'>
         <h3>Warning</h3>
-        <img src={modalImage} className="circle"></img>
+        <img src={modalImage} className="circle swapItemImage"></img>
+        <br></br>
         <div>Another user has alerted us that you have swapped items with them.</div>
         <div>If you confirm, your item will be deleted from Swapify.</div>
+        <div>If you deny, you can continue swapping with your item.</div>
         <br></br>
         <a><Button onClick={deleteItem} modal="close">Confirm</Button></a>
+        <br></br><br></br>
+        <a><Button onClick={keepItem} modal="close">Deny</Button></a>
       </Modal>
     </Router>
   );

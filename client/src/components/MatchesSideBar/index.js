@@ -20,7 +20,6 @@ export default function MatchesSideBar() {
         })
         API.getUserMatches(userData.googleId).then((matchResponse) => {
             if (matchResponse.data.length === 0) {
-                console.log('no chats')
                 setNoChats(true)
             }
             setAllMatches(matchResponse)

@@ -2,19 +2,10 @@ import axios from "axios";
 import { Link, Redirect } from 'react-router-dom'
 
 export default {
-  // Gets all books
-//   getBooks: function() {
-//     return axios.get("/api/users");
-//   },
-//   // Gets the book with the given id
   getUser: function(id) {
     return axios.get("/api/users/" + id);
   },
-//   // Deletes the book with the given id
-//   deleteBook: function(id) {
-//     return axios.delete("/api/users/" + id);
-//   },
-  // Saves a book to the database
+
   saveUser: function(userData) {
     return axios.post("/api/users", userData);
   },
@@ -52,7 +43,7 @@ export default {
   },
 
   getUserMatches: function(id) {
-    return axios.get("/api/matches/" + id)
+    return axios.get("/api/matches/user/" + id)
   },
 
   updateUserMatch: function(id, matchData) {
@@ -62,6 +53,22 @@ export default {
   handleUseItem: function(id) {
     console.log(id)
     localStorage.setItem('itemData', JSON.stringify(id))
+  },
+
+  getMatch: function(id) {
+    return axios.get("/api/matches/" + id)
+  },
+
+  deleteMatchesForItem: function(id) {
+    return axios.delete("/api/matches/all/" + id)
+  },
+
+  deleteItem: function(id) {
+    return axios.delete("/api/items/" + id)
+  },
+
+  deleteMatch: function(id) {
+    return axios.delete("/api/matches/" + id)
   }
 
 };

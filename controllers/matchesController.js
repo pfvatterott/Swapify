@@ -40,5 +40,16 @@ module.exports = {
           ]})
           .then(dbModel => res.json(dbModel))
           .catch(err => res.status(422).json(err));
-      },
+    },
+    deleteMatchesForItem: function(req, res) {
+      db.Matches
+        .find({ $or: [
+          {item1Id: req.params.id},
+          {item2Id: req.params.id},
+        ]})
+        .then(dbModel => dbModel.forEach(match => match.remove()))
+        .then(dbModel => res.json(dbModel))
+        .catch(err => res.status(422).json(err));
+    }
+    
   };

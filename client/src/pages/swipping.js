@@ -48,25 +48,6 @@ function Swipping() {
                 }
             })
         })
-
-        // checks if there are any matches. Needs to be in UseEffect
-        setInterval(function () {
-            API.getUserMatches(userData.googleId).then((response) => {
-                // checks if matches have been read or not by user2 (the user that was not swipping when the match was made)
-                for (let i = 0; i < response.data.length; i++) {
-                    if ((response.data[i].item2Owner == userData.googleId) && (response.data[i].item2Read === false)) {
-                        const matchData = {
-                            item2Read: true
-                        }
-                        API.updateUserMatch(response.data[i]._id, matchData).then((matchPutResponse) => {
-                            console.log(matchPutResponse)
-                            alert('You have a new matched Item!')
-                        })
-                    }
-                }
-            })
-        }, 5000)
-
     }, [])
 
 

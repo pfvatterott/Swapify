@@ -12,8 +12,10 @@ function Item() {
   const [image, setImage] = useState(null)
   const [redirect, setRedirect] = useState(false);
   const [imageURL, setImageURL] = useState("");
+  const [buttonText, setButtonText] = useState("Preview");
 
   useEffect(() => {
+    
     const userData = JSON.parse(localStorage.getItem('userData'))
     if (userData === null) {
       setRedirect(true)
@@ -41,7 +43,19 @@ function Item() {
     setNameState({ ...nameState, name: name })
   }
 
-
+  function previewUploadHandler(){
+    console.log({buttonText})
+    if({buttonText} ==="Preview"){
+      console.log("button text is preview")
+      previewHandler();
+      setButtonText("Upload")   
+    }
+    else{
+      fileUploadHandler()
+      setButtonText("Preview")
+    }
+    
+  }
   function fileUploadHandler() {
 
     // Compress image before uploading to firebase
@@ -66,7 +80,46 @@ function Item() {
               .then(url => {
                 saveToDatabase(url);
                 setImageURL(url);
+                console.log("fileupload handler run")
 
+
+              })
+          }
+        )
+
+      },
+      error(err) {
+        console.log(err.message);
+      },
+    });
+
+  };
+
+  function previewHandler() {
+
+    // Compress image before uploading to firebase
+    new Compressor(image, {
+      quality: 0.2,
+      success(result) {
+
+        // uploads image to firebase
+        const randomNumber = Math.floor(Math.random() * 100000000)
+        const uploadTask = storage.ref(`images/${randomNumber + image.name}`).put(result)
+        uploadTask.on(
+          "state_changed",
+          snapshot => { },
+          error => {
+            console.log(error)
+          },
+          () => {
+            storage
+              .ref("images")
+              .child(randomNumber + image.name)
+              .getDownloadURL()
+              .then(url => {
+                //saveToDatabase(url);
+                setImageURL(url);
+                console.log("preview handler run")
 
               })
           }
@@ -100,7 +153,7 @@ function Item() {
         }
         updatedUser.listedItems.push(itemId)
         API.updateUser(userData.googleId, updatedUser)
-
+        console.log("save to database run")
 
       })
     })
@@ -141,9 +194,11 @@ function Item() {
       />
       <FormBtn
         // disabled={!(formObject.author && formObject.title)}
-        onClick={fileUploadHandler}
+        //onClick={fileUploadHandler}
+        id="mainFileBtn"
+        onClick={previewUploadHandler}
         style={{display: "block", width: "100%"}}
-      >Upload
+      >{buttonText}
         </FormBtn>
 
     </div>

@@ -6,12 +6,16 @@ import Chat from "./pages/chat"
 import createItem from "./pages/createItem"
 import Swipping from "./pages/swipping"
 import API from "./utils/API"
+import { Button, Modal } from 'react-materialize';
 
 
 function App() {
 
   const [userState, setUserState] = useState([]);
   const userDataJSON = JSON.parse(localStorage.getItem('userData'))
+  const [openModal, setOpenModal] = useState(false)
+  const [modalImage, setModalImage] = useState('');
+  const [modalID, setModalID] = useState('') 
   
   function handleSetUser(userData) {
     setUserState(userData)
@@ -23,10 +27,11 @@ function App() {
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].deleteItem === true) {
           console.log('there is an item that might be deleted soon')
+          setModalImage(response.data[i].imageURL)
+          setModalID(response.data[i]._id)
+          setOpenModal(true)
         }
-        
       }
-
     })
   }, 5000)
 
@@ -45,7 +50,11 @@ function App() {
             }
         }
     })
-}, 5000)
+  }, 5000)
+
+  function deleteItem() {
+    API.deleteItem(modalID)
+  }
 
   return (
     <Router>
@@ -54,6 +63,17 @@ function App() {
       <Route exact path="/createItem" component={createItem} />
       <Route exact path="/swipping" component={Swipping} />
       <Route exact path="/chat" component={Chat} />
+      {/* Modal for when other user presses 'swap items' button */}
+      <Modal
+        open={openModal}
+        className='center-align'>
+        <h3>Warning</h3>
+        <img src={modalImage} className="circle"></img>
+        <div>Another user has alerted us that you have swapped items with them.</div>
+        <div>If you confirm, your item will be deleted from Swapify.</div>
+        <br></br>
+        <a><Button onClick={deleteItem} modal="close">Confirm</Button></a>
+      </Modal>
     </Router>
   );
 }

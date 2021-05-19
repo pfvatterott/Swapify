@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import API from "../../utils/API";
-import { Col, Row, Collection, SideNav } from 'react-materialize';
+import { Col, Row, Collection, SideNav, Modal, Button } from 'react-materialize';
 import MatchCard from '../MatchCard'
 import "./style.css"
 
@@ -9,6 +9,7 @@ export default function MatchesSideBar() {
     const [usersItemList, setUsersItemList] = useState([]);
     const [matchList, setMatchList] = useState([])
     const [allMatches, setAllMatches] = useState([])
+    const [noChats, setNoChats] = useState(false)
     const userData = JSON.parse(localStorage.getItem('userData'))
     let matchArray = []
 
@@ -18,6 +19,10 @@ export default function MatchesSideBar() {
             setUsersItemList(response.data)
         })
         API.getUserMatches(userData.googleId).then((matchResponse) => {
+            if (matchResponse.data.length === 0) {
+                console.log('no chats')
+                setNoChats(true)
+            }
             setAllMatches(matchResponse)
             matchResponse.data.forEach(item => {
                 if (item.item1Owner === userData.googleId) {
@@ -73,6 +78,22 @@ export default function MatchesSideBar() {
                     </SideNav>
                 </Col>
             </Row>
+
+            {/* No chats Modal */}
+            <Modal
+                open={noChats}
+                className='center-align'
+                actions={[]}
+                options={{
+                dismissible: false
+                }}>
+                <h3>No Chats!</h3>
+                <br></br>
+                <div>You don't have any open chats!</div>
+                <div>Go make some matches first!</div>
+                <br></br>
+                <a href="/profile"><Button>Go Back</Button></a>
+            </Modal>
         </div>       
     )
 }

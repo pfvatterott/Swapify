@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect } from 'react-router-dom'
+import { Button, Modal } from 'react-materialize';
 import API from "../utils/API";
 import "./style.css"
 let preventFirstRender = false
@@ -39,7 +40,7 @@ function Swipping() {
                     }
                 }
                 if (notUserItemsArray.length === 0) {
-                    alert('no more items')
+                    setNoMoreItems(true)
                 }
                 else {
                     console.log(notUserItemsArray)
@@ -120,11 +121,6 @@ function Swipping() {
         })
     }
 
-    if (noMoreItems === true) {
-        alert('no more items')
-    }
-
-
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
@@ -135,6 +131,22 @@ function Swipping() {
             <button onClick={handleItemNotLike}>Not Interested</button>
             <button onClick={handleItemLike}>Interested</button>
 
+            {/* No more items to swap modal */}
+            <Modal
+                open={noMoreItems}
+                className='center-align'
+                actions={[]}
+                options={{
+                    dismissible: false
+                }}
+                >
+                <h3>No more items available!</h3>
+                <br></br>
+                <div>Add a new item, switch items to swap with, or try back later!</div>
+                <br></br><br></br>
+                <a href="/profile"><Button>Back to my Profile</Button></a>
+                <br></br>
+            </Modal>
         </div>
     )
 }

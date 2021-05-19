@@ -11,6 +11,9 @@ function Swipping() {
     const [currentItem, setCurrentItem] = useState([])
     const [noMoreItems, setNoMoreItems] = useState(false)
     const [imageNumber, setImageNumber] = useState(0)
+    const [itIsAMatch, setItIsAMatch] = useState(false)
+    const [modalMatchImage1, setModalMatchImage1] = useState('')
+    const [modalMatchImage2, setModalMatchImage2] = useState('')
     const itemData = JSON.parse(localStorage.getItem('itemData'))
     const userData = JSON.parse(localStorage.getItem('userData'))
 
@@ -98,7 +101,9 @@ function Swipping() {
                         // once updated, check if there is a match
                         for (let i = 0; i < userItemResponse.data.likesFromItems.length; i++) {
                             if (userItemResponse.data.likesFromItems[i] === currentItem._id) {
-                                alert("its a match!!")
+                                setItIsAMatch(true)
+                                setModalMatchImage1(userItemResponse.data.imageURL)
+                                setModalMatchImage2(currentItem.imageURL)
                                 const matchData = {
                                     item1Id: itemData,
                                     item1Owner: userData.googleId,
@@ -145,6 +150,27 @@ function Swipping() {
                 <div>Add a new item, switch items to swap with, or try back later!</div>
                 <br></br><br></br>
                 <a href="/profile"><Button>Back to my Profile</Button></a>
+                <br></br>
+            </Modal>
+            
+            {/* It's a match! */}
+            <Modal
+                open={itIsAMatch}
+                className='center-align'
+                actions={[]}
+                options={{
+                    dismissible: false
+                }}
+                >
+                <h3>It's a match!</h3>
+                <img src={modalMatchImage1} className="circle swapItemImage"></img>
+                <img src={modalMatchImage2} className="circle swapItemImage"></img>
+                <br></br>
+                <div>Head to the chat page or continue swipping!</div>
+                <br></br><br></br>
+                <a href="/chat"><Button>Chat Page</Button></a>
+                <br></br><br></br>
+                <a><Button modal="close">Continue</Button></a>
                 <br></br>
             </Modal>
         </div>

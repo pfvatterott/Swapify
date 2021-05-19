@@ -5,6 +5,7 @@ import API from '../../utils/API'
 import { firebase, firestore } from "../../utils/firebase"
 import ChatMessage from "../ChatMessage"
 import chatContext from "../../utils/chatContext"
+import "./style.css"
 
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
@@ -77,7 +78,7 @@ export default function ChatRoom() {
 
 
     return (
-        <div className="container">
+        <div className="container chatControls">
             <Row>
                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>

@@ -2,55 +2,59 @@ import React, { useState, useContext, useEffect } from "react";
 import API from "../utils/API";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import { storage } from "../utils/firebase"
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Compressor from 'compressorjs';
 
 
 function Item() {
-  const [descriptionState, setDescriptionState]= useState([]);
-  const [nameState, setNameState]= useState([]);
+  const [descriptionState, setDescriptionState] = useState([]);
+  const [nameState, setNameState] = useState([]);
   const [image, setImage] = useState(null)
   const [redirect, setRedirect] = useState(false);
-
+  const [imageURL, setImageURL] = useState("");
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('userData'))
     if (userData === null) {
-        setRedirect(true)
+      setRedirect(true)
     }
+    const fileUpload = document.getElementById('fileBox');
+    fileUpload.addEventListener('click', function (event) {
+
+    });
   })
 
   //sets the selectedFile state when a a user drops in a file.
   function handleFileChange(e) {
-    if (e.target.files[0]) {  
+    if (e.target.files[0]) {
       setImage(e.target.files[0])
     }
   };
 
   function handleDescriptionChange(event) {
     const desc = event.target.value;
-    setDescriptionState({...descriptionState, description: desc})
+    setDescriptionState({ ...descriptionState, description: desc })
   };
 
   function handleNameChange(event) {
     const name = event.target.value;
-    setNameState({...nameState, name: name})
+    setNameState({ ...nameState, name: name })
   }
 
-  
+
   function fileUploadHandler() {
 
     // Compress image before uploading to firebase
     new Compressor(image, {
       quality: 0.2,
       success(result) {
-      
+
         // uploads image to firebase
         const randomNumber = Math.floor(Math.random() * 100000000)
         const uploadTask = storage.ref(`images/${randomNumber + image.name}`).put(result)
         uploadTask.on(
           "state_changed",
-          snapshot => {},
+          snapshot => { },
           error => {
             console.log(error)
           },
@@ -60,11 +64,14 @@ function Item() {
               .child(randomNumber + image.name)
               .getDownloadURL()
               .then(url => {
-                saveToDatabase(url)
+                saveToDatabase(url);
+                setImageURL(url);
+
+
               })
           }
         )
-       
+
       },
       error(err) {
         console.log(err.message);
@@ -93,39 +100,55 @@ function Item() {
         }
         updatedUser.listedItems.push(itemId)
         API.updateUser(userData.googleId, updatedUser)
+
+
       })
     })
 
   }
 
-    return (
+  return (
 
-      // this cant be a form for some reason?
-      <div>
-        { redirect ? (<Redirect push to="/"/>) : null }
-        <Input
-          onChange={handleFileChange}
-          type="file"
-        />
-        <TextArea
-          onChange={handleNameChange}
-          name="namen"
-          placeholder="Add a name for your item"
-        /> 
-        <TextArea
-          onChange={handleDescriptionChange}
-          name="description"
-          placeholder="Add a description"
-        /> 
-        <FormBtn
-          // disabled={!(formObject.author && formObject.title)}
-          onClick={fileUploadHandler}
-        >
-          Upload
-        </FormBtn>
+    // this cant be a form for some reason?
+    <div className = "container" style={{marginTop:"50px"}}>
+      {redirect ? (<Redirect push to="/" />) : null}
+      
+      <TextArea
+        onChange={handleNameChange}
+        name="name"
+        placeholder="Add a name for your item"
+      />
+        <form action="#">
+    <div className="file-field input-field">
+      <div className="btn">
+        <span>File</span>
+        <input type="file" id = "fileBox" onChange={handleFileChange} style={{color: "#03A696"}}/>
       </div>
-    );
-  }
+      <div className="file-path-wrapper">
+        <input className="file-path validate" type="text" placeholder="Choose a photo"/>
+      </div>
+    </div>
+  </form>
+        
+      <div className= "center-align">
+        {imageURL && <img className="responsive-img" src={imageURL} style={{maxWidth:"50%", height: "auto"}} />}
+      </div>
+
+      <TextArea
+        onChange={handleDescriptionChange}
+        name="description"
+        placeholder="Add a description"
+      />
+      <FormBtn
+        // disabled={!(formObject.author && formObject.title)}
+        onClick={fileUploadHandler}
+        style={{display: "block", width: "100%"}}
+      >Upload
+        </FormBtn>
+
+    </div>
+  );
+}
 
 
 

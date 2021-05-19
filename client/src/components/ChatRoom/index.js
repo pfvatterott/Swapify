@@ -78,11 +78,12 @@ export default function ChatRoom() {
 
 
     return (
-        <div className="container chatControls">
+        <div className="container">
             <Row>
                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
             </Row>
+            <div className="chatControls">
             <Row>
                 <form onSubmit={sendMessage}>
                     <Col s={10}>
@@ -124,6 +125,8 @@ export default function ChatRoom() {
                     </Modal>
                 </Col>
             </Row>
+            <br></br>
+            </div>
 
         </div>
     )

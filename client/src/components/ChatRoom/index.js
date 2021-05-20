@@ -17,6 +17,7 @@ export default function ChatRoom() {
     const dummy = useRef()
     const [userItem, setUserItem] = useState({})
     const [otherItem, setOtherItem] = useState({})
+    const messagesEndRef = React.createRef()
 
     useEffect(() => {
         setMessagesRef(firestore.collection(chatId.matchId || 'empty'))
@@ -30,6 +31,9 @@ export default function ChatRoom() {
                 setOtherItem({id: matchResponse.data.item1Owner, photoURL: matchResponse.data.item1Photo})
             }
         })
+        setTimeout(function () {
+            dummy.current.scrollIntoView({ behavior: 'smooth' })
+          }, 500)
     }, [chatId])
 
 
@@ -78,16 +82,16 @@ export default function ChatRoom() {
         })
     }
 
-
     return (
         <div className="container">
             <Row>
                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
+                <div ref={messagesEndRef} />
             </Row>
             <div className="chatControls">
             <Row>
-                <form onSubmit={sendMessage}>
+                <form onSubmit={sendMessage}>   
                     <Col s={10}>
                     <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
                     </Col>

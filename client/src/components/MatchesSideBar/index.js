@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import API from "../../utils/API";
 import { Col, Row, Collection, SideNav, Modal, Button } from 'react-materialize';
 import MatchCard from '../MatchCard'
+import { firebase, firestore } from "../../utils/firebase"
+import chatContext from "../../utils/chatContext"
 import "./style.css"
 
 
@@ -11,6 +13,7 @@ export default function MatchesSideBar() {
     const [allMatches, setAllMatches] = useState([])
     const [noChats, setNoChats] = useState(false)
     const userData = JSON.parse(localStorage.getItem('userData'))
+    const { recentText } = useContext(chatContext)
     let matchArray = []
 
 
@@ -38,7 +41,9 @@ export default function MatchesSideBar() {
                     }
                     matchArray.push(itemInfo)
                     if (matchResponse.data.length === matchArray.length) {
-                        setMatchList(matchArray)
+                        getCollectionsMostRecents(matchArray).then((res) => {
+                            setMatchList(res)
+                        })
                     }
                 }
                 else {
@@ -55,12 +60,47 @@ export default function MatchesSideBar() {
                     }
                     matchArray.push(itemInfo)
                     if (matchResponse.data.length === matchArray.length) {
-                        setMatchList(matchArray)
+                        getCollectionsMostRecents(matchArray).then((res) => {
+                            setMatchList(res)
+                        })
                     }
                 }
             });
         })
     }, [])
+
+    const getCollectionsMostRecents = async(newArray) => {
+        if (newArray) {
+
+        
+        for (let i = 0; i < newArray.length; i++) {
+            const returns = await firestore.collection(`${newArray[i].matchId}`).orderBy("createdAt", 'desc').limit(1).get()
+            if (returns._delegate._snapshot.docChanges[0]) {
+                console.log(returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields)
+                newArray[i].latestText = returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields.text.stringValue
+                newArray[i].textTime = returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields.createdAt.timestampValue
+            }
+        }
+        console.log(newArray)
+        let sortedList =  newArray.sort(function compare(a, b) {
+            var dateA = new Date(a.textTime);
+            var dateB = new Date(b.textTime);
+            return dateB - dateA;
+        });
+        // setMatchList(sortedList)
+        return sortedList
+        }
+     
+    }
+
+    useEffect(() => {
+        
+        getCollectionsMostRecents(matchList).then((res) => {
+            setMatchList(res)
+        })
+
+    }, [recentText])
+    
 
 
     return (

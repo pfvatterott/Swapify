@@ -9,7 +9,7 @@ import "./style.css"
 
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
-    const { chatId } = useContext(chatContext)
+    const { chatId, setNewText } = useContext(chatContext)
     const [messagesRef, setMessagesRef] = useState(firestore.collection('empty'))
     const query = messagesRef.orderBy('createdAt')
     const [messages] = useCollectionData(query, {idField: 'id'})
@@ -32,8 +32,10 @@ export default function ChatRoom() {
         })
     }, [chatId])
 
+
     const sendMessage = async(e) => {
         e.preventDefault();
+        setNewText(formValue)
         await messagesRef.add({
             text: formValue,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),

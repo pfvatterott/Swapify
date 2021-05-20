@@ -67,7 +67,9 @@ export default function MatchesSideBar() {
                 }
             });
         })
-    }, [])
+    }, [recentText])
+
+    
 
     const getCollectionsMostRecents = async(newArray) => {
         if (newArray) {
@@ -76,12 +78,10 @@ export default function MatchesSideBar() {
         for (let i = 0; i < newArray.length; i++) {
             const returns = await firestore.collection(`${newArray[i].matchId}`).orderBy("createdAt", 'desc').limit(1).get()
             if (returns._delegate._snapshot.docChanges[0]) {
-                console.log(returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields)
                 newArray[i].latestText = returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields.text.stringValue
                 newArray[i].textTime = returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields.createdAt.timestampValue
             }
         }
-        console.log(newArray)
         let sortedList =  newArray.sort(function compare(a, b) {
             var dateA = new Date(a.textTime);
             var dateB = new Date(b.textTime);

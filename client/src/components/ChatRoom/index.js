@@ -39,6 +39,23 @@ export default function ChatRoom() {
 
     const sendMessage = async(e) => {
         e.preventDefault();
+        API.getMatch(chatId.matchId).then((matchResponse) => {
+            console.log(matchResponse)
+            if (matchResponse.data.item1Owner === userData.googleId) {
+                const matchData = {
+                    item2NewText: true
+                }
+                API.updateUserMatch(chatId.matchId, matchData)
+            }
+            else {
+                const matchData = {
+                    item1NewText: true
+                }
+                API.updateUserMatch(chatId.matchId, matchData)
+            }
+        })
+
+
         setNewText(formValue)
         await messagesRef.add({
             text: formValue,

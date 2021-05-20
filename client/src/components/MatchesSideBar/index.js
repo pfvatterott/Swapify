@@ -7,7 +7,7 @@ import chatContext from "../../utils/chatContext"
 import "./style.css"
 
 
-export default function MatchesSideBar() {
+export default function MatchesSideBar(props) {
     const [usersItemList, setUsersItemList] = useState([]);
     const [matchList, setMatchList] = useState([])
     const [allMatches, setAllMatches] = useState([])
@@ -15,7 +15,6 @@ export default function MatchesSideBar() {
     const userData = JSON.parse(localStorage.getItem('userData'))
     const { recentText } = useContext(chatContext)
     let matchArray = []
-
 
     useEffect(() => {
         API.getUserItems(userData.googleId).then((response) => {
@@ -37,7 +36,8 @@ export default function MatchesSideBar() {
                         otherUser: item.item2Owner,
                         otherItemImage: item.item2Photo,
                         otherItemName: item.item2Name,
-                        matchId: item._id
+                        matchId: item._id,
+                        newText: item.item1NewText
                     }
                     matchArray.push(itemInfo)
                     if (matchResponse.data.length === matchArray.length) {
@@ -56,7 +56,8 @@ export default function MatchesSideBar() {
                         otherUser: item.item1Owner,
                         otherItemImage: item.item1Photo,
                         otherItemName: item.item1Name,
-                        matchId: item._id
+                        matchId: item._id,
+                        newText: item.item2NewText
                     }
                     matchArray.push(itemInfo)
                     if (matchResponse.data.length === matchArray.length) {
@@ -67,14 +68,12 @@ export default function MatchesSideBar() {
                 }
             });
         })
-    }, [recentText])
+    }, [recentText, props])
 
     
 
     const getCollectionsMostRecents = async(newArray) => {
         if (newArray) {
-
-        
         for (let i = 0; i < newArray.length; i++) {
             const returns = await firestore.collection(`${newArray[i].matchId}`).orderBy("createdAt", 'desc').limit(1).get()
             if (returns._delegate._snapshot.docChanges[0]) {
@@ -87,10 +86,8 @@ export default function MatchesSideBar() {
             var dateB = new Date(b.textTime);
             return dateB - dateA;
         });
-        // setMatchList(sortedList)
         return sortedList
         }
-     
     }
 
     useEffect(() => {

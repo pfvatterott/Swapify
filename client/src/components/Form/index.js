@@ -1,5 +1,6 @@
 import React from "react";
 import {Button} from 'react-materialize';
+import Reward from 'react-rewards';
 
 // This file exports the Input, TextArea, and FormBtn components
 
@@ -21,8 +22,10 @@ export function TextArea(props) {
 
 export function FormBtn(props) {
   return (
+  
     <button {...props} style={{display: "block", width: "100%", marginBottom: 10, backgroundColor: "#F28705", height: "50px" }} className="btn btn-success">
       {props.children}
     </button>
+    
   );
 }

@@ -4,9 +4,11 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 import { storage } from "../utils/firebase"
 import { Redirect } from 'react-router-dom';
 import Compressor from 'compressorjs';
+import Confetti from 'react-dom-confetti';
 
 
 function Item() {
+  const [reward, setReward]= useState(false);
   const [descriptionState, setDescriptionState] = useState([]);
   const [nameState, setNameState] = useState([]);
   const [image, setImage] = useState(null)
@@ -15,7 +17,7 @@ function Item() {
   const [buttonText, setButtonText] = useState("Preview");
 
   useEffect(() => {
-    
+
     const userData = JSON.parse(localStorage.getItem('userData'))
     if (userData === null) {
       setRedirect(true)
@@ -43,18 +45,21 @@ function Item() {
     setNameState({ ...nameState, name: name })
   }
 
-  function previewUploadHandler(){
-    console.log({buttonText})
-    if({buttonText} ==="Preview"){
+  function previewUploadHandler() {
+
+    
+    console.log({ buttonText })
+    if (buttonText === "Preview") {
       console.log("button text is preview")
       previewHandler();
-      setButtonText("Upload")   
+      setButtonText("Upload")
     }
-    else{
+    else {
       fileUploadHandler()
       setButtonText("Preview")
+      setReward(!reward);
     }
-    
+
   }
   function fileUploadHandler() {
 
@@ -163,28 +168,28 @@ function Item() {
   return (
 
     // this cant be a form for some reason?
-    <div className = "container" style={{marginTop:"50px"}}>
+    <div className="container" style={{ marginTop: "50px" }}>
       {redirect ? (<Redirect push to="/" />) : null}
-      
+
       <TextArea
         onChange={handleNameChange}
         name="name"
         placeholder="Add a name for your item"
       />
-        <form action="#">
-    <div className="file-field input-field">
-      <div className="btn">
-        <span>File</span>
-        <input type="file" id = "fileBox" onChange={handleFileChange} style={{color: "#03A696"}}/>
-      </div>
-      <div className="file-path-wrapper">
-        <input className="file-path validate" type="text" placeholder="Choose a photo"/>
-      </div>
-    </div>
-  </form>
-        
-      <div className= "center-align">
-        {imageURL && <img className="responsive-img" src={imageURL} style={{maxWidth:"50%", height: "auto"}} />}
+      <form action="#">
+        <div className="file-field input-field">
+          <div className="btn">
+            <span>File</span>
+            <input type="file" id="fileBox" onChange={handleFileChange} style={{ color: "#03A696" }} />
+          </div>
+          <div className="file-path-wrapper">
+            <input className="file-path validate" type="text" placeholder="Choose a photo" />
+          </div>
+        </div>
+      </form>
+
+      <div className="center-align">
+        {imageURL && <img className="responsive-img" src={imageURL} style={{ maxWidth: "50%", height: "auto" }} />}
       </div>
 
       <TextArea
@@ -192,14 +197,24 @@ function Item() {
         name="description"
         placeholder="Add a description"
       />
-      <FormBtn
-        // disabled={!(formObject.author && formObject.title)}
-        //onClick={fileUploadHandler}
-        id="mainFileBtn"
-        onClick={previewUploadHandler}
-        style={{display: "block", width: "100%"}}
-      >{buttonText}
+      <div className="container center-align" >
+      
+        <Confetti id="confetti" active={ reward } className="center-align"/>
+      
+      </div>
+      
+        <FormBtn
+          // disabled={!(formObject.author && formObject.title)}
+          //onClick={fileUploadHandler}
+          id="mainFileBtn"
+          onClick={previewUploadHandler}
+          style={{ display: "block", width: "100%" }}
+        >{buttonText}
         </FormBtn>
+       
+  
+
+
 
     </div>
   );

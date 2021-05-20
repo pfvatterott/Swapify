@@ -40,7 +40,6 @@ export default function ChatRoom() {
     const sendMessage = async(e) => {
         e.preventDefault();
         API.getMatch(chatId.matchId).then((matchResponse) => {
-            console.log(matchResponse)
             if (matchResponse.data.item1Owner === userData.googleId) {
                 const matchData = {
                     item2NewText: true

@@ -6,6 +6,7 @@ import { firebase, firestore } from "../../utils/firebase"
 import ChatMessage from "../ChatMessage"
 import chatContext from "../../utils/chatContext"
 import "./style.css"
+import Rating from 'react-rating'
 
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
@@ -18,6 +19,8 @@ export default function ChatRoom() {
     const [userItem, setUserItem] = useState({})
     const [otherItem, setOtherItem] = useState({})
     const messagesEndRef = React.createRef()
+    const [openRateModal, setOpenRateModal] = useState(false)
+    const [rating, setRating] = useState(0)
 
     useEffect(() => {
         setMessagesRef(firestore.collection(chatId.matchId || 'empty'))
@@ -75,7 +78,7 @@ export default function ChatRoom() {
                 API.deleteMatchesForItem(matchResponse.data.item1Id).then((res) => {
                     API.deleteItem(matchResponse.data.item1Id).then((delResponse) => {
                         API.updateItem(matchResponse.data.item2Id, {deleteItem: true}).then((updateRes) => {
-                            window.location.reload();
+                            setOpenRateModal(true)
                         })
                     })
                 })
@@ -84,7 +87,7 @@ export default function ChatRoom() {
                 API.deleteMatchesForItem(matchResponse.data.item2Id).then((res) => {
                     API.deleteItem(matchResponse.data.item2Id).then((delResponse) => {
                         API.updateItem(matchResponse.data.item1Id, {deleteItem: true}).then((updateRes) => {
-                            window.location.reload();
+                            setOpenRateModal(true)
                         })
                     })
                 })
@@ -94,7 +97,24 @@ export default function ChatRoom() {
 
     function deleteMatch() {
         API.deleteMatch(chatId.matchId).then((res) => {
-            window.location.reload();
+            setOpenRateModal(true)
+        })
+    }
+
+    function reloadPage() {
+        window.location.reload();
+    }
+
+    function submitRating() {
+        API.getUser(otherItem.id).then((userResponse) => {
+            const ratingArray = userResponse.data[0].rating
+            ratingArray.push(rating)
+            const newUserRating = {
+                rating: ratingArray
+            }
+            API.updateUser(otherItem.id, newUserRating).then((res) => {
+                window.location.reload();
+            })
         })
     }
 
@@ -109,7 +129,7 @@ export default function ChatRoom() {
             <Row>
                 <form onSubmit={sendMessage}>   
                     <Col s={10}>
-                    <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
+                    <input value={formValue} required onChange={(e) => setFormValue(e.target.value)}/>
                     </Col>
                     <Col s={2}>
                     <button type="submit" class="btn-floating btn-large waves-effect waves-light red sendButton"><i class="material-icons">send</i></button>
@@ -117,10 +137,7 @@ export default function ChatRoom() {
                 </form>
             </Row>
             <Row>
-                <Col s={4} className='center-align'>
-                    <Button>RATE USER</Button>
-                </Col>
-                <Col s={4} className='center-align'>
+                <Col s={6} className='center-align'>
                     <Modal
                         className="center-align"
                         id="Modal-Swap"
@@ -133,7 +150,7 @@ export default function ChatRoom() {
                         <a><Button onClick={swapItems} modal="close">Confirm</Button></a>
                     </Modal>
                 </Col>
-                <Col s={4} className='center-align'>
+                <Col s={6} className='center-align'>
                     <Modal
                         className="center-align"
                         id="Modal-Swap"
@@ -149,6 +166,26 @@ export default function ChatRoom() {
             </Row>
             <br></br>
             </div>
+            {/* Rate User */}
+            <Modal
+                open={openRateModal}
+                className='center-align'
+                >
+                <h3>Match Deleted!</h3>
+                <br></br>
+                <div>Would you like to rate the other user?</div>
+                <br></br>
+                <Rating
+                    emptySymbol={<i class="material-icons">star_border</i>}
+                    fullSymbol={<i class="material-icons">star</i>}
+                    onChange={(e) => setRating(e)}
+                ></Rating>
+                <br></br><br></br>
+                <a><Button onClick={submitRating} modal="close">Submit Rating</Button></a>
+                <br></br><br></br>
+                <a><Button onClick={reloadPage} modal="close">No Thanks</Button></a>
+            </Modal>
+
 
         </div>
     )

@@ -36,8 +36,8 @@ const itemsSchema = new mongoose.Schema({
   }],
 
   deleteItem: {
-    type: Boolean,
-    default: false
+    type: String,
+    default: 'false'
   },
 
   dateCreated: {

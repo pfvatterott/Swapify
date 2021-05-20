@@ -6,6 +6,7 @@ import { firebase, firestore } from "../../utils/firebase"
 import ChatMessage from "../ChatMessage"
 import chatContext from "../../utils/chatContext"
 import "./style.css"
+import Rating from 'react-rating'
 
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
@@ -17,6 +18,9 @@ export default function ChatRoom() {
     const dummy = useRef()
     const [userItem, setUserItem] = useState({})
     const [otherItem, setOtherItem] = useState({})
+    const messagesEndRef = React.createRef()
+    const [openRateModal, setOpenRateModal] = useState(false)
+    const [rating, setRating] = useState(0)
 
     useEffect(() => {
         setMessagesRef(firestore.collection(chatId.matchId || 'empty'))
@@ -30,11 +34,30 @@ export default function ChatRoom() {
                 setOtherItem({id: matchResponse.data.item1Owner, photoURL: matchResponse.data.item1Photo})
             }
         })
+        setTimeout(function () {
+            dummy.current.scrollIntoView({ behavior: 'smooth' })
+          }, 500)
     }, [chatId])
 
 
     const sendMessage = async(e) => {
         e.preventDefault();
+        API.getMatch(chatId.matchId).then((matchResponse) => {
+            if (matchResponse.data.item1Owner === userData.googleId) {
+                const matchData = {
+                    item2NewText: true
+                }
+                API.updateUserMatch(chatId.matchId, matchData)
+            }
+            else {
+                const matchData = {
+                    item1NewText: true
+                }
+                API.updateUserMatch(chatId.matchId, matchData)
+            }
+        })
+
+
         setNewText(formValue)
         await messagesRef.add({
             text: formValue,
@@ -54,8 +77,8 @@ export default function ChatRoom() {
             if (matchResponse.data.item1Owner === userData.googleId) {
                 API.deleteMatchesForItem(matchResponse.data.item1Id).then((res) => {
                     API.deleteItem(matchResponse.data.item1Id).then((delResponse) => {
-                        API.updateItem(matchResponse.data.item2Id, {deleteItem: true}).then((updateRes) => {
-                            window.location.reload();
+                        API.updateItem(matchResponse.data.item2Id, {deleteItem: matchResponse.data.item1Owner}).then((updateRes) => {
+                            setOpenRateModal(true)
                         })
                     })
                 })
@@ -63,8 +86,8 @@ export default function ChatRoom() {
             else {
                 API.deleteMatchesForItem(matchResponse.data.item2Id).then((res) => {
                     API.deleteItem(matchResponse.data.item2Id).then((delResponse) => {
-                        API.updateItem(matchResponse.data.item1Id, {deleteItem: true}).then((updateRes) => {
-                            window.location.reload();
+                        API.updateItem(matchResponse.data.item1Id, {deleteItem: matchResponse.data.item2Owner}).then((updateRes) => {
+                            setOpenRateModal(true)
                         })
                     })
                 })
@@ -74,33 +97,74 @@ export default function ChatRoom() {
 
     function deleteMatch() {
         API.deleteMatch(chatId.matchId).then((res) => {
-            window.location.reload();
+            setOpenRateModal(true)
         })
     }
 
+    function reloadPage() {
+        window.location.reload();
+    }
+
+    function submitRating() {
+        API.getUser(otherItem.id).then((userResponse) => {
+            const ratingArray = userResponse.data[0].rating
+            ratingArray.push(rating)
+            const newUserRating = {
+                rating: ratingArray
+            }
+            API.updateUser(otherItem.id, newUserRating).then((res) => {
+                window.location.reload();
+            })
+        })
+    }
 
     return (
+        <div>
         <div className="container">
-            <Row>
+            {/* Rate User */}
+            <Modal
+                open={openRateModal}
+                className='center-align'
+                actions={[]}
+                options={{
+                dismissible: false
+                }}>
+                <h3>Match Deleted!</h3>
+                <br></br>
+                <div>Would you like to rate the other user?</div>
+                <br></br>
+                <Rating
+                    emptySymbol={<i class="material-icons">star_border</i>}
+                    fullSymbol={<i class="material-icons">star</i>}
+                    onChange={(e) => setRating(e)}
+                ></Rating>
+                <br></br><br></br>
+                <a><Button onClick={submitRating} modal="close">Submit Rating</Button></a>
+                <br></br><br></br>
+                <a><Button onClick={reloadPage} modal="close">No Thanks</Button></a>
+            </Modal>
+            <Row className="wrapper">
                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
+                <div ref={messagesEndRef} />
+                <br></br><br></br><br></br><br></br><br></br>
             </Row>
-            <div className="chatControls">
+        
+        <div className="chatControls">
             <Row>
-                <form onSubmit={sendMessage}>
-                    <Col s={10}>
-                    <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
-                    </Col>
-                    <Col s={2}>
-                    <button type="submit" class="btn-floating btn-large waves-effect waves-light red sendButton"><i class="material-icons">send</i></button>
-                    </Col>
-                </form>
-            </Row>
-            <Row>
-                <Col s={4} className='center-align'>
-                    <Button>RATE USER</Button>
+                <Col s={12}>
+                    <form onSubmit={sendMessage}>   
+                        <Col s={10}>
+                        <input value={formValue} required onChange={(e) => setFormValue(e.target.value)}/>
+                        </Col>
+                        <Col s={2}>
+                        <button type="submit" class="btn-floating btn-large waves-effect waves-light red sendButton"><i class="material-icons">send</i></button>
+                        </Col>
+                    </form>
                 </Col>
-                <Col s={4} className='center-align'>
+            </Row>
+            <Row>
+                <Col s={6} className='center-align'>
                     <Modal
                         className="center-align"
                         id="Modal-Swap"
@@ -113,7 +177,7 @@ export default function ChatRoom() {
                         <a><Button onClick={swapItems} modal="close">Confirm</Button></a>
                     </Modal>
                 </Col>
-                <Col s={4} className='center-align'>
+                <Col s={6} className='center-align'>
                     <Modal
                         className="center-align"
                         id="Modal-Swap"
@@ -127,9 +191,8 @@ export default function ChatRoom() {
                     </Modal>
                 </Col>
             </Row>
-            <br></br>
-            </div>
-
+        </div>
+        </div>
         </div>
     )
 }

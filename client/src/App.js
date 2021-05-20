@@ -7,6 +7,7 @@ import createItem from "./pages/createItem"
 import Swipping from "./pages/swipping"
 import API from "./utils/API"
 import { Button, Modal } from 'react-materialize';
+import Rating from 'react-rating'
 import "./appStyle.css"
 
 
@@ -20,6 +21,9 @@ function App() {
   const [modalID, setModalID] = useState('')
   const [modalMatchImage1, setModalMatchImage1] = useState('')
   const [modalMatchImage2, setModalMatchImage2] = useState('')
+  const [openRateModal, setOpenRateModal] = useState(false)
+  const [rating, setRating] = useState(0)
+  const [deletedItemUserId, setDeletedItemUserId] = useState('')
   
   function handleSetUser(userData) {
     setUserState(userData)
@@ -27,9 +31,10 @@ function App() {
 
   setInterval(function () {
     API.getUserItems(userDataJSON.googleId).then((response) => {
+      console.log(response)
       for (let i = 0; i < response.data.length; i++) {
-        if (response.data[i].deleteItem === true) {
-          console.log('there is an item that might be deleted soon')
+        if (response.data[i].deleteItem !== 'false') {
+          setDeletedItemUserId(response.data[i].deleteItem)
           setModalImage(response.data[i].imageURL)
           setModalID(response.data[i]._id)
           setOpenSwapModal(true)
@@ -57,14 +62,33 @@ function App() {
   }, 5000)
 
   function deleteItem() {
-    API.deleteItem(modalID)
+    API.deleteItem(modalID).then((res) => {
+      setOpenRateModal(true)
+    })
   }
 
   function keepItem() {
     const updatedItem = {
       deleteItem: false
     }
-    API.updateItem(modalID, updatedItem)
+    API.updateItem(modalID, updatedItem).then((res) => {
+      setOpenRateModal(true)
+    })
+  }
+
+  function submitRating() {
+    API.getUser(deletedItemUserId).then((res) => {
+      console.log(res.data[0].rating)
+      const ratingArray = res.data[0].rating
+      ratingArray.push(rating)
+      const newUserRating = {
+          rating: ratingArray
+      }
+      API.updateUser(deletedItemUserId, newUserRating).then((res) => {
+          window.location.reload();
+      })
+    })
+
   }
 
   return (
@@ -104,6 +128,29 @@ function App() {
         <br></br>
         <div>Go to the Chat Page to make the swap!</div>
         <br></br>
+      </Modal>
+
+      {/* Rate User */}
+      <Modal
+          open={openRateModal}
+          className='center-align'
+          actions={[]}
+          options={{
+          dismissible: false
+          }}>
+          <h3>Match Deleted!</h3>
+          <br></br>
+          <div>Would you like to rate the other user?</div>
+          <br></br>
+          <Rating
+              emptySymbol={<i class="material-icons">star_border</i>}
+              fullSymbol={<i class="material-icons">star</i>}
+              onChange={(e) => setRating(e)}
+          ></Rating>
+          <br></br><br></br>
+          <a><Button onClick={submitRating} modal="close">Submit Rating</Button></a>
+          <br></br><br></br>
+          <a><Button modal="close">No Thanks</Button></a>
       </Modal>
     </Router>
   );

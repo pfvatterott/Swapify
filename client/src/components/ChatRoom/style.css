@@ -1,5 +1,12 @@
 .chatControls {
-    position: sticky;
+    position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 90%;
+    max-width: 650px;
+    margin: 0 auto;
 }
+
+.wrapper {
+    max-width: 700px;
+}
+

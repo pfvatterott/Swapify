@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import API from "../../utils/API";
-import { Col, Row, Collection, SideNav, Modal, Button } from 'react-materialize';
+import { Collection, SideNav, Modal, Button } from 'react-materialize';
 import MatchCard from '../MatchCard'
-import { firebase, firestore } from "../../utils/firebase"
+import { firestore } from "../../utils/firebase"
 import chatContext from "../../utils/chatContext"
-import "./style.css"
 
 
-export default function MatchesSideBar() {
+export default function MatchesSideBar(props) {
     const [usersItemList, setUsersItemList] = useState([]);
     const [matchList, setMatchList] = useState([])
     const [allMatches, setAllMatches] = useState([])
@@ -15,7 +14,6 @@ export default function MatchesSideBar() {
     const userData = JSON.parse(localStorage.getItem('userData'))
     const { recentText } = useContext(chatContext)
     let matchArray = []
-
 
     useEffect(() => {
         API.getUserItems(userData.googleId).then((response) => {
@@ -37,7 +35,8 @@ export default function MatchesSideBar() {
                         otherUser: item.item2Owner,
                         otherItemImage: item.item2Photo,
                         otherItemName: item.item2Name,
-                        matchId: item._id
+                        matchId: item._id,
+                        newText: item.item1NewText
                     }
                     matchArray.push(itemInfo)
                     if (matchResponse.data.length === matchArray.length) {
@@ -56,7 +55,8 @@ export default function MatchesSideBar() {
                         otherUser: item.item1Owner,
                         otherItemImage: item.item1Photo,
                         otherItemName: item.item1Name,
-                        matchId: item._id
+                        matchId: item._id,
+                        newText: item.item2NewText
                     }
                     matchArray.push(itemInfo)
                     if (matchResponse.data.length === matchArray.length) {
@@ -67,30 +67,26 @@ export default function MatchesSideBar() {
                 }
             });
         })
-    }, [])
+    }, [recentText, props])
+
+    
 
     const getCollectionsMostRecents = async(newArray) => {
         if (newArray) {
-
-        
         for (let i = 0; i < newArray.length; i++) {
             const returns = await firestore.collection(`${newArray[i].matchId}`).orderBy("createdAt", 'desc').limit(1).get()
             if (returns._delegate._snapshot.docChanges[0]) {
-                console.log(returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields)
                 newArray[i].latestText = returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields.text.stringValue
                 newArray[i].textTime = returns._delegate._snapshot.docChanges[0].doc.data.partialValue.mapValue.fields.createdAt.timestampValue
             }
         }
-        console.log(newArray)
         let sortedList =  newArray.sort(function compare(a, b) {
             var dateA = new Date(a.textTime);
             var dateB = new Date(b.textTime);
             return dateB - dateA;
         });
-        // setMatchList(sortedList)
         return sortedList
         }
-     
     }
 
     useEffect(() => {
@@ -105,18 +101,14 @@ export default function MatchesSideBar() {
 
     return (
         <div>
-            <Row>
-                <Col s={12}>
-                    <SideNav
-                        fixed={true}>
-                     <Collection>
-                        {matchList.map(match => (
-                            <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
-                        ))}
-                    </Collection>
-                    </SideNav>
-                </Col>
-            </Row>
+            <SideNav
+                fixed={true}>
+                <Collection>
+                {matchList.map(match => (
+                    <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
+                ))}
+            </Collection>
+            </SideNav>
 
             {/* No chats Modal */}
             <Modal

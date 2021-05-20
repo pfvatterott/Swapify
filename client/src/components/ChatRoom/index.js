@@ -77,7 +77,7 @@ export default function ChatRoom() {
             if (matchResponse.data.item1Owner === userData.googleId) {
                 API.deleteMatchesForItem(matchResponse.data.item1Id).then((res) => {
                     API.deleteItem(matchResponse.data.item1Id).then((delResponse) => {
-                        API.updateItem(matchResponse.data.item2Id, {deleteItem: true}).then((updateRes) => {
+                        API.updateItem(matchResponse.data.item2Id, {deleteItem: matchResponse.data.item1Owner}).then((updateRes) => {
                             setOpenRateModal(true)
                         })
                     })
@@ -86,7 +86,7 @@ export default function ChatRoom() {
             else {
                 API.deleteMatchesForItem(matchResponse.data.item2Id).then((res) => {
                     API.deleteItem(matchResponse.data.item2Id).then((delResponse) => {
-                        API.updateItem(matchResponse.data.item1Id, {deleteItem: true}).then((updateRes) => {
+                        API.updateItem(matchResponse.data.item1Id, {deleteItem: matchResponse.data.item2Owner}).then((updateRes) => {
                             setOpenRateModal(true)
                         })
                     })
@@ -170,7 +170,10 @@ export default function ChatRoom() {
             <Modal
                 open={openRateModal}
                 className='center-align'
-                >
+                actions={[]}
+                options={{
+                dismissible: false
+                }}>
                 <h3>Match Deleted!</h3>
                 <br></br>
                 <div>Would you like to rate the other user?</div>

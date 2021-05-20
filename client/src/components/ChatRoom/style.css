@@ -1,6 +1,7 @@
 .chatControls {
-    position: sticky;
+    position: fixed;
     bottom: 0;
-    width: 100%;
+    width: 90%;
+    max-width: 900px;
 }
 

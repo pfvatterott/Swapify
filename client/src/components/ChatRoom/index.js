@@ -119,22 +119,49 @@ export default function ChatRoom() {
     }
 
     return (
-        <div className="container">
+        <div>
+        <div className="container wrapper">
+            {/* Rate User */}
+            <Modal
+                open={openRateModal}
+                className='center-align'
+                actions={[]}
+                options={{
+                dismissible: false
+                }}>
+                <h3>Match Deleted!</h3>
+                <br></br>
+                <div>Would you like to rate the other user?</div>
+                <br></br>
+                <Rating
+                    emptySymbol={<i class="material-icons">star_border</i>}
+                    fullSymbol={<i class="material-icons">star</i>}
+                    onChange={(e) => setRating(e)}
+                ></Rating>
+                <br></br><br></br>
+                <a><Button onClick={submitRating} modal="close">Submit Rating</Button></a>
+                <br></br><br></br>
+                <a><Button onClick={reloadPage} modal="close">No Thanks</Button></a>
+            </Modal>
             <Row>
                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
                 <div ref={messagesEndRef} />
+                <br></br><br></br><br></br><br></br><br></br>
             </Row>
-            <div className="chatControls">
+        </div>
+        <div className="chatControls">
             <Row>
-                <form onSubmit={sendMessage}>   
-                    <Col s={10}>
-                    <input value={formValue} required onChange={(e) => setFormValue(e.target.value)}/>
-                    </Col>
-                    <Col s={2}>
-                    <button type="submit" class="btn-floating btn-large waves-effect waves-light red sendButton"><i class="material-icons">send</i></button>
-                    </Col>
-                </form>
+                <Col s={12}>
+                    <form onSubmit={sendMessage}>   
+                        <Col s={10}>
+                        <input value={formValue} required onChange={(e) => setFormValue(e.target.value)}/>
+                        </Col>
+                        <Col s={2}>
+                        <button type="submit" class="btn-floating btn-large waves-effect waves-light red sendButton"><i class="material-icons">send</i></button>
+                        </Col>
+                    </form>
+                </Col>
             </Row>
             <Row>
                 <Col s={6} className='center-align'>
@@ -164,32 +191,8 @@ export default function ChatRoom() {
                     </Modal>
                 </Col>
             </Row>
-            <br></br>
-            </div>
-            {/* Rate User */}
-            <Modal
-                open={openRateModal}
-                className='center-align'
-                actions={[]}
-                options={{
-                dismissible: false
-                }}>
-                <h3>Match Deleted!</h3>
-                <br></br>
-                <div>Would you like to rate the other user?</div>
-                <br></br>
-                <Rating
-                    emptySymbol={<i class="material-icons">star_border</i>}
-                    fullSymbol={<i class="material-icons">star</i>}
-                    onChange={(e) => setRating(e)}
-                ></Rating>
-                <br></br><br></br>
-                <a><Button onClick={submitRating} modal="close">Submit Rating</Button></a>
-                <br></br><br></br>
-                <a><Button onClick={reloadPage} modal="close">No Thanks</Button></a>
-            </Modal>
-
-
+        </div>
+        
         </div>
     )
 }

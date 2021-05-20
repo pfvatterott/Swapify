@@ -40,10 +40,10 @@ function ChatApp() {
     return (
         <chatContext.Provider value={{chatId, recentText, setChat, setNewText }}>
             <Row>
-                <Col s={0} m={3}>
+                <Col s={0} m={4}>
                     <MatchesSideBar newText={notNewText} />
                 </Col>
-                <Col s={12} m={9}>
+                <Col s={12} m={8}>
                     <ChatRoom />
                 </Col>
             </Row>

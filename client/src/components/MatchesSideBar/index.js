@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import API from "../../utils/API";
-import { Col, Row, Collection, SideNav, Modal, Button } from 'react-materialize';
+import { Collection, SideNav, Modal, Button } from 'react-materialize';
 import MatchCard from '../MatchCard'
-import { firebase, firestore } from "../../utils/firebase"
+import { firestore } from "../../utils/firebase"
 import chatContext from "../../utils/chatContext"
-import "./style.css"
 
 
 export default function MatchesSideBar(props) {
@@ -102,18 +101,14 @@ export default function MatchesSideBar(props) {
 
     return (
         <div>
-            <Row>
-                <Col s={12}>
-                    <SideNav
-                        fixed={true}>
-                     <Collection>
-                        {matchList.map(match => (
-                            <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
-                        ))}
-                    </Collection>
-                    </SideNav>
-                </Col>
-            </Row>
+            <SideNav
+                fixed={true}>
+                <Collection>
+                {matchList.map(match => (
+                    <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
+                ))}
+            </Collection>
+            </SideNav>
 
             {/* No chats Modal */}
             <Modal

@@ -120,7 +120,7 @@ export default function ChatRoom() {
 
     return (
         <div>
-        <div className="container wrapper">
+        <div className="container">
             {/* Rate User */}
             <Modal
                 open={openRateModal}
@@ -143,13 +143,13 @@ export default function ChatRoom() {
                 <br></br><br></br>
                 <a><Button onClick={reloadPage} modal="close">No Thanks</Button></a>
             </Modal>
-            <Row>
+            <Row className="wrapper">
                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
                 <div ref={messagesEndRef} />
                 <br></br><br></br><br></br><br></br><br></br>
             </Row>
-        </div>
+        
         <div className="chatControls">
             <Row>
                 <Col s={12}>
@@ -192,7 +192,7 @@ export default function ChatRoom() {
                 </Col>
             </Row>
         </div>
-        
+        </div>
         </div>
     )
 }

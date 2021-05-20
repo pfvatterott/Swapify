@@ -5,7 +5,7 @@ import Profile from "./pages/profile"
 import Chat from "./pages/chat"
 import createItem from "./pages/createItem"
 import Swipping from "./pages/swipping"
-
+import CustomNavbar from './components/Navbar';
 
 function App() {
 
@@ -17,6 +17,7 @@ function App() {
 
   return (
     <Router>
+      <CustomNavbar></CustomNavbar>
       <Route exact path="/" component={Welcome} />
       <Route exact path="/profile" component={Profile} />
       <Route exact path="/createItem" component={createItem} />

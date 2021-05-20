@@ -8,13 +8,18 @@ import chatContext from "../utils/chatContext";
 function ChatApp() {
 
     const [chatId, setChatId] = useState('empty')
+    const [recentText, setRecentText] = useState('')
 
     function setChat(id) {
         setChatId(id)
     }
 
+    function setNewText(text) {
+        setRecentText(text)
+    }
+
     return (
-        <chatContext.Provider value={{chatId, setChat }}>
+        <chatContext.Provider value={{chatId, recentText, setChat, setNewText }}>
             <Row>
                 <Col s={0} m={3}>
                     <MatchesSideBar />

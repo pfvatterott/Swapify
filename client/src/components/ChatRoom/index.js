@@ -5,10 +5,11 @@ import API from '../../utils/API'
 import { firebase, firestore } from "../../utils/firebase"
 import ChatMessage from "../ChatMessage"
 import chatContext from "../../utils/chatContext"
+import "./style.css"
 
 export default function ChatRoom() {
     const userData = JSON.parse(localStorage.getItem('userData'))
-    const { chatId } = useContext(chatContext)
+    const { chatId, setNewText } = useContext(chatContext)
     const [messagesRef, setMessagesRef] = useState(firestore.collection('empty'))
     const query = messagesRef.orderBy('createdAt')
     const [messages] = useCollectionData(query, {idField: 'id'})
@@ -31,8 +32,10 @@ export default function ChatRoom() {
         })
     }, [chatId])
 
+
     const sendMessage = async(e) => {
         e.preventDefault();
+        setNewText(formValue)
         await messagesRef.add({
             text: formValue,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -82,6 +85,7 @@ export default function ChatRoom() {
                 {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <div ref={dummy}></div>
             </Row>
+            <div className="chatControls">
             <Row>
                 <form onSubmit={sendMessage}>
                     <Col s={10}>
@@ -123,6 +127,8 @@ export default function ChatRoom() {
                     </Modal>
                 </Col>
             </Row>
+            <br></br>
+            </div>
 
         </div>
     )

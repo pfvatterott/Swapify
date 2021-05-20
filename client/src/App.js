@@ -14,9 +14,12 @@ function App() {
 
   const [userState, setUserState] = useState([]);
   const userDataJSON = JSON.parse(localStorage.getItem('userData'))
-  const [openModal, setOpenModal] = useState(false)
+  const [openSwapModal, setOpenSwapModal] = useState(false)
+  const [openMatchModal, setOpenMatchModal] = useState(false)
   const [modalImage, setModalImage] = useState('');
-  const [modalID, setModalID] = useState('') 
+  const [modalID, setModalID] = useState('')
+  const [modalMatchImage1, setModalMatchImage1] = useState('')
+  const [modalMatchImage2, setModalMatchImage2] = useState('')
   
   function handleSetUser(userData) {
     setUserState(userData)
@@ -24,13 +27,12 @@ function App() {
 
   setInterval(function () {
     API.getUserItems(userDataJSON.googleId).then((response) => {
-      console.log(response)
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].deleteItem === true) {
           console.log('there is an item that might be deleted soon')
           setModalImage(response.data[i].imageURL)
           setModalID(response.data[i]._id)
-          setOpenModal(true)
+          setOpenSwapModal(true)
         }
       }
     })
@@ -45,8 +47,9 @@ function App() {
                     item2Read: true
                 }
                 API.updateUserMatch(response.data[i]._id, matchData).then((matchPutResponse) => {
-                    console.log(matchPutResponse)
-                    alert('You have a new matched Item!')
+                    setOpenMatchModal(true)
+                    setModalMatchImage1(response.data[i].item1Photo)
+                    setModalMatchImage2(response.data[i].item2Photo)
                 })
             }
         }
@@ -73,8 +76,12 @@ function App() {
       <Route exact path="/chat" component={Chat} />
       {/* Modal for when other user presses 'swap items' button */}
       <Modal
-        open={openModal}
-        className='center-align'>
+        open={openSwapModal}
+        className='center-align'
+        actions={[]}
+        options={{
+          dismissible: false
+        }}>
         <h3>Warning</h3>
         <img src={modalImage} className="circle swapItemImage"></img>
         <br></br>
@@ -85,6 +92,18 @@ function App() {
         <a><Button onClick={deleteItem} modal="close">Confirm</Button></a>
         <br></br><br></br>
         <a><Button onClick={keepItem} modal="close">Deny</Button></a>
+      </Modal>
+      {/* Match Alert Modal */}
+      <Modal
+        open={openMatchModal}
+        className='center-align'
+        >
+        <h3>You have a new Match!</h3>
+        <img src={modalMatchImage1} className="circle swapItemImage"></img>
+        <img src={modalMatchImage2} className="circle swapItemImage"></img>
+        <br></br>
+        <div>Go to the Chat Page to make the swap!</div>
+        <br></br>
       </Modal>
     </Router>
   );

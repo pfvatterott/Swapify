@@ -40,6 +40,15 @@ const matchesSchema = new mongoose.Schema({
      default: false
  },
 
+ item1NewText: {
+   type: Boolean,
+   default: true
+ },
+
+ item2NewText: {
+  type: Boolean,
+  default: true
+}
 
 
 });

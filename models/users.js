@@ -23,7 +23,9 @@ const usersSchema = new mongoose.Schema({
       type: String
   },
 
-  listedItems: [String]
+  listedItems: [String],
+
+  rating: [Number]
 
 });
 

@@ -100,21 +100,6 @@ function Profile() {
                     </Col>
                 </Row>
             </div>
-            <h2>Matches</h2>
-            <div>
-                <Row>
-                    <Col
-                        m={12}
-                        s={12}>
-                        <Collection>
-                            {matchList.map(match => (
-                                <MatchCard imageURL={match.otherItemImage} itemName={match.otherItemName} matchData={match} />
-                            ))}
-                        </Collection>
-
-                    </Col>
-                </Row>
-            </div>
             <h2><a><Link to="/createItem">Create New Item</Link></a></h2>
         </div>
     )

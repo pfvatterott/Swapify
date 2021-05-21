@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Link, Redirect } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { Redirect } from 'react-router-dom'
 import { Button, Modal } from 'react-materialize';
+import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
 let preventFirstRender = false
@@ -12,6 +13,7 @@ function Swipping() {
     const [noMoreItems, setNoMoreItems] = useState(false)
     const [imageNumber, setImageNumber] = useState(0)
     const [itIsAMatch, setItIsAMatch] = useState(false)
+    const [distanceBoundary, setDistanceBoundary] = useState(50)
     const [modalMatchImage1, setModalMatchImage1] = useState('')
     const [modalMatchImage2, setModalMatchImage2] = useState('')
     const itemData = JSON.parse(localStorage.getItem('itemData'))
@@ -19,6 +21,7 @@ function Swipping() {
 
 
     useEffect(() => {
+        console.log(distanceBoundary)
         if (userData === null) {
             setRedirect(true)
         }
@@ -46,9 +49,7 @@ function Swipping() {
                 }
 
                 API.getItem(itemData).then((userItemRes) => {
-
                     const sortedNotUserItems = []
-
                      // Sorting by Location
                      for (let v = 0; v < notUserItemsArray.length; v++) {
                          const notUserLat = notUserItemsArray[v].itemLocation[0]
@@ -58,7 +59,7 @@ function Swipping() {
 
                         getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
                             console.log(distanceResponse)
-                            if (distanceResponse < 50) {
+                            if (distanceResponse < distanceBoundary) {
                                 sortedNotUserItems.push(notUserItemsArray[v])
                                 console.log(sortedNotUserItems)
                             }
@@ -75,7 +76,7 @@ function Swipping() {
                 })
             })
         })
-    }, [])
+    }, [distanceBoundary])
 
     // Haversine Formula
     const getDistanceFromLatLonInKm = async(lat1,lon1,lat2,lon2) => {
@@ -167,6 +168,10 @@ function Swipping() {
         })
     }
 
+    function handleDistanceChange(e) {
+        setDistanceBoundary(e)
+    }
+
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
@@ -212,8 +217,11 @@ function Swipping() {
                 <a href="/chat"><Button>Chat Page</Button></a>
                 <br></br><br></br>
                 <a><Button modal="close">Continue</Button></a>
-                <br></br>
+                <br></br>   
             </Modal>
+            
+            {/* Distance Range Selector */}
+            <DistanceSlider setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
         </div>
     )
 }

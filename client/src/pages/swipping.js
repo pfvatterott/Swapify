@@ -16,23 +16,28 @@ function Swipping() {
     const [distanceBoundary, setDistanceBoundary] = useState(50)
     const [modalMatchImage1, setModalMatchImage1] = useState('')
     const [modalMatchImage2, setModalMatchImage2] = useState('')
-    const [userLocation, setUserLocation] = useState([""])
     const itemData = JSON.parse(localStorage.getItem('itemData'))
     const userData = JSON.parse(localStorage.getItem('userData'))
 
 
     useEffect(() => {
-        // Changes all of the users item's coordinates to the user's most recent location
-        getUserLocation()
-        API.getUserItems(userData.googleId).then((userItemsResponse) => {
-            console.log(userItemsResponse)
-            for (let z = 0; z < userItemsResponse.length; z++) {
-                const newCoords = {
-                    itemLocation: userLocation
+        // Sets all user's items to user's current location
+        const getCoords = async () => {
+            const pos = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+            return [pos.coords.latitude, pos.coords.longitude]
+        };
+        const coords = getCoords().then((res) => {
+            API.getUserItems(userData.googleId).then((userItemsResponse) => {
+                for (let z = 0; z < userItemsResponse.data.length; z++) {
+                    const newCoords = {
+                        itemLocation: res
+                    }
+                    API.updateItem(userItemsResponse.data[z]._id, newCoords)
                 }
-                API.updateItem(userItemsResponse[z]._id, newCoords)
-            }
-        })
+            })
+        });
 
         if (userData === null) {
             setRedirect(true)
@@ -87,18 +92,6 @@ function Swipping() {
             })
         })
     }, [distanceBoundary])
-
-    function getUserLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(saveUserLocation);
-        } else {
-          alert = "Geolocation is not supported by this browser.";
-        }
-      }
-    
-      function saveUserLocation(position) {
-        setUserLocation([position.coords.latitude, position.coords.longitude])
-    }
 
     // Haversine Formula
     const getDistanceFromLatLonInKm = async(lat1,lon1,lat2,lon2) => {

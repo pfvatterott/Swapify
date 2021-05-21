@@ -16,12 +16,25 @@ function Swipping() {
     const [distanceBoundary, setDistanceBoundary] = useState(50)
     const [modalMatchImage1, setModalMatchImage1] = useState('')
     const [modalMatchImage2, setModalMatchImage2] = useState('')
+    const [userLocation, setUserLocation] = useState([""])
     const itemData = JSON.parse(localStorage.getItem('itemData'))
     const userData = JSON.parse(localStorage.getItem('userData'))
 
 
     useEffect(() => {
-        console.log(distanceBoundary)
+       
+        // Changes all of the users item's coordinates to the user's most recent location
+        getUserLocation()
+        API.getUserItems(userData.googleId).then((userItemsResponse) => {
+            console.log(userItemsResponse)
+            for (let z = 0; z < userItemsResponse.length; z++) {
+                const newCoords = {
+                    itemLocation: userLocation
+                }
+                API.updateItem(userItemsResponse[z]._id, newCoords)
+            }
+        })
+
         if (userData === null) {
             setRedirect(true)
         }
@@ -58,10 +71,8 @@ function Swipping() {
                          const userLong = userItemRes.data.itemLocation[1]
 
                         getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
-                            console.log(distanceResponse)
                             if (distanceResponse < distanceBoundary) {
                                 sortedNotUserItems.push(notUserItemsArray[v])
-                                console.log(sortedNotUserItems)
                             }
                             // no more items triggers Modal
                             if (sortedNotUserItems.length === 0) {
@@ -77,6 +88,18 @@ function Swipping() {
             })
         })
     }, [distanceBoundary])
+
+    function getUserLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(saveUserLocation);
+        } else {
+          alert = "Geolocation is not supported by this browser.";
+        }
+      }
+    
+      function saveUserLocation(position) {
+        setUserLocation([position.coords.latitude, position.coords.longitude])
+    }
 
     // Haversine Formula
     const getDistanceFromLatLonInKm = async(lat1,lon1,lat2,lon2) => {

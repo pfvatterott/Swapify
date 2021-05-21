@@ -17,7 +17,6 @@ router
   .route("/user/:id")
   .get(itemsController.findByGoogleId)
 
-
 router.get('search/:name', (req, res) => {
   console.log(res)
 })

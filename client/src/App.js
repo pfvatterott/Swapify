@@ -31,7 +31,6 @@ function App() {
 
   setInterval(function () {
     API.getUserItems(userDataJSON.googleId).then((response) => {
-      console.log(response)
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].deleteItem !== 'false') {
           setDeletedItemUserId(response.data[i].deleteItem)

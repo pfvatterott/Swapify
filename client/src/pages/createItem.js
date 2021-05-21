@@ -15,6 +15,7 @@ function Item() {
   const [redirect, setRedirect] = useState(false);
   const [imageURL, setImageURL] = useState("");
   const [buttonText, setButtonText] = useState("Preview");
+  const [userLocation, setUserLocation] = useState([""])
 
   useEffect(() => {
 
@@ -24,9 +25,22 @@ function Item() {
     }
     const fileUpload = document.getElementById('fileBox');
     fileUpload.addEventListener('click', function (event) {
-
     });
-  })
+
+    getUserLocation()
+  }, [])
+
+  function getUserLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(saveUserLocation);
+    } else {
+      alert = "Geolocation is not supported by this browser.";
+    }
+  }
+
+  function saveUserLocation(position) {
+    setUserLocation([position.coords.latitude, position.coords.longitude])
+  }
 
   //sets the selectedFile state when a a user drops in a file.
   function handleFileChange(e) {
@@ -148,7 +162,8 @@ function Item() {
       itemOwner: userData.googleId,
       likesFromItems: [],
       likesItems: [],
-      seenItems: []
+      seenItems: [],
+      itemLocation: userLocation
     }
     API.saveItem(newItem).then((itemResponse) => {
       const itemId = itemResponse.data._id

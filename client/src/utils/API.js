@@ -69,6 +69,10 @@ export default {
 
   deleteMatch: function(id) {
     return axios.delete("/api/matches/" + id)
+  }, 
+
+  getAllCloseItems: function(coordinates) {
+    return axios.get("/api/items/location/" + coordinates)
   }
 
 };

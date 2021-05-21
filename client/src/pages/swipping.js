@@ -37,11 +37,16 @@ function Swipping() {
                         }
                     }
                 }
+                // moves items that like current item to front of list
                 for (let q = 0; q < notUserItemsArray.length; q++) {
                     if (notUserItemsArray[q].likesItems.includes(itemData)) {
                         notUserItemsArray.unshift(notUserItemsArray.splice(q, 1)[0])
                     }
+
+                    // Haversine formula for location
+                    console.log(notUserItemsArray)
                 }
+                // no more items triggers Modal
                 if (notUserItemsArray.length === 0) {
                     setNoMoreItems(true)
                 }

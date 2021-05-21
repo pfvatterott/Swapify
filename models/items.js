@@ -45,7 +45,6 @@ const itemsSchema = new mongoose.Schema({
     require: true,
     default: Date.now
   }
-  
 
 });
 

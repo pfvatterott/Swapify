@@ -37,28 +37,64 @@ function Swipping() {
                         }
                     }
                 }
+
                 // moves items that like current item to front of list
                 for (let q = 0; q < notUserItemsArray.length; q++) {
                     if (notUserItemsArray[q].likesItems.includes(itemData)) {
                         notUserItemsArray.unshift(notUserItemsArray.splice(q, 1)[0])
                     }
+                }
 
-                    // Haversine formula for location
-                    console.log(notUserItemsArray)
-                }
-                // no more items triggers Modal
-                if (notUserItemsArray.length === 0) {
-                    setNoMoreItems(true)
-                }
-                else {
-                    console.log(notUserItemsArray)
-                    setNotUserItems(notUserItemsArray)
-                    setCurrentItem(notUserItemsArray[imageNumber])
-                }
+                API.getItem(itemData).then((userItemRes) => {
+
+                    const sortedNotUserItems = []
+
+                     // Sorting by Location
+                     for (let v = 0; v < notUserItemsArray.length; v++) {
+                         const notUserLat = notUserItemsArray[v].itemLocation[0]
+                         const notUserLong = notUserItemsArray[v].itemLocation[1]
+                         const userLat = userItemRes.data.itemLocation[0]
+                         const userLong = userItemRes.data.itemLocation[1]
+
+                        getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
+                            console.log(distanceResponse)
+                            if (distanceResponse < 50) {
+                                sortedNotUserItems.push(notUserItemsArray[v])
+                                console.log(sortedNotUserItems)
+                            }
+                            // no more items triggers Modal
+                            if (sortedNotUserItems.length === 0) {
+                                setNoMoreItems(true)
+                            }
+                            else {
+                                setNotUserItems(sortedNotUserItems)
+                                setCurrentItem(sortedNotUserItems[imageNumber])
+                            }
+                        })
+                     }
+                })
             })
         })
     }, [])
 
+    // Haversine Formula
+    const getDistanceFromLatLonInKm = async(lat1,lon1,lat2,lon2) => {
+        var R = 6371; // Radius of the earth in km
+        var dLat = deg2rad(lat2-lat1);  // deg2rad below
+        var dLon = deg2rad(lon2-lon1); 
+        var a = 
+          Math.sin(dLat/2) * Math.sin(dLat/2) +
+          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+          Math.sin(dLon/2) * Math.sin(dLon/2)
+          ; 
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        var d = R * c; // Distance in km
+        return (d / 1.609344); // Convert to Miles
+    }
+      
+    function deg2rad(deg) {
+        return deg * (Math.PI/180)
+    }
 
     // runs every time the imageNumber state changes
     useEffect(() => {

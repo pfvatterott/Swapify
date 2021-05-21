@@ -22,7 +22,6 @@ function Swipping() {
 
 
     useEffect(() => {
-       
         // Changes all of the users item's coordinates to the user's most recent location
         getUserLocation()
         API.getUserItems(userData.googleId).then((userItemsResponse) => {

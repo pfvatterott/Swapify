@@ -6,6 +6,7 @@ import Chat from "./pages/chat"
 import createItem from "./pages/createItem"
 import Swipping from "./pages/swipping"
 import CustomNavbar from './components/Navbar';
+import CustomFooter from './components/Footer';
 import API from "./utils/API"
 import { Button, Modal } from 'react-materialize';
 import Rating from 'react-rating'
@@ -98,6 +99,7 @@ function App() {
       <Route exact path="/createItem" component={createItem} />
       <Route exact path="/swipping" component={Swipping} />
       <Route exact path="/chat" component={Chat} />
+      <CustomFooter></CustomFooter>
       {/* Modal for when other user presses 'swap items' button */}
       <Modal
         open={openSwapModal}

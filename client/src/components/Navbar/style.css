@@ -20,6 +20,16 @@
     color: #F25D27;
 }
 
-.swapIcon{
+.swapIconWrapper{
     color: #F20505;
+}
+
+.chatBadge {
+    position: relative;
+    top:20px
+}
+
+.swapIcon {
+    position: relative;
+    top: -20px
 }

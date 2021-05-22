@@ -102,7 +102,8 @@ export default function MatchesSideBar(props) {
     return (
         <div>
             <SideNav
-                fixed={true}>
+                fixed={true}
+                trigger={<Button floating={true} large={true}><i class="material-icons">chat</i></Button>}>
                 <Collection>
                 {matchList.map(match => (
                     <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>

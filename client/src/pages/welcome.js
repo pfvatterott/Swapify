@@ -1,6 +1,7 @@
 import React, {useState, useContext} from "react";
 import API from "../utils/API";
 import GoogleLogin from 'react-google-login'
+import { Button } from 'react-materialize';
 import {Redirect} from 'react-router-dom';
 
 
@@ -49,6 +50,8 @@ function Welcome() {
                 onFailure={googleFailure}
                 cookiePolicy={'single_host_origin'}
                 isSignedIn={false}
+                render={renderProps => (
+                <Button onClick={renderProps.onClick}>hey</Button>)}
             />
         </div>
     )

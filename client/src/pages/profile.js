@@ -6,6 +6,7 @@ import MatchCard from '../components/MatchCard'
 import { Button, Col, Row, CollectionItem, Collection } from 'react-materialize';
 import AddIcon from '@material-ui/icons/Add';
 
+//document.body.style = "background: -webkit-gradient(linear, top, bottom, from(#003399), to(#6699cc));background: -webkit-linear-gradient(#025159, #03A696);background: linear-gradient(#025159, #03A696);zoom: 1;margin: 0;padding-top: 2%;padding-bottom: 3%;background-attachment: fixed;"
 
 function Profile() {
     const [redirect, setRedirect] = useState(false);
@@ -17,6 +18,11 @@ function Profile() {
 
 
     useEffect(() => {
+       loadItems();
+
+    }, [])
+
+    function loadItems(){
         if (userData === null) {
             setRedirect(true)
         }
@@ -60,28 +66,39 @@ function Profile() {
                 }
             });
         })
-    }, [])
 
+    }
+
+    // function deleteItem(id) {
+    //     API.deleteItem(id)
+    //       .then(res => loadItems())
+    //       .catch(err => console.log(err));
+    //   };
+ 
 
     function handleUseItem(id) {
         console.log(id)
         localStorage.setItem('itemData', JSON.stringify(id))
         setRedirectToSwipping(true)
     }
+    //#05E6CF
+    //linear-gradient(#025159, #03A696, #FFFFFF)
     return (
         <div>
             {redirect ? (<Redirect push to="/" />) : null}
-            <h2>Profile Page</h2>
 
-            <div>
+
+
+            <div className="container" style={{ marginTop: "80px" }}>
+                <h2 style={{ color: "#F28705", textAlign: "center", marginTop: "80px", fontFamily: 'Lemon, cursive' }}>Swappable Items</h2>
                 <Row>
                     <Col
                         m={12}
                         s={12}>
                         <Collection>
-                            {usersItemList.map(item => (
+                            {usersItemList.map((item, index) => (
 
-                                <ItemCard imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
+                                <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
 
                                 // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
                             ))}
@@ -90,17 +107,17 @@ function Profile() {
                                     className="secondary-content"
                                     href="/createItem"
                                 >
-                                    <Button className="btn-floating btn-large" style={{ backgroundColor: "#025159", right: "1420px" }}><AddIcon/></Button>
+                                    <Button className="btn-floating btn-large" style={{ backgroundColor: "#F28705", right: "680px" }}><AddIcon/></Button>
                                 </a>
-                                <span className="title" style={{ height: "70px", lineHeight: "70px", paddingLeft: "20px", fontFamily: "proxima-nova, sans-serif", fontWeight: "700", fontStyle: "normal", fontSize: "20px" }}>
-                                    <a><Link to="/createItem">Create New Item</Link></a>
+                                <span className="title" style={{ height: "70px", lineHeight: "70px", paddingLeft: "18px", fontFamily: "proxima-nova, sans-serif", fontWeight: "700", fontStyle: "normal", fontSize: "20px", textAlign: "center" }}>
+                                    <Link to="/createItem" style={{ color: "#F28705", textAlign: "center" }}>Create New Item?</Link>
                                 </span>
                             </CollectionItem>
                         </Collection>
                     </Col>
                 </Row>
             </div>
-            <h2><a><Link to="/createItem">Create New Item</Link></a></h2>
+
         </div>
     )
 }

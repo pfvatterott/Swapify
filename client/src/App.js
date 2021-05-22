@@ -99,7 +99,7 @@ function App() {
       <Route exact path="/createItem" component={createItem} />
       <Route exact path="/swipping" component={Swipping} />
       <Route exact path="/chat" component={Chat} />
-      <CustomFooter></CustomFooter>
+      {window.location.pathname !== '/chat' ? <CustomFooter /> : null}  
       {/* Modal for when other user presses 'swap items' button */}
       <Modal
         open={openSwapModal}

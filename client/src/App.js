@@ -143,8 +143,8 @@ function App() {
           <div>Would you like to rate the other user?</div>
           <br></br>
           <Rating
-              emptySymbol={<i class="material-icons">star_border</i>}
-              fullSymbol={<i class="material-icons">star</i>}
+              emptySymbol={<i className="material-icons">star_border</i>}
+              fullSymbol={<i className="material-icons">star</i>}
               onChange={(e) => setRating(e)}
           ></Rating>
           <br></br><br></br>

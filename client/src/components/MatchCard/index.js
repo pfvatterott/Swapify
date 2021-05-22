@@ -28,7 +28,7 @@ const MatchCard = (props) => {
                 src={props.imageURL}
             /></a>
             <a className="secondary-content">
-                {props.matchData.newText ? (<a class="btn-floating btn-large pulse" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i class="material-icons">chat</i></a>) : (<a class="btn-floating btn-large" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i class="material-icons">chat</i></a>)}
+                {props.matchData.newText ? (<a className="btn-floating btn-large pulse" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>) : (<a className="btn-floating btn-large" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>)}
                 
             </a>
         </CollectionItem>

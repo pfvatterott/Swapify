@@ -200,7 +200,7 @@ function Swipping() {
             <h2>Swipping</h2>
             <h4>{currentItem.itemName}</h4>
             <h5>{currentItem.itemDescription}</h5>
-            <img class="itemImage" src={currentItem.imageURL} />
+            <img className="itemImage" src={currentItem.imageURL} />
             <button onClick={handleItemNotLike}>Not Interested</button>
             <button onClick={handleItemLike}>Interested</button>
 

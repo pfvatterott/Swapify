@@ -47,7 +47,7 @@ const CustomNavbar = (props) => {
                 }
                 className="navbar"
                 id="mobile-nav"
-                menuIcon={<Icon>menu</Icon>}
+                menuIcon={newText ? (<Badge variant='dot' color="secondary" className="chatBadge"><Icon className="swapIcon">menu</Icon></Badge>) : (<Badge color="secondary" className="chatBadge"><Icon className="swapIcon">menu</Icon></Badge>)}
                 options={{
                     draggable: true,
                     edge: "right",

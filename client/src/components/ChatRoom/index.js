@@ -45,13 +45,15 @@ export default function ChatRoom() {
         API.getMatch(chatId.matchId).then((matchResponse) => {
             if (matchResponse.data.item1Owner === userData.googleId) {
                 const matchData = {
-                    item2NewText: true
+                    item2NewText: true,
+                    item1NewText: false
                 }
                 API.updateUserMatch(chatId.matchId, matchData)
             }
             else {
                 const matchData = {
-                    item1NewText: true
+                    item1NewText: true,
+                    item2NewText: false
                 }
                 API.updateUserMatch(chatId.matchId, matchData)
             }

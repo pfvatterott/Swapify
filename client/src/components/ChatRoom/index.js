@@ -134,8 +134,8 @@ export default function ChatRoom() {
                 <div>Would you like to rate the other user?</div>
                 <br></br>
                 <Rating
-                    emptySymbol={<i class="material-icons">star_border</i>}
-                    fullSymbol={<i class="material-icons">star</i>}
+                    emptySymbol={<i className="material-icons">star_border</i>}
+                    fullSymbol={<i className="material-icons">star</i>}
                     onChange={(e) => setRating(e)}
                 ></Rating>
                 <br></br><br></br>
@@ -158,7 +158,7 @@ export default function ChatRoom() {
                         <input value={formValue} required onChange={(e) => setFormValue(e.target.value)}/>
                         </Col>
                         <Col s={2}>
-                        <button type="submit" class="btn-floating btn-large waves-effect waves-light red sendButton"><i class="material-icons">send</i></button>
+                        <button type="submit" className="btn-floating btn-large waves-effect waves-light red sendButton"><i className="material-icons">send</i></button>
                         </Col>
                     </form>
                 </Col>

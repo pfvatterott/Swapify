@@ -21,24 +21,22 @@ const ItemCard = (props) => {
             <span className="description" style={{height: "70px", lineHeight: "70px",paddingLeft: "20px", fontFamily: "proxima-nova, sans-serif",fontWeight: "100",fontStyle: "normal"}}>   
                 {props.itemDescription}
             </span>
-            <a
-                className="secondary-content"
-                href="/chat"
-            >
-            <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#O3A696", marginRight: "200px" }}>Chat</Button>
-            </a>
+            
             <a
                 className="secondary-content"
                 href="/swipping"
             >
-            <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#F28705",marginRight: "100px" }}>Swap</Button>
+            <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#O3A696",marginRight: "100px" }}>Swap</Button>
             </a>
-            <a
-                className="secondary-content"
-                href="/swipping"
-            >
-            <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#F20505", }}><DeleteIcon/></Button>
-            </a>
+            
+            <Button className = "btn-floating btn-large" onClick={() => {
+                
+                API.deleteItem(props.id).then(results=>{
+                    props.loadItems()
+                })
+                
+                }} style= {{backgroundColor:"#F20505", }}><DeleteIcon/></Button>
+            
 
         </CollectionItem>
     )

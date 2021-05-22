@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import API from "../utils/API";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import { storage } from "../utils/firebase"
-import { Redirect } from 'react-router-dom';
+import { Redirect, NavLink, BrowserRouter as Router } from 'react-router-dom';
 import Compressor from 'compressorjs';
 import Confetti from 'react-dom-confetti';
 
@@ -16,6 +16,7 @@ function Item() {
   const [imageURL, setImageURL] = useState("");
   const [buttonText, setButtonText] = useState("Preview");
   const [userLocation, setUserLocation] = useState([""])
+  const [wait, setWait]= useState(false);
 
   useEffect(() => {
 
@@ -61,21 +62,18 @@ function Item() {
 
   function previewUploadHandler() {
 
-    
-    console.log({ buttonText })
+
     if (buttonText === "Preview") {
-      console.log("button text is preview")
       previewHandler();
       setButtonText("Upload")
     }
     else {
       fileUploadHandler()
-      setButtonText("Preview")
-      setReward(!reward);
+     
     }
 
   }
-  function fileUploadHandler() {
+ const fileUploadHandler = ()=> {
 
     // Compress image before uploading to firebase
     new Compressor(image, {
@@ -100,7 +98,12 @@ function Item() {
                 saveToDatabase(url);
                 setImageURL(url);
                 console.log("fileupload handler run")
-
+                //setButtonText("Preview")
+                setReward(!reward)
+                setTimeout(()=> setWait(true),3000 )
+                
+                // window.location.href="/profile"
+                
 
               })
           }
@@ -138,7 +141,6 @@ function Item() {
               .then(url => {
                 //saveToDatabase(url);
                 setImageURL(url);
-                console.log("preview handler run")
 
               })
           }
@@ -227,7 +229,7 @@ function Item() {
         >{buttonText}
         </FormBtn>
        
-  
+        {wait ? <Redirect to = "/profile"/> : ""}
 
 
 

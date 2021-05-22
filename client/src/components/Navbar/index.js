@@ -6,7 +6,6 @@ import "./style.css";
 
 const CustomNavbar = (props) => {
     return (
-        <div className="section">
             <Navbar
                 alignLinks="right"
                 brand={
@@ -14,13 +13,12 @@ const CustomNavbar = (props) => {
                         <img src="./../img/swapifyLogoTop-vector.png" height="200" />
                     </a>
                 }
-                centerLogo
                 className="navbar"
                 id="mobile-nav"
                 menuIcon={<Icon>menu</Icon>}
                 options={{
                     draggable: true,
-                    edge: "left",
+                    edge: "right",
                     inDuration: 250,
                     onCloseEnd: null,
                     onCloseStart: null,
@@ -40,7 +38,6 @@ const CustomNavbar = (props) => {
                     <Icon>all_inclusive</Icon>
                 </NavItem>
             </Navbar>
-        </div>
     );
 };
 

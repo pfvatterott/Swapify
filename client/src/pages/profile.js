@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useParams } from 'react-router-dom'
 import API from "../utils/API";
 import ItemCard from "../components/ItemCard"
 import MatchCard from '../components/MatchCard'
@@ -14,16 +14,33 @@ function Profile() {
     const [redirectToSwipping, setRedirectToSwipping] = useState(false);
     const [usersItemList, setUsersItemList] = useState([]);
     const [matchList, setMatchList] = useState([])
-    const userData = JSON.parse(localStorage.getItem('userData'))
-    const userProfileImg = userData.image;
+    const [userData, setUserData] = useState({email: "",
+        firstName: "",
+        googleId: "",
+        image: "",
+        lastName: "",
+        listedItems: [],
+        rating: []})
     const [imageArray, setImageArray] = useState([""]);
     const [rating, setRating] = useState();
+    const { id } = useParams()
 
     let matchArray = []
 
-
     useEffect(() => {
         loadItems();
+        API.getUser(id).then((res) => {
+            const newUser = {
+                email: res.data[0].email,
+                firstName: res.data[0].firstName,
+                googleId: res.data[0].googleId,
+                image: res.data[0].image,
+                lastName: res.data[0].lastName,
+                listedItems: res.data[0].listedItems,
+                rating: res.data[0].rating
+            }
+            setUserData(newUser)
+        })
     }, [])
 
     useEffect(() => {
@@ -138,9 +155,9 @@ function Profile() {
                 
                 <Row className="left-align">
                     <Col m={12} s={12}><h4>Your Rating</h4></Col>
-                    {Array(getRating()).fill().map((el, i) =>
+                    {/* {Array(getRating()).fill().map((el, i) =>
                             <i className="material-icons" key={i}>star</i>
-                        )}
+                        )} */}
                     
                 </Row>
                 <Row className="left-align">

@@ -6,12 +6,13 @@ import {Redirect} from 'react-router-dom';
 
 
 function Welcome() {
-
     const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
     const [redirect, setRedirect] = useState(false);
+    const [userID, setUserID] = useState('')
 
     const googleSuccess = async (response) => {
         const userObj = response.profileObj
+        setUserID(userObj.googleId)
         const user = {
             email: userObj.email,
             firstName: userObj.givenName,
@@ -42,7 +43,7 @@ function Welcome() {
 
     return (
         <div>
-            { redirect ? (<Redirect push to="/profile"/>) : null }
+            { redirect ? (<Redirect push to={`/profile/${userID}`}/>) : null }
             <GoogleLogin 
                 clientId={googleClientId}
                 buttonText="Login, buddy"

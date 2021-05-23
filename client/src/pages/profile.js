@@ -160,19 +160,19 @@ function Profile() {
                 <Row className="left-align valign-wrapper">
                     <Col m={3} s={3}><h4 style={{ color: "#025159" }}>Your Rating</h4></Col>
                     <Col m={9} s={9} className="left-align">
-                        {Array(getRating()).fill().map((el, i) =>
+                        {/* {Array(getRating()).fill().map((el, i) =>
                             <i className="material-icons" key={i} style={{ color: "#025159" }}>star</i>
                         )}
                         {Array(5 - getRating()).fill().map((el, i) =>
                             <i className="material-icons" key={i} style={{ color: "#025159" }}>star_border</i>
-                        )}
+                        )} */}
                     </Col>
 
                 </Row>
                 <Row className="left-align">
                     <Col m={1} s={1}>
-                        <Button floating={true} large={true} style={{ backgroundColor: "#F28705" }}><Link to={`/createItem/${userData.googleId}>
-                            <i className="material-icons">add</i></Link></Button></Col>
+                        <Button floating={true} large={true} style={{ backgroundColor: "#F28705" }}><Link to={`/createItem/${userData.googleId}`}>
+<i className="material-icons">add</i></Link></Button></Col>
                     <Col m={11} s={11} className="valign-wrapper">
                         <h4 style={{ color: "#025159" }}>Add Item</h4>
                     </Col>

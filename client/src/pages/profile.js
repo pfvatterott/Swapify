@@ -2,8 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import { Link, Redirect, useParams } from 'react-router-dom'
 import API from "../utils/API";
 import ItemCard from "../components/ItemCard"
+import CarouselCard from "../components/CarouselCard"
 import MatchCard from '../components/MatchCard'
-import { Button, Col, Row, CollectionItem, Collection, Carousel } from 'react-materialize';
+import { Button, Col, Row, CollectionItem, Collection, Carousel, Card, Icon, CardTitle } from 'react-materialize';
 import AddIcon from '@material-ui/icons/Add';
 
 
@@ -47,6 +48,7 @@ function Profile() {
 
     useEffect(() => {
         loadImages()
+
     }, [usersItemList])
 
     function loadImages() {
@@ -138,7 +140,7 @@ function Profile() {
             {/* {redirect ? (<Redirect push to="/" />) : null} */}
 
             <div className="container center-align" style={{ marginTop: "20px" }}>
-                {/* <h2 style={{ color: "#F28705", textAlign: "center", marginTop: "80px", fontFamily: 'Lemon, cursive' }}>Swappable Items</h2> */}
+        
                 <Row>
                     <Col
                         m={12}
@@ -151,65 +153,58 @@ function Profile() {
                             }}
                             src={userData.image}
                         />
-                        <h2>{userData.firstName} {userData.lastName}</h2>
+                        <h2 style={{ color: "#025159" }}>{userData.firstName} {userData.lastName}</h2>
                     </Col>
                 </Row>
-                
-                <Row className="left-align">
-                    <Col m={12} s={12}><h4>Your Rating</h4></Col>
-                    {/* {Array(getRating()).fill().map((el, i) =>
-                            <i className="material-icons" key={i}>star</i>
-                        )} */}
-                    
-                </Row>
-                <Row className="left-align">
-                <Col m={1} s={1}>
-                <Button floating={true} large={true} style={{backgroundColor:"#F28705"}}><Link to={`/createItem/${userData.googleId}`}>
-                <i className="material-icons">add</i></Link></Button></Col>
-                <Col m={11} s={11} className= "valign-wrapper">
-                    <h4>Add Item</h4>
+
+                <Row className="left-align valign-wrapper">
+                    <Col m={3} s={3}><h4 style={{ color: "#025159" }}>Your Rating</h4></Col>
+                    <Col m={9} s={9} className="left-align">
+                        {Array(getRating()).fill().map((el, i) =>
+                            <i className="material-icons" key={i} style={{ color: "#025159" }}>star</i>
+                        )}
+                        {Array(5 - getRating()).fill().map((el, i) =>
+                            <i className="material-icons" key={i} style={{ color: "#025159" }}>star_border</i>
+                        )}
                     </Col>
-     
+
                 </Row>
-                <Row style={{paddingTop:"10px"}}>
-                <h3 style={{fontFamily: "lemon", color:"#F28705"}}>Your Items</h3>
-                    {/* <Col
-                        m={12}
-                        s={12}> */}
-{/* 
-                        <Carousel
-                            carouselId="Carousel-2"
+                <Row className="left-align">
+                    <Col m={1} s={1}>
+                        <Button floating={true} large={true} style={{ backgroundColor: "#F28705" }}><Link to={`/createItem/${userData.googleId}>
+                            <i className="material-icons">add</i></Link></Button></Col>
+                    <Col m={11} s={11} className="valign-wrapper">
+                        <h4 style={{ color: "#025159" }}>Add Item</h4>
+                    </Col>
 
-                            images={imageArray}
-
-                            options={{
-                                dist: -100,
-                                duration: 200,
-                                fullWidth: false,
-                                indicators: false,
-                                noWrap: true,
-                                numVisible: 5,
-                                onCycleTo: null,
-                                padding: 0,
-                                shift: 0
-                            }}
-                        /> */}
-
-
-                        <Collection style={{maxHeight: "500px", overflow: "scroll"}} >
-                            {usersItemList.map((item, index) => (
-
-                                <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
-
-                                // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
-                            ))}
-                            
-                        </Collection>
-                    
                 </Row>
-                <Row></Row>
-                <Row style={{paddingBottom:"100px"}}></Row>
+                <Row style={{ paddingTop: "10px" }}>
+                    <h3 style={{ fontFamily: "lemon", color: "#F28705" , paddingBottom: "20px" }}>Your Items</h3>
+
+
+                    <Collection style={{ maxHeight: "500px", overflow: "scroll" }} >
+                        {usersItemList.map((item, index) => (
+
+                            <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
+
+                            // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
+                        ))}
+
+                    </Collection>
+
+                </Row>
+
+            <Row style={{height:"400px"}}></Row>
             </div>
+
+            {/* <Carousel>
+                {usersItemList.map((item, index) => (
+
+                    <CarouselCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
+                ))}
+
+            </Carousel> */}
+
         </div>
     )
 }

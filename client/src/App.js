@@ -31,34 +31,38 @@ function App() {
   }
 
   setInterval(function () {
-    API.getUserItems(userDataJSON.googleId).then((response) => {
-      for (let i = 0; i < response.data.length; i++) {
-        if (response.data[i].deleteItem !== 'false') {
-          setDeletedItemUserId(response.data[i].deleteItem)
-          setModalImage(response.data[i].imageURL)
-          setModalID(response.data[i]._id)
-          setOpenSwapModal(true)
+    if (userDataJSON) {
+      API.getUserItems(userDataJSON.googleId).then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          if (response.data[i].deleteItem !== 'false') {
+            setDeletedItemUserId(response.data[i].deleteItem)
+            setModalImage(response.data[i].imageURL)
+            setModalID(response.data[i]._id)
+            setOpenSwapModal(true)
+          }
         }
-      }
-    })
+      })
+    }
   }, 5000)
 
   setInterval(function () {
-    API.getUserMatches(userDataJSON.googleId).then((response) => {
-        // checks if matches have been read or not by user2 (the user that was not swipping when the match was made)
-        for (let i = 0; i < response.data.length; i++) {
-            if ((response.data[i].item2Owner == userDataJSON.googleId) && (response.data[i].item2Read === false)) {
-                const matchData = {
-                    item2Read: true
-                }
-                API.updateUserMatch(response.data[i]._id, matchData).then((matchPutResponse) => {
-                    setOpenMatchModal(true)
-                    setModalMatchImage1(response.data[i].item1Photo)
-                    setModalMatchImage2(response.data[i].item2Photo)
-                })
-            }
-        }
-    })
+    if (userDataJSON) {
+      API.getUserMatches(userDataJSON.googleId).then((response) => {
+          // checks if matches have been read or not by user2 (the user that was not swipping when the match was made)
+          for (let i = 0; i < response.data.length; i++) {
+              if ((response.data[i].item2Owner == userDataJSON.googleId) && (response.data[i].item2Read === false)) {
+                  const matchData = {
+                      item2Read: true
+                  }
+                  API.updateUserMatch(response.data[i]._id, matchData).then((matchPutResponse) => {
+                      setOpenMatchModal(true)
+                      setModalMatchImage1(response.data[i].item1Photo)
+                      setModalMatchImage2(response.data[i].item2Photo)
+                  })
+              }
+          }
+      })
+    }
   }, 5000)
 
   function deleteItem() {

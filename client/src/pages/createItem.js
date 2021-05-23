@@ -5,7 +5,7 @@ import { storage } from "../utils/firebase"
 import { Redirect, useParams, BrowserRouter as Router } from 'react-router-dom';
 import Compressor from 'compressorjs';
 import Confetti from 'react-dom-confetti';
-
+import {Col, Row} from 'react-materialize';
 
 function Item() {
   const [reward, setReward]= useState(false);
@@ -212,32 +212,42 @@ function Item() {
         onChange={handleNameChange}
         name="name"
         placeholder="Add a name for your item"
+        style={{color:"#025159"}}
+        
       />
       <form action="#">
         <div className="file-field input-field">
-          <div className="btn">
-            <span>File</span>
-            <input type="file" id="fileBox" onChange={handleFileChange} style={{ color: "#03A696" }} />
+          <div className="btn" style={{ color: "#D4EEE3" }}>
+            {/* <span>File</span> */}
+            <input type="file" id="fileBox" onChange={handleFileChange} style={{ color: "#03A696" }}/>
+            <i class="material-icons">file_upload</i>
+            
+
           </div>
           <div className="file-path-wrapper">
-            <input className="file-path validate" type="text" placeholder="Choose a photo" />
+            <input className="file-path validate" type="text" placeholder="Choose a photo" style={{color:"#025159"}} />
           </div>
         </div>
       </form>
 
       <div className="center-align">
         {imageURL && <img className="responsive-img" src={imageURL} style={{ maxWidth: "50%", height: "auto" }} />}
+        
       </div>
 
       <TextArea
         onChange={handleDescriptionChange}
         name="description"
         placeholder="Add a description"
+        style={{color:"#025159"}}
       />
-      <div className="container center-align" >
+      <div className="container right-align" >
+      <Row>
+        <Col s={6} m={6}>
       
-        <Confetti id="confetti" active={ reward } className="center-align"/>
-      
+      </Col>
+      <Col s={6} m={6}><Confetti id="confetti" active={ reward } className="right-align"/></Col>
+      </Row>
       </div>
       
         <FormBtn

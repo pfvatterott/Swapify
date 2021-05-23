@@ -74,5 +74,6 @@ export default {
   getAllCloseItems: function(coordinates) {
     return axios.get("/api/items/location/" + coordinates)
   }
+  
 
 };

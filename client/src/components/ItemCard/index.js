@@ -28,12 +28,12 @@ const ItemCard = (props) => {
             </Col>
             
             <Col m={2} s={2}>
-            {/* <a
+            <a
                 className="secondary-content"
-                href="/swipping"
+                href={`/swipping/${props.id}/${props.userData.googleId}`}
             >
             <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#O3A696" }}>Swap</Button>
-            </a> */}
+            </a>
             
             <Button className = "btn-floating btn-large" onClick={() => {
                 

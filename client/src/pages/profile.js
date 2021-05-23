@@ -189,7 +189,7 @@ function Profile() {
                     <Collection style={{ maxHeight: "500px", overflow: "scroll" }} >
                         {usersItemList.map((item, index) => (
 
-                            <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
+                            <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} userData={userData}/>
 
                             // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
                         ))}

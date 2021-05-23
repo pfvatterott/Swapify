@@ -3,7 +3,6 @@ import "./style.css"
 
 export default function ChatMessage(props) {
     const userData = props.userData
-    console.log(userData)
     const { text, sentFromid, sentFromPhoto } = props.message;
     const messageClass = sentFromid === userData.googleId ? 'sent' : 'received';
 

@@ -77,6 +77,9 @@ function Swipping() {
                     for (let p = 0; p < notUserItemsArray.length; p++) {
                         if (seenItems[i] === notUserItemsArray[p]._id) {
                             notUserItemsArray.splice(p, 1)
+                            if (notUserItemsArray.length === 0) {
+                                setNoMoreItems(true)
+                            }
                         }
                     }
                 }
@@ -89,6 +92,7 @@ function Swipping() {
                 }
 
                 API.getItem(itemData).then((userItemRes) => {
+                    console.log(userItemRes)
                     const sortedNotUserItems = []
                      // Sorting by Location
                      for (let v = 0; v < notUserItemsArray.length; v++) {
@@ -103,6 +107,7 @@ function Swipping() {
                             }
                             // no more items triggers Modal
                             if (sortedNotUserItems.length === 0) {
+                                console.log(sortedNotUserItems)
                                 setNoMoreItems(true)
                             }
                             else {

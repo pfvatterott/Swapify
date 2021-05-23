@@ -32,6 +32,7 @@ function Profile() {
 
     useEffect(() => {
         loadItems();
+        loadImages()
         API.getUser(id).then((res) => {
             const newUser = {
                 email: res.data[0].email,
@@ -46,10 +47,13 @@ function Profile() {
         })
     }, [])
 
-    useEffect(() => {
-        loadImages()
 
-    }, [usersItemList])
+    useEffect(() => {
+        loadItems();
+        loadImages()
+    }, [userData])
+
+
 
     function loadImages() {
 
@@ -64,12 +68,12 @@ function Profile() {
         console.log(tempArray);
         setImageArray(tempArray);
     }
+
     function loadItems() {
         if (userData === null) {
             //   setRedirect(true)
         }
         API.getUserItems(userData.googleId).then((response) => {
-
             setUsersItemList(response.data)
 
         })
@@ -172,7 +176,7 @@ function Profile() {
                 <Row className="left-align">
                     <Col m={1} s={1}>
                         <Button floating={true} large={true} style={{ backgroundColor: "#F28705" }}><Link to={`/createItem/${userData.googleId}`}>
-<i className="material-icons">add</i></Link></Button></Col>
+<                           i className="material-icons">add</i></Link></Button></Col>
                     <Col m={11} s={11} className="valign-wrapper">
                         <h4 style={{ color: "#025159" }}>Add Item</h4>
                     </Col>
@@ -185,7 +189,7 @@ function Profile() {
                     <Collection style={{ maxHeight: "500px", overflow: "scroll" }} >
                         {usersItemList.map((item, index) => (
 
-                            <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
+                            <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} userData={userData}/>
 
                             // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
                         ))}

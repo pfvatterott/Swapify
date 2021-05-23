@@ -8,15 +8,7 @@ import "./style.css";
 
 const CustomNavbar = (props) => {
 const [ newText, setNewText ] = useState(false)
-const [userData, setUserData] = useState({
-    email: "",
-    firstName: "",
-    googleId: "",
-    image: "",
-    lastName: "",
-    listedItems: [],
-    rating: []}
-)
+const [userData, setUserData] = useState({})
 const { pathname } = useLocation();
 const pathway = pathname.split("/")
 const id = pathway[pathway.length - 1]
@@ -26,6 +18,9 @@ useEffect(() => {
     setInterval(function() {
         checkForNewTexts()
     }, 5000)
+}, [userData])
+
+useEffect(() => {
     API.getUser(id).then((res) => {
         const newUser = {
             email: res.data[0].email,

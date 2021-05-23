@@ -18,22 +18,24 @@ const CustomNavbar = (props) => {
 
     function checkForNewTexts() {
         let trueCount = 0;
-        API.getUserMatches(userData.googleId).then((response) => {
-            for (let i = 0; i < response.data.length; i++) {
-                if ((response.data[i].item1Owner === userData.googleId) && (response.data[i].item1NewText === true)) {
-                    trueCount++
+        if (userData) {
+            API.getUserMatches(userData.googleId).then((response) => {
+                for (let i = 0; i < response.data.length; i++) {
+                    if ((response.data[i].item1Owner === userData.googleId) && (response.data[i].item1NewText === true)) {
+                        trueCount++
+                    }
+                    else if ((response.data[i].item2Owner === userData.googleId) && (response.data[i].item2NewText === true)) {
+                        trueCount++
+                    }
                 }
-                else if ((response.data[i].item2Owner === userData.googleId) && (response.data[i].item2NewText === true)) {
-                    trueCount++
+                if (trueCount === 0) {
+                    setNewText(false)
                 }
-            }
-            if (trueCount === 0) {
-                setNewText(false)
-            }
-            else {
-                setNewText(true)
-            }
-        })
+                else {
+                    setNewText(true)
+                }
+            })
+        }
     }
 
 

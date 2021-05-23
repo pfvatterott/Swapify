@@ -147,7 +147,7 @@ return (
     </div>
     <motion.div className="row"></motion.div>
     <div className="row login">
-    {redirect ? <Redirect push to="/profile" /> : null}
+    {redirect ? <Redirect push to={`/profile/${userID}`} /> : null}
     <GoogleLogin
         className="loginBtn"
         clientId={googleClientId}

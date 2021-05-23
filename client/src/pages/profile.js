@@ -172,7 +172,7 @@ function Profile() {
                 <Row className="left-align">
                     <Col m={1} s={1}>
                         <Button floating={true} large={true} style={{ backgroundColor: "#F28705" }}><Link to={`/createItem/${userData.googleId}`}>
-<i className="material-icons">add</i></Link></Button></Col>
+<                           i className="material-icons">add</i></Link></Button></Col>
                     <Col m={11} s={11} className="valign-wrapper">
                         <h4 style={{ color: "#025159" }}>Add Item</h4>
                     </Col>

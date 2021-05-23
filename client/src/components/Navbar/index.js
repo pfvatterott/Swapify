@@ -8,15 +8,7 @@ import "./style.css";
 
 const CustomNavbar = (props) => {
 const [ newText, setNewText ] = useState(false)
-const [userData, setUserData] = useState({
-    email: "",
-    firstName: "",
-    googleId: "",
-    image: "",
-    lastName: "",
-    listedItems: [],
-    rating: []}
-)
+const [userData, setUserData] = useState({})
 const { pathname } = useLocation();
 const pathway = pathname.split("/")
 const id = pathway[pathway.length - 1]
@@ -30,7 +22,6 @@ useEffect(() => {
 
 useEffect(() => {
     API.getUser(id).then((res) => {
-        console.log(res)
         const newUser = {
             email: res.data[0].email,
             firstName: res.data[0].firstName,
@@ -40,7 +31,6 @@ useEffect(() => {
             listedItems: res.data[0].listedItems,
             rating: res.data[0].rating
         }
-        console.log(newUser)
         setUserData(newUser)
     })
 }, [])
@@ -48,7 +38,6 @@ useEffect(() => {
 function checkForNewTexts() {
     let trueCount = 0;
     if (userData) {
-        console.log(userData)
         API.getUserMatches(userData.googleId).then((response) => {
             for (let i = 0; i < response.data.length; i++) {
                 if ((response.data[i].item1Owner === userData.googleId) && (response.data[i].item1NewText === true)) {

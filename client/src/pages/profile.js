@@ -32,6 +32,7 @@ function Profile() {
 
     useEffect(() => {
         loadItems();
+        loadImages()
         API.getUser(id).then((res) => {
             const newUser = {
                 email: res.data[0].email,
@@ -46,10 +47,13 @@ function Profile() {
         })
     }, [])
 
-    useEffect(() => {
-        loadImages()
 
-    }, [usersItemList])
+    useEffect(() => {
+        loadItems();
+        loadImages()
+    }, [userData])
+
+
 
     function loadImages() {
 
@@ -64,12 +68,12 @@ function Profile() {
         console.log(tempArray);
         setImageArray(tempArray);
     }
+
     function loadItems() {
         if (userData === null) {
             //   setRedirect(true)
         }
         API.getUserItems(userData.googleId).then((response) => {
-
             setUsersItemList(response.data)
 
         })

@@ -18,11 +18,11 @@ const ItemCard = (props) => {
             />
             </Col>
             <Col m={7} s={7}>
-            <span className="title" style={{height: "70px", lineHeight: "70px", paddingLeft: "0px", fontFamily: "proxima-nova, sans-serif", fontWeight: "700", fontStyle: "normal", fontSize: "20px"}}>
+            <span className="title" style={{height: "70px", lineHeight: "70px", paddingLeft: "0px", fontFamily: "proxima-nova, sans-serif", fontWeight: "700", fontStyle: "normal", fontSize: "20px", color:"#025159"}}>
                 {props.itemName}
             </span>
             
-            <span className="description" style={{height: "70px", lineHeight: "70px",paddingLeft: "20px", fontFamily: "proxima-nova, sans-serif",fontWeight: "100",fontStyle: "normal"}}>   
+            <span className="description" style={{height: "70px", lineHeight: "70px",paddingLeft: "20px", fontFamily: "proxima-nova, sans-serif",fontWeight: "100",fontStyle: "normal", color:"#025159"}}>   
                 {props.itemDescription}
             </span>
             </Col>
@@ -41,7 +41,7 @@ const ItemCard = (props) => {
                     props.loadItems()
                 })
                 
-                }} style= {{backgroundColor:"#F20505", }}><i class="material-icons">delete</i></Button>
+                }} style= {{backgroundColor:"#F20505", }}><i className="material-icons">delete</i></Button>
             
                 </Col>
         </CollectionItem>

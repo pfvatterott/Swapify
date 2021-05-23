@@ -23,12 +23,10 @@ function Welcome() {
         }
         API.getUser(userObj.googleId).then(res => {
             if (res.data.length > 0) {
-                localStorage.setItem('userData', JSON.stringify(user))
                 setRedirect(true)
             }
             else {
                 API.saveUser(user)
-                localStorage.setItem('userData', JSON.stringify(user))
                 setRedirect(true)
             }
         }).catch(error => console.log(error))

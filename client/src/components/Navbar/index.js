@@ -1,19 +1,43 @@
 import React, { useEffect, useState } from "react";
 import 'materialize-css';
+import { useLocation } from 'react-router-dom'
 import { Navbar, Icon, NavItem } from "react-materialize";
 import Badge from '@material-ui/core/Badge';
 import API from "../../utils/API";
 import "./style.css";
 
 const CustomNavbar = (props) => {
-    const userData = JSON.parse(localStorage.getItem('userData'))
     const [ newText, setNewText ] = useState(false)
+    const [userData, setUserData] = useState({
+        email: "",
+        firstName: "",
+        googleId: "",
+        image: "",
+        lastName: "",
+        listedItems: [],
+        rating: []}
+    )
+    const { pathname } = useLocation();
+    const pathway = pathname.split("/")
+    const id = pathway[pathway.length - 1]
 
     useEffect(() => {
         checkForNewTexts()
         setInterval(function() {
             checkForNewTexts()
         }, 5000)
+        API.getUser(id).then((res) => {
+            const newUser = {
+                email: res.data[0].email,
+                firstName: res.data[0].firstName,
+                googleId: res.data[0].googleId,
+                image: res.data[0].image,
+                lastName: res.data[0].lastName,
+                listedItems: res.data[0].listedItems,
+                rating: res.data[0].rating
+            }
+            setUserData(newUser)
+        })
     }, [])
 
     function checkForNewTexts() {
@@ -60,13 +84,13 @@ const CustomNavbar = (props) => {
                     preventScrolling: true,
                 }}
             >
-                <NavItem href="createItem" className="addItem" alt-text="add item" >
+                <NavItem href={`/createItem/${userData.googleId}`} className="addItem" alt-text="add item" >
                     <Icon>add_circle</Icon>
                 </NavItem>
-                <NavItem href="profile" className="profile">
+                <NavItem href={`/profile/${userData.googleId}`} className="profile">
                     <Icon>person</Icon>
                 </NavItem>
-                <NavItem href="chat" className="swapIconWrapper">
+                <NavItem href={`/chat/${userData.googleId}`} className="swapIconWrapper">
                     {newText ? (<Badge variant='dot' color="secondary" className="chatBadge">
                         <Icon className="swapIcon">all_inclusive</Icon>
                     </Badge>) : (<Badge color="secondary" className="chatBadge">

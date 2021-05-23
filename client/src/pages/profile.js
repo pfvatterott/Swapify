@@ -14,13 +14,15 @@ function Profile() {
     const [redirectToSwipping, setRedirectToSwipping] = useState(false);
     const [usersItemList, setUsersItemList] = useState([]);
     const [matchList, setMatchList] = useState([])
-    const [userData, setUserData] = useState({email: "",
+    const [userData, setUserData] = useState({
+        email: "",
         firstName: "",
         googleId: "",
         image: "",
         lastName: "",
         listedItems: [],
-        rating: []})
+        rating: []}
+    )
     const [imageArray, setImageArray] = useState([""]);
     const [rating, setRating] = useState();
     const { id } = useParams()
@@ -162,7 +164,7 @@ function Profile() {
                 </Row>
                 <Row className="left-align">
                 <Col m={1} s={1}>
-                <Button floating={true} large={true} style={{backgroundColor:"#F28705"}}><Link to="/createItem">
+                <Button floating={true} large={true} style={{backgroundColor:"#F28705"}}><Link to={`/createItem/${userData.googleId}`}>
                 <i className="material-icons">add</i></Link></Button></Col>
                 <Col m={11} s={11} className= "valign-wrapper">
                     <h4>Add Item</h4>

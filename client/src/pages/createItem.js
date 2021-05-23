@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import API from "../utils/API";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import { storage } from "../utils/firebase"
-import { Redirect, NavLink, BrowserRouter as Router } from 'react-router-dom';
+import { Redirect, useParams, BrowserRouter as Router } from 'react-router-dom';
 import Compressor from 'compressorjs';
 import Confetti from 'react-dom-confetti';
 import {Col, Row} from 'react-materialize';
@@ -17,10 +17,31 @@ function Item() {
   const [buttonText, setButtonText] = useState("Preview");
   const [userLocation, setUserLocation] = useState([""])
   const [wait, setWait]= useState(false);
+  const { id } = useParams()
+  const [userData, setUserData] = useState({
+    email: "",
+    firstName: "",
+    googleId: "",
+    image: "",
+    lastName: "",
+    listedItems: [],
+    rating: []}
+)
 
   useEffect(() => {
 
-    const userData = JSON.parse(localStorage.getItem('userData'))
+    API.getUser(id).then((res) => {
+      const newUser = {
+          email: res.data[0].email,
+          firstName: res.data[0].firstName,
+          googleId: res.data[0].googleId,
+          image: res.data[0].image,
+          lastName: res.data[0].lastName,
+          listedItems: res.data[0].listedItems,
+          rating: res.data[0].rating
+      }
+      setUserData(newUser)
+    })
     if (userData === null) {
       setRedirect(true)
     }
@@ -155,7 +176,6 @@ function Item() {
   };
 
   function saveToDatabase(url) {
-    const userData = JSON.parse(localStorage.getItem('userData'))
     const newItem = {
       itemName: nameState.name,
       itemDescription: descriptionState.description,
@@ -239,7 +259,7 @@ function Item() {
         >{buttonText}
         </FormBtn>
        
-        {wait ? <Redirect to = "/profile"/> : ""}
+        {wait ? <Redirect to = {`/profile/${userData.googleId}`}/> : ""}
 
 
 

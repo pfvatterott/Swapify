@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 import { Button, Modal } from 'react-materialize';
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
@@ -16,9 +16,32 @@ function Swipping() {
     const [distanceBoundary, setDistanceBoundary] = useState(50)
     const [modalMatchImage1, setModalMatchImage1] = useState('')
     const [modalMatchImage2, setModalMatchImage2] = useState('')
-    const itemData = JSON.parse(localStorage.getItem('itemData'))
-    const userData = JSON.parse(localStorage.getItem('userData'))
+    const { id, item } = useParams()
+    const itemData = item
+    const [userData, setUserData] = useState({
+        email: "",
+        firstName: "",
+        googleId: "",
+        image: "",
+        lastName: "",
+        listedItems: [],
+        rating: []}
+    )
 
+    useEffect(() => {
+        API.getUser(id).then((res) => {
+            const newUser = {
+                email: res.data[0].email,
+                firstName: res.data[0].firstName,
+                googleId: res.data[0].googleId,
+                image: res.data[0].image,
+                lastName: res.data[0].lastName,
+                listedItems: res.data[0].listedItems,
+                rating: res.data[0].rating
+            }
+            setUserData(newUser)
+        })
+    }, [])
 
     useEffect(() => {
         // Sets all user's items to user's current location
@@ -210,7 +233,7 @@ function Swipping() {
                 <br></br>
                 <div>Add a new item, switch items to swap with, or try back later!</div>
                 <br></br><br></br>
-                <a href="/profile"><Button>Back to my Profile</Button></a>
+                <a href={`/profile/${userData.googleId}`}><Button>Back to my Profile</Button></a>
                 <br></br>
             </Modal>
             
@@ -229,7 +252,7 @@ function Swipping() {
                 <br></br>
                 <div>Head to the chat page or continue swipping!</div>
                 <br></br><br></br>
-                <a href="/chat"><Button>Chat Page</Button></a>
+                <a href={`/chat/${userData.googleId}`}><Button>Chat Page</Button></a>
                 <br></br><br></br>
                 <a><Button modal="close">Continue</Button></a>
                 <br></br>   

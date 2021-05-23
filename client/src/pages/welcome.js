@@ -9,32 +9,31 @@ import { motion } from "framer-motion";
 import { Button } from "react-materialize";
 
 function Welcome() {
-  const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-  const [redirect, setRedirect] = useState(false);
 
-  const googleSuccess = async (response) => {
-    const userObj = response.profileObj;
+const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const [redirect, setRedirect] = useState(false);
+const [userID, setUserID] = useState('')
+
+const googleSuccess = async (response) => {
+    const userObj = response.profileObj
+    setUserID(userObj.googleId)
     const user = {
-      email: userObj.email,
-      firstName: userObj.givenName,
-      lastName: userObj.familyName,
-      image: userObj.imageUrl,
-      googleId: userObj.googleId,
-      listedItems: [],
-    };
-    API.getUser(userObj.googleId)
-      .then((res) => {
+        email: userObj.email,
+        firstName: userObj.givenName,
+        lastName: userObj.familyName,
+        image: userObj.imageUrl,
+        googleId: userObj.googleId,
+        listedItems: []
+    }
+    API.getUser(userObj.googleId).then(res => {
         if (res.data.length > 0) {
-          localStorage.setItem("userData", JSON.stringify(user));
-          setRedirect(true);
-        } else {
-          API.saveUser(user);
-          localStorage.setItem("userData", JSON.stringify(user));
-          setRedirect(true);
+            setRedirect(true)
         }
-      })
-      .catch((error) => console.log(error));
-  };
+        else {
+            API.saveUser(user)
+            setRedirect(true)
+        }
+    }).catch(error => console.log(error))
 
   const googleFailure = (response) => {
     console.log("Google Sign in was unsuccessful");
@@ -146,7 +145,7 @@ function Welcome() {
       </div>
       <motion.div className="row"></motion.div>
       <div className="row login">
-        {redirect ? <Redirect push to="/profile" /> : null}
+        {redirect ? <Redirect push to={`/profile/${userID}`} /> : null}
         <GoogleLogin
           className="loginBtn"
           clientId={googleClientId}

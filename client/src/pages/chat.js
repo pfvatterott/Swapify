@@ -1,17 +1,42 @@
-import React, {useState } from "react";
+import React, {useState, useEffect } from "react";
+import { useParams } from 'react-router-dom'
 import { Col, Row} from 'react-materialize';
 import MatchesSideBar from "../components/MatchesSideBar"
 import ChatRoom from "../components/ChatRoom"
 import "./style.css"
 import API from "../utils/API"
 import chatContext from "../utils/chatContext";
-const userData = JSON.parse(localStorage.getItem('userData'))
+
 
 function ChatApp() {
 
     const [chatId, setChatId] = useState('empty')
     const [recentText, setRecentText] = useState('')
     const [notNewText, setNotNewText] = useState(2)
+    const [userData, setUserData] = useState({email: "",
+        firstName: "",
+        googleId: "",
+        image: "",
+        lastName: "",
+        listedItems: [],
+        rating: []}
+    )
+    const { id } = useParams()
+
+    useEffect(() => {
+        API.getUser(id).then((res) => {
+            const newUser = {
+                email: res.data[0].email,
+                firstName: res.data[0].firstName,
+                googleId: res.data[0].googleId,
+                image: res.data[0].image,
+                lastName: res.data[0].lastName,
+                listedItems: res.data[0].listedItems,
+                rating: res.data[0].rating
+            }
+            setUserData(newUser)
+        })
+    }, [])
 
     function setChat(id) {
         setChatId(id)
@@ -41,10 +66,10 @@ function ChatApp() {
         <chatContext.Provider value={{chatId, recentText, setChat, setNewText }}>
             <Row>
                 <Col s={0} m={4}>
-                    <MatchesSideBar newText={notNewText} />
+                    <MatchesSideBar newText={notNewText} userData={userData}/>
                 </Col>
                 <Col s={12} m={8}>
-                    <ChatRoom />
+                    <ChatRoom userData={userData}/>
                 </Col>
             </Row>
         </chatContext.Provider>

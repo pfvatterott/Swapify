@@ -99,11 +99,11 @@ function App() {
     <Router>
       <CustomNavbar></CustomNavbar>
       <Route exact path="/" component={Welcome} />
-      <Route exact path="/profile" component={Profile} />
-      <Route exact path="/createItem" component={createItem} />
-      <Route exact path="/swipping" component={Swipping} />
-      <Route exact path="/chat" component={Chat} />
-      {window.location.pathname !== '/chat' ? <CustomFooter /> : null}  
+      <Route path="/profile/:id" component={Profile} />
+      <Route exact path="/createItem/:id" component={createItem} />
+      <Route exact path="/swipping/:item/:id" component={Swipping} />
+      <Route exact path="/chat/:id" component={Chat} />
+      {window.location.pathname.includes('/chat/') ? null : <CustomFooter />}  
       {/* Modal for when other user presses 'swap items' button */}
       <Modal
         open={openSwapModal}

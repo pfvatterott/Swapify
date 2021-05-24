@@ -127,22 +127,6 @@ function Profile() {
 
     }
 
-    function getRating() {
-        console.log(userData.rating);
-        let ratingsArr = userData.rating;
-        if (userData.rating) {
-            let avg = 0
-            ratingsArr.forEach((rating, i) => {
-                avg += rating;
-            })
-            return (avg / ratingsArr.length)
-        }
-        else {
-
-            return 0
-        }
-    }
-
     function handleUseItem(id) {
         console.log(id)
         localStorage.setItem('itemData', JSON.stringify(id))

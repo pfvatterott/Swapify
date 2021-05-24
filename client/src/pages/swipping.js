@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal } from 'react-materialize';
+import { Button, Modal, Row, Col } from 'react-materialize';
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
@@ -101,20 +101,20 @@ function Swipping() {
                          const userLat = userItemRes.data.itemLocation[0]
                          const userLong = userItemRes.data.itemLocation[1]
 
-                        getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
-                            if (distanceResponse < distanceBoundary) {
-                                sortedNotUserItems.push(notUserItemsArray[v])
-                            }
-                            // no more items triggers Modal
-                            if (sortedNotUserItems.length === 0) {
-                                console.log(sortedNotUserItems)
-                                setNoMoreItems(true)
-                            }
-                            else {
-                                setNotUserItems(sortedNotUserItems)
-                                setCurrentItem(sortedNotUserItems[imageNumber])
-                            }
-                        })
+                        // getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
+                        //     if (distanceResponse < distanceBoundary) {
+                        //         sortedNotUserItems.push(notUserItemsArray[v])
+                        //     }
+                        //     // no more items triggers Modal
+                        //     if (sortedNotUserItems.length === 0) {
+                        //         console.log(sortedNotUserItems)
+                        //         setNoMoreItems(true)
+                        //     }
+                        //     else {
+                        //         setNotUserItems(sortedNotUserItems)
+                        //         setCurrentItem(sortedNotUserItems[imageNumber])
+                        //     }
+                        // })
                      }
                 })
             })
@@ -218,13 +218,33 @@ function Swipping() {
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
-            <h2>Swipping</h2>
+            <div className= "container center-align">
+            <Row className="center-align">
+           
+            {/* <h2>Swipping</h2> */}   
             <h4>{currentItem.itemName}</h4>
+            </Row>
+            <Row className="center-align">
             <h5>{currentItem.itemDescription}</h5>
+            </Row>
+            <Row className="center-align">
             <img className="itemImage" src={currentItem.imageURL} />
-            <button onClick={handleItemNotLike}>Not Interested</button>
-            <button onClick={handleItemLike}>Interested</button>
-
+            </Row>
+            <Row>
+                <Col s={6} m={6} className="right-align">
+            <Button className="waves-effect waves-light btn-large"onClick={handleItemNotLike}>Hate it</Button>
+            </Col>
+            <Col s={6} m={6} className="left-align">
+            <Button className ="waves-effect waves-light btn-large"onClick={handleItemLike}>Love it</Button>
+             {/* Distance Range Selector */}
+             </Col>
+             </Row>
+             <Row className="center-align">
+             <Col s={12} m ={12} className="center-align">
+                 <DistanceSlider setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+             </Col>
+             </Row>
+            </div>
             {/* No more items to swap modal */}
             <Modal
                 open={noMoreItems}
@@ -263,8 +283,7 @@ function Swipping() {
                 <br></br>   
             </Modal>
             
-            {/* Distance Range Selector */}
-            <DistanceSlider setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+           
         </div>
     )
 }

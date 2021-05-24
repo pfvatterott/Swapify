@@ -213,7 +213,7 @@ return (
               transition={{ delay: 3, duration: 1 }}
               className="how3"
             >
-              Swipe to swap match
+              Swipe to swap & match
             </motion.h4>
           </div>
         </motion.div>

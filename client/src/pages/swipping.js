@@ -101,20 +101,20 @@ function Swipping() {
                          const userLat = userItemRes.data.itemLocation[0]
                          const userLong = userItemRes.data.itemLocation[1]
 
-                        getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
-                            if (distanceResponse < distanceBoundary) {
-                                sortedNotUserItems.push(notUserItemsArray[v])
-                            }
-                            // no more items triggers Modal
-                            if (sortedNotUserItems.length === 0) {
-                                console.log(sortedNotUserItems)
-                                setNoMoreItems(true)
-                            }
-                            else {
-                                setNotUserItems(sortedNotUserItems)
-                                setCurrentItem(sortedNotUserItems[imageNumber])
-                            }
-                        })
+                        // getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
+                        //     if (distanceResponse < distanceBoundary) {
+                        //         sortedNotUserItems.push(notUserItemsArray[v])
+                        //     }
+                        //     // no more items triggers Modal
+                        //     if (sortedNotUserItems.length === 0) {
+                        //         console.log(sortedNotUserItems)
+                        //         setNoMoreItems(true)
+                        //     }
+                        //     else {
+                        //         setNotUserItems(sortedNotUserItems)
+                        //         setCurrentItem(sortedNotUserItems[imageNumber])
+                        //     }
+                        // })
                      }
                 })
             })

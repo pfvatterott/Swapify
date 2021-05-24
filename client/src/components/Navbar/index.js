@@ -45,7 +45,7 @@ const CustomNavbar = (props) => {
       alignLinks="right"
       brand={
         <a className="brand-logo" href="/">
-          <img src="./../img/swapifyLogoTopAllDark-vector.png" height="125" />
+          <img src="./../img/swapifyLogoTopDark-vector.png" height="125" />
         </a>
       }
       centerChildren

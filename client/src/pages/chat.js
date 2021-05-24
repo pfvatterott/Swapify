@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom'
 import { Col, Row} from 'react-materialize';
 import MatchesSideBar from "../components/MatchesSideBar"
 import ChatRoom from "../components/ChatRoom"
-import "./style.css"
 import API from "../utils/API"
 import chatContext from "../utils/chatContext";
+import "./chatStyle.css"
 
 
 function ChatApp() {
@@ -63,6 +63,7 @@ function ChatApp() {
     }
 
     return (
+        <div className="chatBackground">
         <chatContext.Provider value={{chatId, recentText, setChat, setNewText }}>
             <Row>
                 <Col s={0} m={4}>
@@ -73,6 +74,7 @@ function ChatApp() {
                 </Col>
             </Row>
         </chatContext.Provider>
+        </div>
     )
 
 }

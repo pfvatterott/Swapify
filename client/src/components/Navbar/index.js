@@ -9,6 +9,7 @@ import "./style.css";
 const CustomNavbar = (props) => {
 const [ newText, setNewText ] = useState(false)
 const [userData, setUserData] = useState({})
+const [centerLogo, setCenterLogo] = useState(false)
 const { pathname } = useLocation();
 const pathway = pathname.split("/")
 const id = pathway[pathway.length - 1]
@@ -33,6 +34,9 @@ useEffect(() => {
         }
         setUserData(newUser)
     })
+    if (pathway[1] === 'chat') {
+      setCenterLogo(true)
+    }
 }, [])
 
 function checkForNewTexts() {
@@ -58,8 +62,70 @@ function checkForNewTexts() {
 }
 
   return (
-    // <div className="container">
-    <Navbar
+    <div>
+    
+    {centerLogo ? (<Navbar
+      alignLinks="right"
+      brand={
+        <a className="brand-logo" href="/">
+          <img src="./../img/swapifyLogoTopDark-vector.png" height="125" />
+        </a>
+      }
+      centerLogo
+      centerChildren
+      className="navbar transparent z-depth-0"
+      id="mobile-nav"
+      menuIcon={
+        newText ? (
+          <Badge variant="dot" color="secondary" className="chatBadge">
+            <Icon className="swapIcon">menu</Icon>
+          </Badge>
+        ) : (
+          <Badge color="secondary" className="chatBadge">
+            <Icon className="swapIcon">menu</Icon>
+          </Badge>
+        )
+      }
+      options={{
+        draggable: true,
+        edge: "right",
+        inDuration: 250,
+        onCloseEnd: null,
+        onCloseStart: null,
+        onOpenEnd: null,
+        onOpenStart: null,
+        outDuration: 200,
+        preventScrolling: true,
+      }}
+    >
+      <NavItem
+        tooltip="Add Item"
+        href={`/createItem/${userData.googleId}`}
+        className="addItem"
+        alt-text="add item"
+        node="button"
+      >
+        <Icon tooltip="Add Item" node="button">
+          add_circle
+        </Icon>
+      </NavItem>
+      <NavItem href={`/profile/${userData.googleId}`} className="profile">
+        <Icon>person</Icon>
+      </NavItem>
+      <NavItem href={`/chat/${userData.googleId}`} className="swapIconWrapper">
+        {newText ? (
+          <Badge variant="dot" color="secondary" className="chatBadge">
+            <Icon className="swapIcon">all_inclusive</Icon>
+          </Badge>
+        ) : (
+          <Badge color="secondary" className="chatBadge">
+            <Icon className="swapIcon">all_inclusive</Icon>
+          </Badge>
+        )}
+      </NavItem>
+    </Navbar>) : 
+    
+    (<Navbar
       alignLinks="right"
       brand={
         <a className="brand-logo" href="/">
@@ -117,8 +183,11 @@ function checkForNewTexts() {
           </Badge>
         )}
       </NavItem>
-    </Navbar>
-    // </div>
+    </Navbar>)}
+    
+
+    </div>
+
   );
 };
 

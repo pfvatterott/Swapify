@@ -4,6 +4,7 @@ import { Collection, SideNav, Modal, Button } from 'react-materialize';
 import MatchCard from '../MatchCard'
 import { firestore } from "../../utils/firebase"
 import chatContext from "../../utils/chatContext"
+import "./style.css"
 
 
 export default function MatchesSideBar(props) {
@@ -103,12 +104,12 @@ export default function MatchesSideBar(props) {
         <div>
             <SideNav
                 fixed={true}
-                trigger={<Button floating={true} large={true}><i class="material-icons">chat</i></Button>}>
-                <Collection>
-                {matchList.map(match => (
-                    <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
-                ))}
-            </Collection>
+                trigger={<Button floating={true} large={true} className="chatSideNavTrigger"><i class="material-icons">chat</i></Button>}>
+                <Collection className="chatCollection">
+                    {matchList.map(match => (
+                        <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
+                    ))}
+                </Collection>
             </SideNav>
 
             {/* No chats Modal */}

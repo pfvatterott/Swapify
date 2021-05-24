@@ -105,11 +105,11 @@ export default function MatchesSideBar(props) {
             <SideNav
                 fixed={true}
                 trigger={<Button floating={true} large={true} className="chatSideNavTrigger"><i class="material-icons">chat</i></Button>}>
-                <Collection>
-                {matchList.map(match => (
-                    <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
-                ))}
-            </Collection>
+                <Collection className="chatCollection">
+                    {matchList.map(match => (
+                        <MatchCard yourImageUrl={match.userItemPhoto} imageURL={match.otherItemImage} matchData={match} allMatches={allMatches}/>
+                    ))}
+                </Collection>
             </SideNav>
 
             {/* No chats Modal */}

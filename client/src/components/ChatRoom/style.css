@@ -10,7 +10,23 @@
     max-width: 700px;
 }
 
-.sendButton {
-    background-color:#F25D27 !important;
+.chatForm {
+    margin-left: -10px !important
 }
 
+.sendButton {
+    background-color:#F25D27 !important;
+    margin-left: -15px !important
+}
+
+.swapItemsButton {
+    background-color: #F25D27 !important;
+    margin-left: -20px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important
+}
+
+.deleteMatchButton {
+    background-color: #F25D27 !important;
+    margin-left: -20px;
+}

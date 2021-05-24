@@ -157,7 +157,7 @@ export default function ChatRoom(props) {
                 <Col s={12}>
                     <form onSubmit={sendMessage}>   
                         <Col s={10}>
-                        <input value={formValue} required onChange={(e) => setFormValue(e.target.value)}/>
+                        <input value={formValue} required className="chatForm" onChange={(e) => setFormValue(e.target.value)}/>
                         </Col>
                         <Col s={2}>
                         <button type="submit" className="btn-floating btn-large waves-effect waves-light sendButton"><i className="material-icons">send</i></button>
@@ -170,7 +170,7 @@ export default function ChatRoom(props) {
                     <Modal
                         className="center-align"
                         id="Modal-Swap"
-                        trigger={<Button node="button">SWAP ITEMS</Button>}
+                        trigger={<Button node="button" className="swapItemsButton">SWAP ITEMS</Button>}
                     >
                         <h3>Swap Items?</h3>
                         <br></br>
@@ -183,7 +183,7 @@ export default function ChatRoom(props) {
                     <Modal
                         className="center-align"
                         id="Modal-Swap"
-                        trigger={<Button node="button">DELETE MATCH</Button>}
+                        trigger={<Button node="button" className="deleteMatchButton">DELETE MATCH</Button>}
                     >
                         <h3>Delete Match?</h3>
                         <br></br>

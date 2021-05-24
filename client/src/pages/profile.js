@@ -27,6 +27,7 @@ function Profile() {
     const [imageArray, setImageArray] = useState([""]);
     const [rating, setRating] = useState();
     const { id } = useParams()
+    const [ userRating, setUserRating ] = useState(0)
 
     let matchArray = []
 
@@ -44,6 +45,16 @@ function Profile() {
                 rating: res.data[0].rating
             }
             setUserData(newUser)
+            if (res.data[0].rating.length === 0) {
+                setUserRating(0)
+            }
+            else {
+                let ratingCount = 0
+                for (let i = 0; i < res.data[0].rating.length; i++) {
+                    ratingCount = ratingCount + res.data[0].rating[i]
+                }
+                setUserRating(Math.round(ratingCount / res.data[0].rating.length))
+            }
         })
     }, [])
 
@@ -164,12 +175,12 @@ function Profile() {
                 <Row className="left-align valign-wrapper">
                     <Col m={3} s={3}><h4 style={{ color: "#025159" }}>Your Rating</h4></Col>
                     <Col m={9} s={9} className="left-align">
-                        {/* {Array(getRating()).fill().map((el, i) =>
+                        {Array(userRating).fill().map((el, i) =>
                             <i className="material-icons" key={i} style={{ color: "#025159" }}>star</i>
                         )}
-                        {Array(5 - getRating()).fill().map((el, i) =>
+                        {Array(5 - userRating).fill().map((el, i) =>
                             <i className="material-icons" key={i} style={{ color: "#025159" }}>star_border</i>
-                        )} */}
+                        )}
                     </Col>
 
                 </Row>

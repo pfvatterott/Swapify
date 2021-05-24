@@ -160,7 +160,7 @@ export default function ChatRoom(props) {
                         <input value={formValue} required onChange={(e) => setFormValue(e.target.value)}/>
                         </Col>
                         <Col s={2}>
-                        <button type="submit" className="btn-floating btn-large waves-effect waves-light red sendButton"><i className="material-icons">send</i></button>
+                        <button type="submit" className="btn-floating btn-large waves-effect waves-light sendButton"><i className="material-icons">send</i></button>
                         </Col>
                     </form>
                 </Col>

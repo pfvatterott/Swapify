@@ -15,3 +15,7 @@
 .matchItem {
     height: 100px;
 }
+
+.chatButton {
+    background-color: #F25D27 !important;
+}

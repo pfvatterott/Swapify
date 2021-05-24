@@ -35,3 +35,7 @@
     top: -67px !important;
     z-index: 5;
 }
+
+.noHover{
+    pointer-events: none;
+}

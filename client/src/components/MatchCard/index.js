@@ -42,18 +42,18 @@ const MatchCard = (props) => {
         <div>
             {/* highlights currently selected chat */}
             {currentChatStyle ? (
-                <CollectionItem className="avatar valign-wrapper" style={{backgroundColor:"#D3EEE3"}}>
-                <a><img
+                <CollectionItem className="avatar valign-wrapper collection" style={{backgroundColor:"#D3EEE3"}}>
+                <a className="noHover"><img
                     alt=""
-                    className="circle userItemPicture "
+                    className="circle userItemPicture"
                     src={props.yourImageUrl}
                 /></a>
-                <a><i className="material-icons swapSymbol">autorenew</i></a>
-                <a><img
+                <a className="noHover"><i className="material-icons swapSymbol noHover">autorenew</i></a>
+                <a className="noHover"><img
                     alt=""
-                    className="circle itemPicture"
+                    className="circle itemPicture noHover"
                     src={props.imageURL}
-                /><i className="material-icons ratingStar">star</i><p className="ratingNumber">{userRating}</p></a>
+                /><i className="material-icons ratingStar noHover">star</i><p className="ratingNumber noHover">{userRating}</p></a>
                 <a className="secondary-content">
                     {props.matchData.newText ? (<a className="btn-floating btn-large chatButton pulse" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>) : (<a className="btn-floating btn-large chatButton" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>)}
                     
@@ -61,17 +61,17 @@ const MatchCard = (props) => {
             </CollectionItem>
             ) : (
                 <CollectionItem className="avatar valign-wrapper">
-                <a><img
+                <a className="noHover"><img
                     alt=""
                     className="circle userItemPicture "
                     src={props.yourImageUrl}
                 /></a>
-                <a><i className="material-icons swapSymbol">autorenew</i></a>
-                <a><img
+                <a className="noHover"><i className="material-icons swapSymbol noHover">autorenew</i></a>
+                <a className="noHover"><img
                     alt=""
-                    className="circle itemPicture"
+                    className="circle itemPicture noHover"
                     src={props.imageURL}
-                /><i className="material-icons ratingStar">star</i><p className="ratingNumber">{userRating}</p></a>
+                /><i className="material-icons ratingStar noHover">star</i><p className="ratingNumber">{userRating}</p></a>
                 <a className="secondary-content">
                     {props.matchData.newText ? (<a className="btn-floating btn-large chatButton pulse" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>) : (<a className="btn-floating btn-large chatButton" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>)}
                     

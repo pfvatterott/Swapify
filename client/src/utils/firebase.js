@@ -3,13 +3,13 @@ import "firebase/storage"
 import "firebase/firestore"
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDhXv_Ip1AQOyJwOp1INy3iocNkp3biMF4",
-    authDomain: "swapify-85d2c.firebaseapp.com",
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
     projectId: "swapify-85d2c",
     storageBucket: "swapify-85d2c.appspot.com",
-    messagingSenderId: "133644331634",
-    appId: "1:133644331634:web:395ae8cb57e8ba3883b0eb",
-    measurementId: "G-YRN7X1QCM9"
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
   };
 
 firebase.initializeApp(firebaseConfig)
@@ -17,4 +17,4 @@ firebase.initializeApp(firebaseConfig)
 const storage = firebase.storage()
 const firestore = firebase.firestore()
 
-export { storage, firebase, firestore, firebase as default}
+export { storage, firebase, firestore, firebase as default} 

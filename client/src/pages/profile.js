@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useParams } from 'react-router-dom'
 import API from "../utils/API";
 import ItemCard from "../components/ItemCard"
 import CarouselCard from "../components/CarouselCard"
@@ -15,23 +15,45 @@ function Profile() {
     const [redirectToSwipping, setRedirectToSwipping] = useState(false);
     const [usersItemList, setUsersItemList] = useState([]);
     const [matchList, setMatchList] = useState([])
-    const userData = JSON.parse(localStorage.getItem('userData'))
-    const userProfileImg = userData.image;
+    const [userData, setUserData] = useState({
+        email: "",
+        firstName: "",
+        googleId: "",
+        image: "",
+        lastName: "",
+        listedItems: [],
+        rating: []}
+    )
     const [imageArray, setImageArray] = useState([""]);
     const [rating, setRating] = useState();
+    const { id } = useParams()
 
     let matchArray = []
+
+    useEffect(() => {
+        loadItems();
+        loadImages()
+        API.getUser(id).then((res) => {
+            const newUser = {
+                email: res.data[0].email,
+                firstName: res.data[0].firstName,
+                googleId: res.data[0].googleId,
+                image: res.data[0].image,
+                lastName: res.data[0].lastName,
+                listedItems: res.data[0].listedItems,
+                rating: res.data[0].rating
+            }
+            setUserData(newUser)
+        })
+    }, [])
 
 
     useEffect(() => {
         loadItems();
-
-    }, [])
-
-    useEffect(() => {
         loadImages()
+    }, [userData])
 
-    }, [usersItemList])
+
 
     function loadImages() {
 
@@ -46,12 +68,12 @@ function Profile() {
         console.log(tempArray);
         setImageArray(tempArray);
     }
+
     function loadItems() {
         if (userData === null) {
             //   setRedirect(true)
         }
         API.getUserItems(userData.googleId).then((response) => {
-
             setUsersItemList(response.data)
 
         })
@@ -142,19 +164,19 @@ function Profile() {
                 <Row className="left-align valign-wrapper">
                     <Col m={3} s={3}><h4 style={{ color: "#025159" }}>Your Rating</h4></Col>
                     <Col m={9} s={9} className="left-align">
-                        {Array(getRating()).fill().map((el, i) =>
+                        {/* {Array(getRating()).fill().map((el, i) =>
                             <i className="material-icons" key={i} style={{ color: "#025159" }}>star</i>
                         )}
                         {Array(5 - getRating()).fill().map((el, i) =>
                             <i className="material-icons" key={i} style={{ color: "#025159" }}>star_border</i>
-                        )}
+                        )} */}
                     </Col>
 
                 </Row>
                 <Row className="left-align">
                     <Col m={1} s={1}>
-                        <Button floating={true} large={true} style={{ backgroundColor: "#F28705" }}><Link to="/createItem">
-                            <i className="material-icons">add</i></Link></Button></Col>
+                        <Button floating={true} large={true} style={{ backgroundColor: "#F28705" }}><Link to={`/createItem/${userData.googleId}`}>
+<                           i className="material-icons">add</i></Link></Button></Col>
                     <Col m={11} s={11} className="valign-wrapper">
                         <h4 style={{ color: "#025159" }}>Add Item</h4>
                     </Col>
@@ -167,7 +189,7 @@ function Profile() {
                     <Collection style={{ maxHeight: "500px", overflow: "scroll" }} >
                         {usersItemList.map((item, index) => (
 
-                            <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
+                            <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} userData={userData}/>
 
                             // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
                         ))}

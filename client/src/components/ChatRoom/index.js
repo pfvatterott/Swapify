@@ -8,8 +8,8 @@ import chatContext from "../../utils/chatContext"
 import "./style.css"
 import Rating from 'react-rating'
 
-export default function ChatRoom() {
-    const userData = JSON.parse(localStorage.getItem('userData'))
+export default function ChatRoom(props) {
+    const userData = props.userData
     const { chatId, setNewText } = useContext(chatContext)
     const [messagesRef, setMessagesRef] = useState(firestore.collection('empty'))
     const query = messagesRef.orderBy('createdAt')
@@ -146,7 +146,7 @@ export default function ChatRoom() {
                 <a><Button onClick={reloadPage} modal="close">No Thanks</Button></a>
             </Modal>
             <Row className="wrapper">
-                {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+                {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} userData={userData}/>)}
                 <div ref={dummy}></div>
                 <div ref={messagesEndRef} />
                 <br></br><br></br><br></br><br></br><br></br>

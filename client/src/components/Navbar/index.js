@@ -1,43 +1,61 @@
 import React, { useEffect, useState } from "react";
-import "materialize-css";
-import { Navbar, Icon, NavItem, Button } from "react-materialize";
-import Badge from "@material-ui/core/Badge";
+import 'materialize-css';
+import { useLocation } from 'react-router-dom'
+import { Navbar, Icon, NavItem } from "react-materialize";
+import Badge from '@material-ui/core/Badge';
 import API from "../../utils/API";
 import "./style.css";
 
 const CustomNavbar = (props) => {
-  const userData = JSON.parse(localStorage.getItem("userData"));
-  const [newText, setNewText] = useState(false);
+const [ newText, setNewText ] = useState(false)
+const [userData, setUserData] = useState({})
+const { pathname } = useLocation();
+const pathway = pathname.split("/")
+const id = pathway[pathway.length - 1]
 
-  useEffect(() => {
-    checkForNewTexts();
-    setInterval(function () {
-      checkForNewTexts();
-    }, 5000);
-  }, []);
+useEffect(() => {
+    checkForNewTexts()
+    setInterval(function() {
+        checkForNewTexts()
+    }, 5000)
+}, [userData])
 
-
-    function checkForNewTexts() {
-        let trueCount = 0;
-        if (userData) {
-            API.getUserMatches(userData.googleId).then((response) => {
-                for (let i = 0; i < response.data.length; i++) {
-                    if ((response.data[i].item1Owner === userData.googleId) && (response.data[i].item1NewText === true)) {
-                        trueCount++
-                    }
-                    else if ((response.data[i].item2Owner === userData.googleId) && (response.data[i].item2NewText === true)) {
-                        trueCount++
-                    }
-                }
-                if (trueCount === 0) {
-                    setNewText(false)
-                }
-                else {
-                    setNewText(true)
-                }
-            })
+useEffect(() => {
+    API.getUser(id).then((res) => {
+        const newUser = {
+            email: res.data[0].email,
+            firstName: res.data[0].firstName,
+            googleId: res.data[0].googleId,
+            image: res.data[0].image,
+            lastName: res.data[0].lastName,
+            listedItems: res.data[0].listedItems,
+            rating: res.data[0].rating
         }
+        setUserData(newUser)
+    })
+}, [])
+
+function checkForNewTexts() {
+    let trueCount = 0;
+    if (userData) {
+        API.getUserMatches(userData.googleId).then((response) => {
+            for (let i = 0; i < response.data.length; i++) {
+                if ((response.data[i].item1Owner === userData.googleId) && (response.data[i].item1NewText === true)) {
+                    trueCount++
+                }
+                else if ((response.data[i].item2Owner === userData.googleId) && (response.data[i].item2NewText === true)) {
+                    trueCount++
+                }
+            }
+            if (trueCount === 0) {
+                setNewText(false)
+            }
+            else {
+                setNewText(true)
+            }
+        })
     }
+}
 
   return (
     // <div className="container">
@@ -76,7 +94,7 @@ const CustomNavbar = (props) => {
     >
       <NavItem
         tooltip="Add Item"
-        href="createItem"
+        href={`/createItem/${userData.googleId}`}
         className="addItem"
         alt-text="add item"
         node="button"
@@ -85,10 +103,10 @@ const CustomNavbar = (props) => {
           add_circle
         </Icon>
       </NavItem>
-      <NavItem href="profile" className="profile">
+      <NavItem href={`/profile/${userData.googleId}`} className="profile">
         <Icon>person</Icon>
       </NavItem>
-      <NavItem href="chat" className="swapIconWrapper">
+      <NavItem href={`/chat/${userData.googleId}`} className="swapIconWrapper">
         {newText ? (
           <Badge variant="dot" color="secondary" className="chatBadge">
             <Icon className="swapIcon">all_inclusive</Icon>

@@ -2,7 +2,7 @@ import React from 'react'
 import "./style.css"
 
 export default function ChatMessage(props) {
-    const userData = JSON.parse(localStorage.getItem('userData'))
+    const userData = props.userData
     const { text, sentFromid, sentFromPhoto } = props.message;
     const messageClass = sentFromid === userData.googleId ? 'sent' : 'received';
 

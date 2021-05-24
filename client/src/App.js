@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { useLocation } from 'react-router-dom'
 import Welcome from "./pages/welcome"
 import Profile from "./pages/profile"
 import Chat from "./pages/chat"
@@ -13,9 +14,9 @@ import Rating from 'react-rating'
 import "./appStyle.css"
 
 function App() {
-
-  const [userState, setUserState] = useState([]);
-  const userDataJSON = JSON.parse(localStorage.getItem('userData'))
+  const { pathname } = useLocation();
+  const pathway = pathname.split("/")
+  const id = pathway[pathway.length - 1]
   const [openSwapModal, setOpenSwapModal] = useState(false)
   const [openMatchModal, setOpenMatchModal] = useState(false)
   const [modalImage, setModalImage] = useState('');
@@ -26,13 +27,10 @@ function App() {
   const [rating, setRating] = useState(0)
   const [deletedItemUserId, setDeletedItemUserId] = useState('')
   
-  function handleSetUser(userData) {
-    setUserState(userData)
-  }
-
+  
   setInterval(function () {
-    if (userDataJSON) {
-      API.getUserItems(userDataJSON.googleId).then((response) => {
+    if (id) {
+      API.getUserItems(id).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           if (response.data[i].deleteItem !== 'false') {
             setDeletedItemUserId(response.data[i].deleteItem)
@@ -46,11 +44,11 @@ function App() {
   }, 5000)
 
   setInterval(function () {
-    if (userDataJSON) {
-      API.getUserMatches(userDataJSON.googleId).then((response) => {
+    if (id) {
+      API.getUserMatches(id).then((response) => {
           // checks if matches have been read or not by user2 (the user that was not swipping when the match was made)
           for (let i = 0; i < response.data.length; i++) {
-              if ((response.data[i].item2Owner == userDataJSON.googleId) && (response.data[i].item2Read === false)) {
+              if ((response.data[i].item2Owner == id) && (response.data[i].item2Read === false)) {
                   const matchData = {
                       item2Read: true
                   }
@@ -96,14 +94,14 @@ function App() {
   }
 
   return (
-    <Router>
+    <div>
       <CustomNavbar></CustomNavbar>
       <Route exact path="/" component={Welcome} />
-      <Route exact path="/profile" component={Profile} />
-      <Route exact path="/createItem" component={createItem} />
-      <Route exact path="/swipping" component={Swipping} />
-      <Route exact path="/chat" component={Chat} />
-      {window.location.pathname !== '/chat' ? <CustomFooter /> : null}  
+      <Route path="/profile/:id" component={Profile} />
+      <Route exact path="/createItem/:id" component={createItem} />
+      <Route exact path="/swipping/:item/:id" component={Swipping} />
+      <Route exact path="/chat/:id" component={Chat} />
+      {window.location.pathname.includes('/chat/') ? null : <CustomFooter />}  
       {/* Modal for when other user presses 'swap items' button */}
       <Modal
         open={openSwapModal}
@@ -158,7 +156,7 @@ function App() {
           <br></br><br></br>
           <a><Button modal="close">No Thanks</Button></a>
       </Modal>
-    </Router>
+    </div>
   );
 }
 

@@ -11,7 +11,7 @@ export default function MatchesSideBar(props) {
     const [matchList, setMatchList] = useState([])
     const [allMatches, setAllMatches] = useState([])
     const [noChats, setNoChats] = useState(false)
-    const userData = JSON.parse(localStorage.getItem('userData'))
+    const userData = props.userData
     const { recentText } = useContext(chatContext)
     let matchArray = []
 
@@ -124,7 +124,7 @@ export default function MatchesSideBar(props) {
                 <div>You don't have any open chats!</div>
                 <div>Go make some matches first!</div>
                 <br></br>
-                <a href="/profile"><Button>Go Back</Button></a>
+                <a href={`/profile/${userData.googleId}`}><Button>Go Back</Button></a>
             </Modal>
         </div>       
     )

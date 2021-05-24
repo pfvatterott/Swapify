@@ -30,11 +30,18 @@ const ItemCard = (props) => {
             <Col m={2} s={2}>
             {/* <a
                 className="secondary-content"
-                href="/swipping"
+                href={`/swipping/${props.id}/${props.userData.googleId}`}
             >
-            <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#O3A696" }}>Swap</Button>
+            <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#O3A696" }}>  <img src="/img/swapifyLogoS-vector.png" style={{height: "30px"}} /></Button>
             </a> */}
-            
+            <a
+                className="secondary-content"
+                href={`/swipping/${props.id}/${props.userData.googleId}`}
+            >
+            <img src="/img/S-logoBtn.png" onClick={() => API.handleUseItem(props.id)} style={{height:"65px"}}/>
+            </a>
+
+
             <Button className = "btn-floating btn-large" onClick={() => {
                 
                 API.deleteItem(props.id).then(results=>{

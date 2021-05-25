@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal, Row, Col } from 'react-materialize';
+import { Button, Modal } from 'react-materialize';
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
-import { Fireworks } from 'fireworks/lib/react'
-
 let preventFirstRender = false
 
 function Swipping() {
@@ -103,20 +101,20 @@ function Swipping() {
                          const userLat = userItemRes.data.itemLocation[0]
                          const userLong = userItemRes.data.itemLocation[1]
 
-                        // getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
-                        //     if (distanceResponse < distanceBoundary) {
-                        //         sortedNotUserItems.push(notUserItemsArray[v])
-                        //     }
-                        //     // no more items triggers Modal
-                        //     if (sortedNotUserItems.length === 0) {
-                        //         console.log(sortedNotUserItems)
-                        //         setNoMoreItems(true)
-                        //     }
-                        //     else {
-                        //         setNotUserItems(sortedNotUserItems)
-                        //         setCurrentItem(sortedNotUserItems[imageNumber])
-                        //     }
-                        // })
+                        getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
+                            if (distanceResponse < distanceBoundary) {
+                                sortedNotUserItems.push(notUserItemsArray[v])
+                            }
+                            // no more items triggers Modal
+                            if (sortedNotUserItems.length === 0) {
+                                console.log(sortedNotUserItems)
+                                setNoMoreItems(true)
+                            }
+                            else {
+                                setNotUserItems(sortedNotUserItems)
+                                setCurrentItem(sortedNotUserItems[imageNumber])
+                            }
+                        })
                      }
                 })
             })
@@ -217,46 +215,16 @@ function Swipping() {
         setDistanceBoundary(e)
     }
 
-    let fxProps = {
-        count: 3,
-        interval: 200,
-        colors: ['#cc3333', '#4CAF50', '#81C784'],
-        calc: (props, i) => ({
-          ...props,
-          x: (i + 1) * (window.innerWidth / 3) - (i + 1) * 100,
-          y: 200 + Math.random() * 100 - 50 + (i === 2 ? -80 : 0)
-        })}
-
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
-            <div className= "container center-align">
-            <Row className="center-align">
-           
-            {/* <h2>Swipping</h2> */}   
+            <h2>Swipping</h2>
             <h4>{currentItem.itemName}</h4>
-            </Row>
-            <Row className="center-align">
             <h5>{currentItem.itemDescription}</h5>
-            </Row>
-            <Row className="center-align">
             <img className="itemImage" src={currentItem.imageURL} />
-            </Row>
-            <Row>
-                <Col s={6} m={6} className="right-align">
-            <Button className="waves-effect waves-light btn-large"onClick={handleItemNotLike}>Hate it</Button>
-            </Col>
-            <Col s={6} m={6} className="left-align">
-            <Button className ="waves-effect waves-light btn-large"onClick={handleItemLike}>Love it</Button>
-             {/* Distance Range Selector */}
-             </Col>
-             </Row>
-             <Row className="center-align">
-             <Col s={12} m ={12} className="center-align">
-                 <DistanceSlider setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
-             </Col>
-             </Row>
-            </div>
+            <button onClick={handleItemNotLike}>Not Interested</button>
+            <button onClick={handleItemLike}>Interested</button>
+
             {/* No more items to swap modal */}
             <Modal
                 open={noMoreItems}
@@ -292,11 +260,11 @@ function Swipping() {
                 <a href={`/chat/${userData.googleId}`}><Button>Chat Page</Button></a>
                 <br></br><br></br>
                 <a><Button modal="close">Continue</Button></a>
-                <br></br>  
-                <Fireworks {...fxProps} /> 
+                <br></br>   
             </Modal>
             
-           
+            {/* Distance Range Selector */}
+            <DistanceSlider setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
         </div>
     )
 }

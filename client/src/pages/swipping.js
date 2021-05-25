@@ -231,11 +231,11 @@ function Swipping() {
         console.log(startingDragPoint)
         if ((startingDragPoint * 1.8) < x) {
             console.log("likes")
-            // handleItemLike()
+            handleItemLike()
         }
         else if ((startingDragPoint / 2) > x) {
             console.log('doesnt like')
-            // handleItemNotLike()
+            handleItemNotLike()
         }
     }
 
@@ -243,9 +243,10 @@ function Swipping() {
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
             <div className="container center-align" style={{ marginTop: "20px" }}>
-                <Row className="center-align">
-                    <Col s={12} className="center-align">
-                        <motion.div style={{ background }}>
+                <Row>
+                    <Col m={3} l={4}></Col>
+                    <Col s={12} m={6} l={4}>
+                        <motion.div style={{ background }} className="swipBackground">
                             <motion.div
                             drag="x"
                             dragConstraints={{ left: 0, right: 0 }}
@@ -258,16 +259,17 @@ function Swipping() {
                             }
                             >
                                 <Row>
-                                    <Col s={1} m={3} l={4}></Col>
-                                    <Col s={10} m={6} l={4} className="center-align">
-                                        <SwipingCard itemInfo={currentItem} className="center-align"/>
+                                    {/* <Col s={1}></Col> */}
+                                    <Col s={12}>
+                                        <SwipingCard itemInfo={currentItem}/>
                                     </Col>
-                                    <Col s={1} m={3} l={4}></Col>
+                                    {/* <Col s={1}></Col> */}
                                 </Row>
                                 
                             </motion.div>
                         </motion.div>
                     </Col>
+                    <Col m={3} l={4}></Col>
                 </Row>
                 <Row className="center-align">
                     <Col s={3}></Col>

@@ -4,10 +4,10 @@
     width: auto;
     height: auto;
     -webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--o-user-select: none;
-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 .swipCard {
     max-width: 800px !important;

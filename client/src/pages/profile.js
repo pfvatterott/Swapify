@@ -15,7 +15,8 @@ import {
   Icon,
   CardTitle,
 } from "react-materialize";
-import AddIcon from "@material-ui/icons/Add";
+import ReactTooltip from 'react-tooltip';
+
 import "./style.css";
 import "./profileStyle.css";
 import { motion } from "framer-motion";
@@ -136,7 +137,7 @@ function Profile() {
     //  setRedirectToSwipping(true)
   }
 
-  //backgroundImage: "radial-gradient(circle, #03A696, white)"
+
   return (
     <div>
       {/* {redirect ? (<Redirect push to="/" />) : null} */}
@@ -160,6 +161,49 @@ function Profile() {
               }}
               src={userData.image}
             />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col m12 s12 center-align" data-tip="Your Swapify rating">
+            <motion.div
+              animate={{ opacity: 1 }}
+              initial={{ opacity: 0 }}
+              transition={{ duration: .2, delay: 0.2 }}
+              className="col m12 s12 center-align">
+              {Array(userRating)
+                .fill()
+                .map((el, i) => (
+                  <i
+                    className="material-icons"
+                    key={i}
+                    style={{ color: "#F25D27" }}
+                  >
+                    star
+                </i>
+                ))}
+              {Array(5 - userRating)
+                .fill()
+                .map((el, i) => (
+                  <i
+                    className="material-icons"
+                    key={i}
+                    style={{ color: "#F25D27" }}
+                  >
+                    star_border
+                </i>
+                ))}
+            </motion.div>
+          
+            <ReactTooltip place="bottom" type="light" effect="float"/>
+          </div>
+        </div>
+
+
+
+        <Row className="valign-wrapper">
+        </Row>
+        <Row>
+          <div className="col m12 s12 ">
             <motion.h2
               animate={{ opacity: 1 }}
               initial={{ opacity: 0 }}
@@ -167,91 +211,58 @@ function Profile() {
               style={{ color: "#03A696" }}
               className="userName"
             >
-              
+
               {userData.firstName} {userData.lastName}
             </motion.h2>
           </div>
-        </div>
-
-        <Row className="valign-wrapper">
-          <Col m={6} s={6} className="right-align">
-            <h4 style={{ color: "#025159" }}>Swapify Rating</h4>
-          </Col>
-          <motion.div 
-        animate={{ opacity: 1 }}
-        initial={{ opacity: 0 }}
-        transition={{ duration: .2, delay: 0.2 }}
-          className="col m6 s6 left-align">
-            {Array(userRating)
-              .fill()
-              .map((el, i) => (
-                <i
-                  className="material-icons"
-                  key={i}
-                  style={{ color: "#F25D27" }}
-                >
-                  star
-                </i>
-              ))}
-            {Array(5 - userRating)
-              .fill()
-              .map((el, i) => (
-                <i
-                  className="material-icons"
-                  key={i}
-                  style={{ color: "#F25D27" }}
-                >
-                  star_border
-                </i>
-              ))}
-          </motion.div>
         </Row>
-        <Row className="right-align valign-wrapper">
-          <Col m={6} s={6} >
-            <h4 style={{ color: "#025159" }}>Add Item</h4>
-          </Col>
-          <Col m={6} s={6} className="left-align">
-            <Button
-              floating={true}
-              large={true}
-              style={{ backgroundColor: "#F25D27" }}
-            >
-              <Link to={`/createItem/${userData.googleId}`}>
-                <i className="material-icons">add</i>
-              </Link>
-            </Button>
-          </Col>
-        </Row>
-        <Row style={{ paddingTop: "10px" }}>
-          <h3
-            style={{
-              fontFamily: "lemon",
-              color: "#03A696",
-              paddingBottom: "20px",
-            }}
+      
+      <Row className="valign-wrapper">
+        <Col m={8} s={8} className="right-align">
+          <h4 style={{ color: "#025159" }}>Add Item</h4>
+        </Col>
+        <Col m={6} s={6} className="left-align">
+          <Button
+            floating={true}
+            large={true}
+            style={{ backgroundColor: "#F25D27" }}
           >
-            Your Items
+            <Link to={`/createItem/${userData.googleId}`}>
+              <i className="material-icons">add</i>
+            </Link>
+          </Button>
+        </Col>
+      </Row>
+      <Row style={{ paddingTop: "10px" }}>
+        <h3
+          style={{
+            fontFamily: "lemon",
+            color: "#03A696",
+            paddingBottom: "20px",
+          }}
+        >
+          Your Items
           </h3>
 
-          <Collection style={{ maxHeight: "500px", overflow: "scroll" }}>
-            {usersItemList.map((item, index) => (
-              <ItemCard
-                key={index}
-                loadItems={loadItems}
-                imageURL={item.imageURL}
-                itemName={item.itemName}
-                id={item._id}
-                itemDescription={item.itemDescription}
-                userData={userData}
-              />
+        <Collection style={{ maxHeight: "1000px", overflow: "scroll" }}>
+          {usersItemList.map((item, index) => (
+            <ItemCard
+              key={index}
+              loadItems={loadItems}
+              imageURL={item.imageURL}
+              itemName={item.itemName}
+              id={item._id}
+              itemDescription={item.itemDescription}
+              userData={userData}
+            />
 
-              // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
-            ))}
-          </Collection>
-        </Row>
+            // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
+          ))}
+        </Collection>
+      </Row>
 
-        <Row style={{ height: "400px" }}></Row>
-      </div>
+      <Row style={{ height: "400px" }}></Row>
+    </div>
 
       {/* <Carousel>
                 {usersItemList.map((item, index) => (
@@ -260,7 +271,7 @@ function Profile() {
                 ))}
 
             </Carousel> */}
-    </div>
+    </div >
   );
 }
 

@@ -4,6 +4,8 @@ import { Button, Modal, Row, Col } from 'react-materialize';
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
+import { Fireworks } from 'fireworks/lib/react'
+
 let preventFirstRender = false
 
 function Swipping() {
@@ -215,6 +217,16 @@ function Swipping() {
         setDistanceBoundary(e)
     }
 
+    let fxProps = {
+        count: 3,
+        interval: 200,
+        colors: ['#cc3333', '#4CAF50', '#81C784'],
+        calc: (props, i) => ({
+          ...props,
+          x: (i + 1) * (window.innerWidth / 3) - (i + 1) * 100,
+          y: 200 + Math.random() * 100 - 50 + (i === 2 ? -80 : 0)
+        })}
+
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
@@ -280,7 +292,8 @@ function Swipping() {
                 <a href={`/chat/${userData.googleId}`}><Button>Chat Page</Button></a>
                 <br></br><br></br>
                 <a><Button modal="close">Continue</Button></a>
-                <br></br>   
+                <br></br>  
+                <Fireworks {...fxProps} /> 
             </Modal>
             
            

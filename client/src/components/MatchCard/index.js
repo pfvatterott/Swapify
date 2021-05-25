@@ -1,6 +1,6 @@
 
 import React, { useContext, useEffect, useState } from "react";
-import { Button, CollectionItem } from 'react-materialize';
+import { Button, CollectionItem, Modal, Row, Col } from 'react-materialize';
 import "./style.css"
 import chatContext from "../../utils/chatContext"
 import API from "../../utils/API";
@@ -12,6 +12,7 @@ const MatchCard = (props) => {
     const { setChat, chatId } = useContext(chatContext)
     const [ currentChatStyle, setCurrentChatStyle ] = useState(false)
     const [ userRating, setUserRating ] = useState(0)
+    const [ openInfoModal, setOpenInfoModal ] = useState(false)
 
     useEffect(() => {
        setChat({matchId: props.allMatches.data[0]._id})
@@ -38,11 +39,20 @@ const MatchCard = (props) => {
         }
     }, [chatId])
 
+    function activateInfoModal() {
+        setOpenInfoModal(true)
+        console.log(props.matchData)
+    }
+
+    function closeInfoModal() {
+        setOpenInfoModal(false)
+    }
+
     return (
         <div>
             {/* highlights currently selected chat */}
             {currentChatStyle ? (
-                <CollectionItem className="avatar valign-wrapper collection" style={{backgroundColor:"#D3EEE3"}}>
+                <CollectionItem className="avatar valign-wrapper" style={{backgroundColor:"#D3EEE3"}}>
                 <a className="noHover"><img
                     alt=""
                     className="circle userItemPicture"
@@ -54,6 +64,11 @@ const MatchCard = (props) => {
                     className="circle itemPicture noHover"
                     src={props.imageURL}
                 /><i className="material-icons ratingStar noHover">star</i><p className="ratingNumber noHover">{userRating}</p></a>
+
+                <a className="secondary-content">
+                    <a className="btn-floating btn-large infoButton" style= {{backgroundColor:"#F28705"}} onClick={() => {activateInfoModal()}} ><i className="material-icons">info</i></a>
+                </a>
+
                 <a className="secondary-content">
                     {props.matchData.newText ? (<a className="btn-floating btn-large chatButton pulse" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>) : (<a className="btn-floating btn-large chatButton" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>)}
                     
@@ -72,12 +87,67 @@ const MatchCard = (props) => {
                     className="circle itemPicture noHover"
                     src={props.imageURL}
                 /><i className="material-icons ratingStar noHover">star</i><p className="ratingNumber">{userRating}</p></a>
+
+                <a className="secondary-content">
+                    <a className="btn-floating btn-large infoButton" style= {{backgroundColor:"#F28705"}} onClick={() => {activateInfoModal()}} ><i className="material-icons">info</i></a>
+                </a>
                 <a className="secondary-content">
                     {props.matchData.newText ? (<a className="btn-floating btn-large chatButton pulse" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>) : (<a className="btn-floating btn-large chatButton" style= {{backgroundColor:"#F28705"}} onClick={() => {setChat(itemIds)}} ><i className="material-icons">chat</i></a>)}
                     
                 </a>
             </CollectionItem>
             )}
+{/* 
+            <Modal
+                open={openInfoModal}
+                className='center-align'
+                actions={[]}
+                options={{
+                dismissible: false
+                }}>
+                <div className="modalUserItem left center-align">
+                    <img src={props.matchData.userItemPhoto} className="circle modalUserImage"></img>
+                    
+                    <br></br><br></br>
+                    <h5>{props.matchData.userItemName}</h5>
+                </div>
+                <div className="modalOtherItem center-align">
+                    <img src={props.matchData.otherItemImage} className="circle modalUserImage"></img>
+                    
+                    <br></br><br></br>
+                    <h5>{props.matchData.otherItemName}</h5>
+                </div>
+                <br></br><br></br>
+
+                <a><Button modal="close" className="center-align">Close</Button></a>
+            </Modal> */}
+
+            <Modal
+                open={openInfoModal}
+                className='center-align'
+                actions={[]}
+                options={{
+                    dismissible: false
+                }}>
+                <Row>
+                    <Col s={6}>
+                        <img src={props.matchData.userItemPhoto} className="circle modalUserImage"></img>
+                    </Col>
+                    <Col s={6}>
+                        <img src={props.matchData.otherItemImage} className="circle modalUserImage"></img>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col s={6}>
+                    <h5>{props.matchData.userItemName}</h5>
+                    </Col>
+                    <Col s={6}>
+                    <h5>{props.matchData.otherItemName}</h5>
+                    </Col>
+                </Row>
+                <a><Button modal="close" onClick={closeInfoModal}>Close</Button></a>
+            </Modal>
+
         </div>
     )
 }

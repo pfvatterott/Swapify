@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal } from 'react-materialize';
+import { Button, Modal, Row, Col } from 'react-materialize';
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
@@ -218,13 +218,23 @@ function Swipping() {
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
-            <h2>Swipping</h2>
-            <h4>{currentItem.itemName}</h4>
-            <h5>{currentItem.itemDescription}</h5>
-            <img className="itemImage" src={currentItem.imageURL} />
-            <button onClick={handleItemNotLike}>Not Interested</button>
-            <button onClick={handleItemLike}>Interested</button>
-
+            <div className="container center-align" style={{ marginTop: "20px" }}>
+                <Row>
+                    <Col s={12}>
+                    <h4>{currentItem.itemName}</h4>
+                    <h5>{currentItem.itemDescription}</h5>
+                    <img className="itemImage" src={currentItem.imageURL} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col s={6}>
+                        <button onClick={handleItemNotLike}>Not Interested</button>
+                    </Col>
+                    <Col s={6}>
+                    <button onClick={handleItemLike}>Interested</button>
+                    </Col>
+                </Row>
+            </div>
             {/* No more items to swap modal */}
             <Modal
                 open={noMoreItems}

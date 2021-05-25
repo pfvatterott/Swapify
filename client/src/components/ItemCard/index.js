@@ -60,12 +60,13 @@ const ItemCard = (props) => {
                         href={`/swipping/${props.id}/${props.userData.googleId}`}
                     >
                         <img
-                            src="/img/S-logoBtn.png"
+                            src="/img/S-logoBtn-vector.png"
                             onClick={() => API.handleUseItem(props.id)}
                             style={{ height: "65px" }}
                             data-tip="Swap your Item"
                         />
                         <ReactTooltip place="bottom" type="light" effect="float"/>
+
                     </a>
                 </Col>
                 <Col m={1} s={1}>

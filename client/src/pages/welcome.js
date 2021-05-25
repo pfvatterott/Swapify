@@ -67,7 +67,7 @@ return (
             initial={{ opacity: 0, scale: 0 }}
             transition={{ delay: 0.5, duration: 1.5 }}
             whileHover={{ rotateZ: 180 }}
-            src="./../img/swapifylogo-S-vector.png"
+            src="./../img/swapifyLogo-S-vector.png"
             alt="Swapify S Logo"
             class="responsive-img"
           />

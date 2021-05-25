@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal, Row, Col } from 'react-materialize';
+import { Button, Modal, Row, Col, Card, CardTitle } from 'react-materialize';
+import  {motion, useMotionValue, useTransform } from "framer-motion"
+import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
 let preventFirstRender = false
 
 function Swipping() {
+    let startingDragPoint = {}
     const [redirect, setRedirect] = useState(false);
     const [notUserItems, setNotUserItems] = useState([])
     const [currentItem, setCurrentItem] = useState([])
@@ -216,24 +219,57 @@ function Swipping() {
         setDistanceBoundary(e)
     }
 
+    const x = useMotionValue(0)
+    const background = useTransform(
+        x,
+        [-100, 0, 100],
+        ["#FF0000", "#FFFFFF", "#00FF00"]
+    )
+
+    function processDragInfo(x, y) {
+        console.log("ending: ", x, y)
+        console.log(startingDragPoint)
+        if ((startingDragPoint * 1.8) < x) {
+            console.log("likes")
+            handleItemLike()
+        }
+        else if ((startingDragPoint / 2) > x) {
+            console.log('doesnt like')
+            handleItemNotLike()
+        }
+    }
+
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
             <div className="container center-align" style={{ marginTop: "20px" }}>
                 <Row>
-                    <Col s={12}>
-                    <h4>{currentItem.itemName}</h4>
-                    <h5>{currentItem.itemDescription}</h5>
-                    <img className="itemImage" src={currentItem.imageURL} />
+                    <Col m={3} l={4}></Col>
+                    <Col s={12} m={6} l={4}>
+                        <motion.div style={{ background }} className="swipBackground">
+                            <motion.div
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            style={{ x }}
+                            onDragStart={
+                                (event, info) => startingDragPoint = (info.point.x)
+                            }
+                            onDragEnd={
+                                (event, info) => processDragInfo(info.point.x, info.point.y)
+                            }
+                            >
+                                <Row>
+                                    {/* <Col s={1}></Col> */}
+                                    <Col s={12}>
+                                        <SwipingCard itemInfo={currentItem}/>
+                                    </Col>
+                                    {/* <Col s={1}></Col> */}
+                                </Row>
+                                
+                            </motion.div>
+                        </motion.div>
                     </Col>
-                </Row>
-                <Row>
-                    <Col s={6}>
-                        <button onClick={handleItemNotLike}>Not Interested</button>
-                    </Col>
-                    <Col s={6}>
-                    <button onClick={handleItemLike}>Interested</button>
-                    </Col>
+                    <Col m={3} l={4}></Col>
                 </Row>
                 <Row className="center-align">
                     <Col s={3}></Col>

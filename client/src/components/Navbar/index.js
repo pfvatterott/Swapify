@@ -14,7 +14,6 @@ const [ deleteNavbarLinks, setDeleteNavbarLinks ] = useState(false)
 const { pathname } = useLocation();
 const pathway = pathname.split("/")
 const id = pathway[pathway.length - 1]
-console.log(pathname)
 
 useEffect(() => {
     checkForNewTexts()
@@ -39,6 +38,7 @@ useEffect(() => {
 }, [pathname])
 
 useEffect(() => {
+  if (id) {
     API.getUser(id).then((res) => {
         const newUser = {
             email: res.data[0].email,
@@ -51,6 +51,7 @@ useEffect(() => {
         }
         setUserData(newUser)
     })
+  }
 }, [])
 
 function checkForNewTexts() {

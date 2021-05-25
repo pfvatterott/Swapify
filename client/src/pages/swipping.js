@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal, Row, Col } from 'react-materialize';
+import { Button, Modal, Row, Col, Card, CardTitle } from 'react-materialize';
+import  {motion, useMotionValue, useTransform } from "framer-motion"
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
 let preventFirstRender = false
 
 function Swipping() {
+    let startingDragPoint = {}
     const [redirect, setRedirect] = useState(false);
     const [notUserItems, setNotUserItems] = useState([])
     const [currentItem, setCurrentItem] = useState([])
@@ -216,15 +218,50 @@ function Swipping() {
         setDistanceBoundary(e)
     }
 
+    const x = useMotionValue(0)
+    const background = useTransform(
+        x,
+        [-100, 0, 100],
+        ["#ff008c", "#7700ff", "rgb(230, 255, 0)"]
+    )
+
+    function processDragInfo(x, y) {
+        console.log("ending: ", x, y)
+        console.log(startingDragPoint)
+        if ((startingDragPoint * 1.8) < x) {
+            console.log("likes")
+        }
+        else if ((startingDragPoint / 2) > x) {
+            console.log('doesnt like')
+        }
+    }
+
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
             <div className="container center-align" style={{ marginTop: "20px" }}>
                 <Row>
                     <Col s={12}>
-                    <h4>{currentItem.itemName}</h4>
-                    <h5>{currentItem.itemDescription}</h5>
-                    <img className="itemImage" src={currentItem.imageURL} />
+                        <motion.div style={{ background }}>
+                            <motion.div
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            style={{ x }}
+                            onDragStart={
+                                (event, info) => startingDragPoint = (info.point.x)
+                            }
+                            onDragEnd={
+                                (event, info) => processDragInfo(info.point.x, info.point.y)
+                            }
+                            >
+                                <Card
+                                    header={<CardTitle image={currentItem.imageURL}></CardTitle>}
+                                    title={currentItem.itemName}
+                                >
+                                    {currentItem.itemDescription}
+                                </Card>
+                            </motion.div>
+                        </motion.div>
                     </Col>
                 </Row>
                 <Row>

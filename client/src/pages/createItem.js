@@ -7,6 +7,7 @@ import Compressor from 'compressorjs';
 import Confetti from 'react-dom-confetti';
 import {Col, Row} from 'react-materialize';
 
+
 function Item() {
   const [reward, setReward]= useState(false);
   const [descriptionState, setDescriptionState] = useState([]);
@@ -100,6 +101,7 @@ function Item() {
     new Compressor(image, {
       quality: 0.2,
       success(result) {
+        
 
         // uploads image to firebase
         const randomNumber = Math.floor(Math.random() * 100000000)
@@ -116,7 +118,7 @@ function Item() {
               .child(randomNumber + image.name)
               .getDownloadURL()
               .then(url => {
-                saveToDatabase(url);
+                saveToDatabase(url, image.name);
                 setImageURL(url);
                 console.log("fileupload handler run")
                 //setButtonText("Preview")
@@ -142,7 +144,7 @@ function Item() {
 
     // Compress image before uploading to firebase
     new Compressor(image, {
-      quality: 0.2,
+      quality: 0.8,
       success(result) {
 
         // uploads image to firebase
@@ -175,12 +177,15 @@ function Item() {
 
   };
 
-  function saveToDatabase(url) {
+  function saveToDatabase(url, imageName) {
+    const splitURL = imageName.split(".")
+    const newImageName = (splitURL[0] + "_400x400." + splitURL[1])
+    const newURL = url.replace(imageName, newImageName)
     const newItem = {
       itemName: nameState.name,
       itemDescription: descriptionState.description,
       itemPrice: 45,
-      imageURL: `${url}`,
+      imageURL: `${newURL}`,
       itemOwner: userData.googleId,
       likesFromItems: [],
       likesItems: [],

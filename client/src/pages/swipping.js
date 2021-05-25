@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
 import { Button, Modal, Row, Col, Card, CardTitle } from 'react-materialize';
 import  {motion, useMotionValue, useTransform } from "framer-motion"
+import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
@@ -222,7 +223,7 @@ function Swipping() {
     const background = useTransform(
         x,
         [-100, 0, 100],
-        ["#ff008c", "#7700ff", "rgb(230, 255, 0)"]
+        ["#FF0000", "#FFFFFF", "#00FF00"]
     )
 
     function processDragInfo(x, y) {
@@ -230,9 +231,11 @@ function Swipping() {
         console.log(startingDragPoint)
         if ((startingDragPoint * 1.8) < x) {
             console.log("likes")
+            // handleItemLike()
         }
         else if ((startingDragPoint / 2) > x) {
             console.log('doesnt like')
+            // handleItemNotLike()
         }
     }
 
@@ -240,8 +243,8 @@ function Swipping() {
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
             <div className="container center-align" style={{ marginTop: "20px" }}>
-                <Row>
-                    <Col s={12}>
+                <Row className="center-align">
+                    <Col s={12} className="center-align">
                         <motion.div style={{ background }}>
                             <motion.div
                             drag="x"
@@ -254,22 +257,16 @@ function Swipping() {
                                 (event, info) => processDragInfo(info.point.x, info.point.y)
                             }
                             >
-                                <Card
-                                    header={<CardTitle image={currentItem.imageURL}></CardTitle>}
-                                    title={currentItem.itemName}
-                                >
-                                    {currentItem.itemDescription}
-                                </Card>
+                                <Row>
+                                    <Col s={1} m={3} l={4}></Col>
+                                    <Col s={10} m={6} l={4} className="center-align">
+                                        <SwipingCard itemInfo={currentItem} className="center-align"/>
+                                    </Col>
+                                    <Col s={1} m={3} l={4}></Col>
+                                </Row>
+                                
                             </motion.div>
                         </motion.div>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col s={6}>
-                        <button onClick={handleItemNotLike}>Not Interested</button>
-                    </Col>
-                    <Col s={6}>
-                    <button onClick={handleItemLike}>Interested</button>
                     </Col>
                 </Row>
                 <Row className="center-align">

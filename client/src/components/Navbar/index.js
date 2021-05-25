@@ -14,7 +14,6 @@ const [ deleteNavbarLinks, setDeleteNavbarLinks ] = useState(false)
 const { pathname } = useLocation();
 const pathway = pathname.split("/")
 const id = pathway[pathway.length - 1]
-console.log(pathname)
 
 useEffect(() => {
     checkForNewTexts()

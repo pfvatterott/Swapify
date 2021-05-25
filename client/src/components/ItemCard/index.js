@@ -38,7 +38,7 @@ const ItemCard = (props) => {
                 className="secondary-content"
                 href={`/swipping/${props.id}/${props.userData.googleId}`}
             >
-            <img src="/img/S-logoBtn.png" onClick={() => API.handleUseItem(props.id)} style={{height:"65px"}}/>
+            <img src="../img/S-logoBtn.png" onClick={() => API.handleUseItem(props.id)} style={{height:"65px"}}/>
             </a>
 
 

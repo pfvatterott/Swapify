@@ -1,211 +1,267 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, Redirect, useParams } from 'react-router-dom'
+import { Link, Redirect, useParams } from "react-router-dom";
 import API from "../utils/API";
-import ItemCard from "../components/ItemCard"
-import CarouselCard from "../components/CarouselCard"
-import MatchCard from '../components/MatchCard'
-import { Button, Col, Row, CollectionItem, Collection, Carousel, Card, Icon, CardTitle } from 'react-materialize';
-import AddIcon from '@material-ui/icons/Add';
-
+import ItemCard from "../components/ItemCard";
+import CarouselCard from "../components/CarouselCard";
+import MatchCard from "../components/MatchCard";
+import {
+  Button,
+  Col,
+  Row,
+  CollectionItem,
+  Collection,
+  Carousel,
+  Card,
+  Icon,
+  CardTitle,
+} from "react-materialize";
+import AddIcon from "@material-ui/icons/Add";
+import "./style.css";
+import "./profileStyle.css";
+import { motion } from "framer-motion";
 
 //document.body.style = "background: -webkit-gradient(linear, top, bottom, from(#003399), to(#6699cc));background: -webkit-linear-gradient(#025159, #03A696);background: linear-gradient(#025159, #03A696);zoom: 1;margin: 0;padding-top: 2%;padding-bottom: 3%;background-attachment: fixed;"
 
 function Profile() {
-    const [redirect, setRedirect] = useState(false);
-    const [redirectToSwipping, setRedirectToSwipping] = useState(false);
-    const [usersItemList, setUsersItemList] = useState([]);
-    const [matchList, setMatchList] = useState([])
-    const [userData, setUserData] = useState({
-        email: "",
-        firstName: "",
-        googleId: "",
-        image: "",
-        lastName: "",
-        listedItems: [],
-        rating: []}
-    )
-    const [imageArray, setImageArray] = useState([""]);
-    const [rating, setRating] = useState();
-    const { id } = useParams()
-    const [ userRating, setUserRating ] = useState(0)
+  const [redirect, setRedirect] = useState(false);
+  const [redirectToSwipping, setRedirectToSwipping] = useState(false);
+  const [usersItemList, setUsersItemList] = useState([]);
+  const [matchList, setMatchList] = useState([]);
+  const [userData, setUserData] = useState({
+    email: "",
+    firstName: "",
+    googleId: "",
+    image: "",
+    lastName: "",
+    listedItems: [],
+    rating: [],
+  });
+  const [imageArray, setImageArray] = useState([""]);
+  const [rating, setRating] = useState();
+  const { id } = useParams();
+  const [userRating, setUserRating] = useState(0);
 
-    let matchArray = []
+  let matchArray = [];
 
-    useEffect(() => {
-        loadItems();
-        loadImages()
-        API.getUser(id).then((res) => {
-            const newUser = {
-                email: res.data[0].email,
-                firstName: res.data[0].firstName,
-                googleId: res.data[0].googleId,
-                image: res.data[0].image,
-                lastName: res.data[0].lastName,
-                listedItems: res.data[0].listedItems,
-                rating: res.data[0].rating
-            }
-            setUserData(newUser)
-            if (res.data[0].rating.length === 0) {
-                setUserRating(0)
-            }
-            else {
-                let ratingCount = 0
-                for (let i = 0; i < res.data[0].rating.length; i++) {
-                    ratingCount = ratingCount + res.data[0].rating[i]
-                }
-                setUserRating(Math.round(ratingCount / res.data[0].rating.length))
-            }
-        })
-    }, [])
-
-
-    useEffect(() => {
-        loadItems();
-        loadImages()
-    }, [userData])
-
-
-
-    function loadImages() {
-
-        let tempArray = [];
-        usersItemList.forEach((item, i) => {
-            tempArray.push(item.imageURL);
-
-        })
-        if (usersItemList.length == 0) {
-            return
+  useEffect(() => {
+    loadItems();
+    loadImages();
+    API.getUser(id).then((res) => {
+      const newUser = {
+        email: res.data[0].email,
+        firstName: res.data[0].firstName,
+        googleId: res.data[0].googleId,
+        image: res.data[0].image,
+        lastName: res.data[0].lastName,
+        listedItems: res.data[0].listedItems,
+        rating: res.data[0].rating,
+      };
+      setUserData(newUser);
+      if (res.data[0].rating.length === 0) {
+        setUserRating(0);
+      } else {
+        let ratingCount = 0;
+        for (let i = 0; i < res.data[0].rating.length; i++) {
+          ratingCount = ratingCount + res.data[0].rating[i];
         }
-        console.log(tempArray);
-        setImageArray(tempArray);
-    }
+        setUserRating(Math.round(ratingCount / res.data[0].rating.length));
+      }
+    });
+  }, []);
 
-    function loadItems() {
-        if (userData === null) {
-            //   setRedirect(true)
+  useEffect(() => {
+    loadItems();
+    loadImages();
+  }, [userData]);
+
+  function loadImages() {
+    let tempArray = [];
+    usersItemList.forEach((item, i) => {
+      tempArray.push(item.imageURL);
+    });
+    if (usersItemList.length == 0) {
+      return;
+    }
+    console.log(tempArray);
+    setImageArray(tempArray);
+  }
+
+  function loadItems() {
+    if (userData === null) {
+      //   setRedirect(true)
+    }
+    API.getUserItems(userData.googleId).then((response) => {
+      setUsersItemList(response.data);
+    });
+    API.getUserMatches(userData.googleId).then((matchResponse) => {
+      matchResponse.data.forEach((item) => {
+        if (item.item1Owner === userData.googleId) {
+          const itemInfo = {
+            userItemId: item.item1Id,
+            userId: item.item1Owner,
+            userItemPhoto: item.item1Photo,
+            userItemName: item.item1Name,
+            otherItemId: item.item2Id,
+            otherUser: item.item2Owner,
+            otherItemImage: item.item2Photo,
+            otherItemName: item.item2Name,
+          };
+          matchArray.push(itemInfo);
+          if (matchResponse.data.length === matchArray.length) {
+            setMatchList(matchArray);
+          }
+        } else {
+          const itemInfo = {
+            userItemId: item.item2Id,
+            userId: item.item2Owner,
+            userItemPhoto: item.item2Photo,
+            userItemName: item.item2Name,
+            otherItemId: item.item1Id,
+            otherUser: item.item1Owner,
+            otherItemImage: item.item1Photo,
+            otherItemName: item.item1Name,
+          };
+          matchArray.push(itemInfo);
+          if (matchResponse.data.length === matchArray.length) {
+            setMatchList(matchArray);
+          }
         }
-        API.getUserItems(userData.googleId).then((response) => {
-            setUsersItemList(response.data)
+      });
+    });
+  }
 
-        })
-        API.getUserMatches(userData.googleId).then((matchResponse) => {
-            matchResponse.data.forEach(item => {
-                if (item.item1Owner === userData.googleId) {
-                    const itemInfo = {
-                        userItemId: item.item1Id,
-                        userId: item.item1Owner,
-                        userItemPhoto: item.item1Photo,
-                        userItemName: item.item1Name,
-                        otherItemId: item.item2Id,
-                        otherUser: item.item2Owner,
-                        otherItemImage: item.item2Photo,
-                        otherItemName: item.item2Name,
-                    }
-                    matchArray.push(itemInfo)
-                    if (matchResponse.data.length === matchArray.length) {
-                        setMatchList(matchArray)
-                    }
-                }
-                else {
-                    const itemInfo = {
-                        userItemId: item.item2Id,
-                        userId: item.item2Owner,
-                        userItemPhoto: item.item2Photo,
-                        userItemName: item.item2Name,
-                        otherItemId: item.item1Id,
-                        otherUser: item.item1Owner,
-                        otherItemImage: item.item1Photo,
-                        otherItemName: item.item1Name,
-                    }
-                    matchArray.push(itemInfo)
-                    if (matchResponse.data.length === matchArray.length) {
-                        setMatchList(matchArray)
-                    }
-                }
-            });
-        })
+  function handleUseItem(id) {
+    console.log(id);
+    localStorage.setItem("itemData", JSON.stringify(id));
+    //  setRedirectToSwipping(true)
+  }
 
-    }
+  //backgroundImage: "radial-gradient(circle, #03A696, white)"
+  return (
+    <div>
+      {/* {redirect ? (<Redirect push to="/" />) : null} */}
 
-    function handleUseItem(id) {
-        console.log(id)
-        localStorage.setItem('itemData', JSON.stringify(id))
-        //  setRedirectToSwipping(true)
-    }
+      <div className="container center-align" style={{ marginTop: "20px" }}>
+        <div className="row">
+          <div className="col m12 s12 ">
+            <motion.img
+              animate={{ opacity: 1 }}
+              initial={{ opacity: 0 }}
+              transition={{
+                delay: 0.2,
+                duration: 0.2,
+              }}
+              alt=""
+              className="circle z-depth-3"
+              style={{
+                height: "150px",
+                width: "150px",
+                marginTop: "50px",
+              }}
+              src={userData.image}
+            />
+            <motion.h2
+              animate={{ opacity: 1 }}
+              initial={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              style={{ color: "#03A696" }}
+              className="userName"
+            >
+              
+              {userData.firstName} {userData.lastName}
+            </motion.h2>
+          </div>
+        </div>
 
-    //backgroundImage: "radial-gradient(circle, #03A696, white)"
-    return (
-        <div style={{ backgroundImage: "url(/img/waves.png)", backgroundSize: "cover" }}>
-            {/* {redirect ? (<Redirect push to="/" />) : null} */}
+        <Row className="valign-wrapper">
+          <Col m={6} s={6} className="right-align">
+            <h4 style={{ color: "#025159" }}>Swapify Rating</h4>
+          </Col>
+          <motion.div 
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0 }}
+        transition={{ duration: .2, delay: 0.2 }}
+          className="col m6 s6 left-align">
+            {Array(userRating)
+              .fill()
+              .map((el, i) => (
+                <i
+                  className="material-icons"
+                  key={i}
+                  style={{ color: "#F25D27" }}
+                >
+                  star
+                </i>
+              ))}
+            {Array(5 - userRating)
+              .fill()
+              .map((el, i) => (
+                <i
+                  className="material-icons"
+                  key={i}
+                  style={{ color: "#F25D27" }}
+                >
+                  star_border
+                </i>
+              ))}
+          </motion.div>
+        </Row>
+        <Row className="right-align valign-wrapper">
+          <Col m={6} s={6} >
+            <h4 style={{ color: "#025159" }}>Add Item</h4>
+          </Col>
+          <Col m={6} s={6} className="left-align">
+            <Button
+              floating={true}
+              large={true}
+              style={{ backgroundColor: "#F25D27" }}
+            >
+              <Link to={`/createItem/${userData.googleId}`}>
+                <i className="material-icons">add</i>
+              </Link>
+            </Button>
+          </Col>
+        </Row>
+        <Row style={{ paddingTop: "10px" }}>
+          <h3
+            style={{
+              fontFamily: "lemon",
+              color: "#03A696",
+              paddingBottom: "20px",
+            }}
+          >
+            Your Items
+          </h3>
 
-            <div className="container center-align" style={{ marginTop: "20px" }}>
-        
-                <Row>
-                    <Col
-                        m={12}
-                        s={12}>
-                        <img
-                            alt=""
-                            className="circle"
-                            style={{
-                                height: "150px", width: "150px", marginTop: "50px"
-                            }}
-                            src={userData.image}
-                        />
-                        <h2 style={{ color: "#025159" }}>{userData.firstName} {userData.lastName}</h2>
-                    </Col>
-                </Row>
+          <Collection style={{ maxHeight: "500px", overflow: "scroll" }}>
+            {usersItemList.map((item, index) => (
+              <ItemCard
+                key={index}
+                loadItems={loadItems}
+                imageURL={item.imageURL}
+                itemName={item.itemName}
+                id={item._id}
+                itemDescription={item.itemDescription}
+                userData={userData}
+              />
 
-                <Row className="left-align valign-wrapper">
-                    <Col m={3} s={3}><h4 style={{ color: "#025159" }}>Your Rating</h4></Col>
-                    <Col m={9} s={9} className="left-align">
-                        {Array(userRating).fill().map((el, i) =>
-                            <i className="material-icons" key={i} style={{ color: "#025159" }}>star</i>
-                        )}
-                        {Array(5 - userRating).fill().map((el, i) =>
-                            <i className="material-icons" key={i} style={{ color: "#025159" }}>star_border</i>
-                        )}
-                    </Col>
+              // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
+            ))}
+          </Collection>
+        </Row>
 
-                </Row>
-                <Row className="left-align">
-                    <Col m={1} s={1}>
-                        <Button floating={true} large={true} style={{ backgroundColor: "#F28705" }}><Link to={`/createItem/${userData.googleId}`}>
-<                           i className="material-icons">add</i></Link></Button></Col>
-                    <Col m={11} s={11} className="valign-wrapper">
-                        <h4 style={{ color: "#025159" }}>Add Item</h4>
-                    </Col>
+        <Row style={{ height: "400px" }}></Row>
+      </div>
 
-                </Row>
-                <Row style={{ paddingTop: "10px" }}>
-                    <h3 style={{ fontFamily: "lemon", color: "#F28705" , paddingBottom: "20px" }}>Your Items</h3>
-
-
-                    <Collection style={{ maxHeight: "500px", overflow: "scroll" }} >
-                        {usersItemList.map((item, index) => (
-
-                            <ItemCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} userData={userData}/>
-
-                            // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
-                        ))}
-
-                    </Collection>
-
-                </Row>
-
-            <Row style={{height:"400px"}}></Row>
-            </div>
-
-            {/* <Carousel>
+      {/* <Carousel>
                 {usersItemList.map((item, index) => (
 
                     <CarouselCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
                 ))}
 
             </Carousel> */}
-
-        </div>
-    )
+    </div>
+  );
 }
 
 export default Profile;

@@ -10,9 +10,11 @@ const CustomNavbar = (props) => {
 const [ newText, setNewText ] = useState(false)
 const [userData, setUserData] = useState({})
 const [centerLogo, setCenterLogo] = useState(false)
+const [ deleteNavbarLinks, setDeleteNavbarLinks ] = useState(false)
 const { pathname } = useLocation();
 const pathway = pathname.split("/")
 const id = pathway[pathway.length - 1]
+console.log(pathname)
 
 useEffect(() => {
     checkForNewTexts()
@@ -20,6 +22,21 @@ useEffect(() => {
         checkForNewTexts()
     }, 5000)
 }, [userData])
+
+useEffect(() => {
+  if (pathway[1] === 'chat') {
+    setCenterLogo(true)
+  }
+  else {
+    setCenterLogo(false)
+  }
+  if (pathname === '/') {
+    setDeleteNavbarLinks(true)
+  }
+  else {
+    setDeleteNavbarLinks(false)
+  }
+}, [pathname])
 
 useEffect(() => {
     API.getUser(id).then((res) => {
@@ -34,9 +51,6 @@ useEffect(() => {
         }
         setUserData(newUser)
     })
-    if (pathway[1] === 'chat') {
-      setCenterLogo(true)
-    }
 }, [])
 
 function checkForNewTexts() {
@@ -61,10 +75,48 @@ function checkForNewTexts() {
     }
 }
 
-  return (
-    <div>
-    
-    {centerLogo ? (<Navbar
+  if (deleteNavbarLinks === true) {
+    return (
+      <Navbar
+      alignLinks="right"
+      brand={
+        <a className="brand-logo" href="/">
+          <img src="./../img/swapifyLogoTopDark-vector.png" height="125" />
+        </a>
+      }
+      centerChildren
+      className="navbar transparent z-depth-0"
+      id="mobile-nav"
+      menuIcon={
+        newText ? (
+          <Badge variant="dot" color="secondary" className="chatBadge">
+            <Icon className="swapIcon">menu</Icon>
+          </Badge>
+        ) : (
+          <Badge color="secondary" className="chatBadge">
+            <Icon className="swapIcon">menu</Icon>
+          </Badge>
+        )
+      }
+      options={{
+        draggable: true,
+        edge: "right",
+        inDuration: 250,
+        onCloseEnd: null,
+        onCloseStart: null,
+        onOpenEnd: null,
+        onOpenStart: null,
+        outDuration: 200,
+        preventScrolling: true,
+      }}
+    >
+      
+    </Navbar>
+    )
+  }
+  else if (centerLogo === true) {
+    return (
+      <Navbar
       alignLinks="right"
       brand={
         <a className="brand-logo" href="/">
@@ -123,9 +175,12 @@ function checkForNewTexts() {
           </Badge>
         )}
       </NavItem>
-    </Navbar>) : 
-    
-    (<Navbar
+    </Navbar>
+    )
+  }
+  else {
+    return (
+    <Navbar
       alignLinks="right"
       brand={
         <a className="brand-logo" href="/">
@@ -183,12 +238,10 @@ function checkForNewTexts() {
           </Badge>
         )}
       </NavItem>
-    </Navbar>)}
-    
-
-    </div>
-
-  );
+    </Navbar>
+    )
+  }
+ 
 };
 
 export default CustomNavbar;

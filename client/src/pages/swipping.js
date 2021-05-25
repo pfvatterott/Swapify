@@ -42,6 +42,7 @@ function Swipping() {
             setUserData(newUser)
         })
     }, [])
+    
 
     useEffect(() => {
         // Sets all user's items to user's current location
@@ -68,7 +69,7 @@ function Swipping() {
         API.getAllItems().then((res) => {
             // filters out selected item so it cant see itself
             const notUserItemsArray = res.data.filter(item => (
-                item._id !== itemData
+                (item.itemOwner !== id)
             ))
             // filters out already seen items
             API.getItem(itemData).then((response) => {

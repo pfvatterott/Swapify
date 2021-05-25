@@ -179,7 +179,7 @@ function Item() {
 
   function saveToDatabase(url, imageName) {
     const splitURL = imageName.split(".")
-    const newImageName = (splitURL[0] + "_400x400." + splitURL[1])
+    const newImageName = (splitURL[0] + "_500x500." + splitURL[1])
     const newURL = url.replace(imageName, newImageName)
     const newItem = {
       itemName: nameState.name,

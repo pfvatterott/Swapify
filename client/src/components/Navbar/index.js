@@ -38,6 +38,7 @@ useEffect(() => {
 }, [pathname])
 
 useEffect(() => {
+  if (id) {
     API.getUser(id).then((res) => {
         const newUser = {
             email: res.data[0].email,
@@ -50,6 +51,7 @@ useEffect(() => {
         }
         setUserData(newUser)
     })
+  }
 }, [])
 
 function checkForNewTexts() {

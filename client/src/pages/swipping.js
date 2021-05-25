@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal, Row, Col, Card, CardTitle } from 'react-materialize';
+import { Button, Modal, Row, Col, Card, CardTitle, CardPanel } from 'react-materialize';
 import  {motion, useMotionValue, useTransform } from "framer-motion"
 import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
@@ -14,6 +14,8 @@ function Swipping() {
     const [notUserItems, setNotUserItems] = useState([])
     const [currentItem, setCurrentItem] = useState([])
     const [noMoreItems, setNoMoreItems] = useState(false)
+    const [activateCheckMark, setActivateCheckMark ] = useState(false)
+    const [activateRedXMark, setActivateRedXMark] = useState(false)
     const [imageNumber, setImageNumber] = useState(0)
     const [itIsAMatch, setItIsAMatch] = useState(false)
     const [distanceBoundary, setDistanceBoundary] = useState(50)
@@ -227,15 +229,22 @@ function Swipping() {
     )
 
     function processDragInfo(x, y) {
-        console.log("ending: ", x, y)
-        console.log(startingDragPoint)
         if ((startingDragPoint * 1.8) < x) {
             console.log("likes")
             handleItemLike()
+            setActivateCheckMark(true)
+            setTimeout(function () {
+                setActivateCheckMark(false)
+              }, 700)
+            
         }
         else if ((startingDragPoint / 2) > x) {
             console.log('doesnt like')
             handleItemNotLike()
+            setActivateRedXMark(true)
+            setTimeout(function () {
+                setActivateRedXMark(false)
+              }, 700)
         }
     }
 
@@ -244,8 +253,8 @@ function Swipping() {
             { redirect ? (<Redirect push to="/" />) : null}
             <div className="container center-align" style={{ marginTop: "20px" }}>
                 <Row>
-                    <Col m={3} l={4}></Col>
-                    <Col s={12} m={6} l={4}>
+                    <Col m={3} l={3.5}></Col>
+                    <Col s={12} m={6} l={6.5}>
                         <motion.div style={{ background }} className="swipBackground">
                             <motion.div
                             drag="x"
@@ -259,25 +268,46 @@ function Swipping() {
                             }
                             >
                                 <Row>
-                                    {/* <Col s={1}></Col> */}
                                     <Col s={12}>
                                         <SwipingCard itemInfo={currentItem}/>
                                     </Col>
-                                    {/* <Col s={1}></Col> */}
                                 </Row>
                                 
                             </motion.div>
-                        </motion.div>
+                        </motion.div>  
                     </Col>
-                    <Col m={3} l={4}></Col>
+                    <Col m={3} l={2}></Col>
                 </Row>
                 <Row className="center-align">
-                    <Col s={3}></Col>
-                    <Col s={6}>
-                    <DistanceSlider className="center-align" setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+                    <Col l={3}></Col>
+                    <Col s={12} l={5}>
+                        <h4 style={{ color: "#025159" }}>Set Distance</h4>
                     </Col>
-                    <Col s={3}></Col>
+                    <Col l={4}></Col>
                 </Row>
+                <Row className="center-align">
+                    <Col m={3} l={3.5}></Col>
+                    <Col s={12} m={6} l={6.5}>
+                        <DistanceSlider className="center-align" setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+                    </Col>
+                    <Col m={3} l={2}></Col>
+                </Row>
+                <Row style={{height: "100px"}}>
+                        {/* check Mark */}
+                        {activateCheckMark ? ( <motion.img 
+                            className="greenCheck"
+                            src="../../img/greenCheckMark.png"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: .5 }}
+                            />) : null}
+                         {activateRedXMark ? ( <motion.img 
+                            className="greenCheck"
+                            src="../../img/redXMark.png"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: .5 }}
+                            />) : null}
+                </Row>
+
             </div>
             {/* No more items to swap modal */}
             <Modal

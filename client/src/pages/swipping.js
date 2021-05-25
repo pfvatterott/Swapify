@@ -234,6 +234,13 @@ function Swipping() {
                     <button onClick={handleItemLike}>Interested</button>
                     </Col>
                 </Row>
+                <Row className="center-align">
+                    <Col s={3}></Col>
+                    <Col s={6}>
+                    <DistanceSlider className="center-align" setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+                    </Col>
+                    <Col s={3}></Col>
+                </Row>
             </div>
             {/* No more items to swap modal */}
             <Modal
@@ -272,9 +279,6 @@ function Swipping() {
                 <a><Button modal="close">Continue</Button></a>
                 <br></br>   
             </Modal>
-            
-            {/* Distance Range Selector */}
-            <DistanceSlider setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
         </div>
     )
 }

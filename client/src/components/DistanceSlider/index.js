@@ -27,8 +27,7 @@ function DistanceSlider(distance) {
 
     return (  
     <div>
-        <div style={wrapperStyle}>
-        <p>Slider with custom handle</p>
+        <div className="center-align">
         <Slider min={0} max={50} defaultValue={distance.distanceBoundary} handle={handle} onAfterChange={(e) => distance.setDistanceBoundary(e)}/>
         </div>
     </div>

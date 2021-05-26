@@ -235,26 +235,13 @@ function Profile() {
         >
           Your Items
           </h3>
-
-        {/* <Collection style={{ maxHeight: "1000px", overflowY: "scroll" }}>
-          {usersItemList.map((item, index) => (
-            <ItemCard
-              key={index}
-              loadItems={loadItems}
-              imageURL={item.imageURL}
-              itemName={item.itemName}
-              id={item._id}
-              itemDescription={item.itemDescription}
-              userData={userData}
-            />
-          ))}
-        </Collection>
-         */}
          <Col s={12} style={{paddingTop: "50px"}}>
         <ScrollMenu
+          
           arrowLeft={<div style={{ fontSize: "30px", paddingRight: "10px" }}>{" < "}</div>}
           arrowRight={<div style={{ fontSize: "30px", paddingLeft: "10px" }}>{" > "}</div>}
-         itemStyle={{paddingLeft:"15px"}}
+          itemStyle={{paddingLeft:"15px"}}
+          itemClassActive={'null'}
           data={usersItemList.map((item, index) => (
             <ItemCard
               key={index}

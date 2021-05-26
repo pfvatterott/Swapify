@@ -249,7 +249,7 @@ function Swipping() {
     }
 
     return (
-        <div>
+        <div style={{minHeight: "95vh"}}>
             { redirect ? (<Redirect push to="/" />) : null}
             <div className="container center-align" style={{ marginTop: "20px" }}>
                 <Row>

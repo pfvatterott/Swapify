@@ -11,84 +11,10 @@ const ItemCard = (props) => {
 
   return (
     <div>
-    {/* <CollectionItem>
-      <Row className="valign-wrapper">
-        <Col m={4} s={12} className="left-align">
-          <img
-            alt=""
-            className="circle"
-            style={{ height: "150px", width: "150px" }}
-            src={props.imageURL}
-          />
-        </Col>
-        <Col m={6} s={12}>
-          <span
-            className="title"
-            style={{
-              height: "70px",
-              lineHeight: "70px",
-              paddingLeft: "0px",
-              fontFamily: "proxima-nova, sans-serif",
-              fontWeight: "700",
-              fontStyle: "normal",
-              fontSize: "20px",
-              color: "#025159",
-            }}
-          >
-            {props.itemName}
-          </span>
-
-          <span
-            className="description"
-            style={{
-              height: "70px",
-              lineHeight: "70px",
-              paddingLeft: "20px",
-              fontFamily: "proxima-nova, sans-serif",
-              fontWeight: "100",
-              fontStyle: "normal",
-              color: "#025159",
-            }}
-          >
-            {props.itemDescription}
-          </span>
-        </Col>
-            <Col m={1} s={12}>
-     
-              <a
-                className="secondary-content"
-                href={`/swipping/${props.id}/${props.userData.googleId}`}
-              >
-                <img
-                  src="/img/S-logoBtn-vector.png"
-                  onClick={() => API.handleUseItem(props.id)}
-                  style={{ height: "65px" }}
-                  alt="swap logo"
-                  data-tip="Swap your Item"
-                />
-                <ReactTooltip place="bottom" type="light" effect="float" />
-              </a>
-            </Col>
-            <Col m={1} s={6}>
-              <Button
-                className="btn-floating btn-large"
-                onClick={() => {
-                  API.deleteItem(props.id).then((results) => {
-                    props.loadItems();
-                  });
-                }}
-                style={{ backgroundColor: "#F20505" }}
-                data-tip="Delete Item"
-              >
-                <i className="material-icons">delete</i>
-              </Button>
-            </Col>
-      </Row>
-    </CollectionItem> */}
     <div class="card itemCard">
         <div class="card-image">
           <img src={props.imageURL} className="itemCardImage" draggable="false" />
-          <span class="card-title itemCardTitle"  style={{
+          <span class="card-title itemCardTitle truncate"  style={{
               height: "70px",
               lineHeight: "70px",
               paddingLeft: "0px",
@@ -99,31 +25,19 @@ const ItemCard = (props) => {
               color: "#025159",
             }}>{props.itemName}</span>
         </div>
-        <div class="card-content">
-          <a className="secondary-content cardSwapButton" href={`/swipping/${props.id}/${props.userData.googleId}`}>
-            <img
-              src="/img/S-logoBtn-vector.png"
-              onClick={() => API.handleUseItem(props.id)}
-              style={{ height: "65px" }}
-              alt="swap logo"
-              data-tip="Swap your Item"
-            />
-            <ReactTooltip place="bottom" type="light" effect="float" />
-          </a>
-          <Button
-            className="btn-floating btn-large cardDeleteButton"
-            onClick={() => setOpenDeleteModal(true)}
-            style={{ backgroundColor: "#F20505" }}
-            data-tip="Delete Item"
-          >
-            <i className="material-icons">delete</i>
-          </Button>
+        <div class="card-content center-align">
+          <a href={`/swipping/${props.id}/${props.userData.googleId}`}><Button id="modalBtn" className="cardSwapButton" onClick={() => API.handleUseItem(props.id)}>Swap Item</Button></a>
+          <br></br>
+          <Button style={{marginTop: "10px"}} className="cardDeleteButton" id="modalBtn" onClick={() => setOpenDeleteModal(true)}>Delete Item</Button>
         </div>
     </div>
     <Modal
         open={openDeleteModal}
         className='center-align modal'
         actions={[]}
+        options={{
+          dismissible: false
+        }}
         >
         <h3>Are you sure you want to do that?</h3>
         <br></br>
@@ -139,7 +53,7 @@ const ItemCard = (props) => {
         </a>
         <br></br><br></br>
         <a>
-          <Button id="modalBtn" onClick={() => setOpenDeleteModal(false)} modal="close" >Cancel</Button>
+          <Button id="modalBtn" onClick={() => setOpenDeleteModal(false)} modal="close">Cancel</Button>
         </a>
         <br></br>
     </Modal>

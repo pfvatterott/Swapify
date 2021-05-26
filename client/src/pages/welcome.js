@@ -3,7 +3,7 @@ import API from "../utils/API";
 import GoogleLogin from "react-google-login";
 import { Redirect } from "react-router-dom";
 import "materialize-css";
-import "./style.css";
+// import "./style.css";
 import "./welcomeStyle.css";
 import { motion } from "framer-motion";
 import { Button } from "react-materialize";
@@ -63,9 +63,9 @@ return (
         </div>
         <div className="row">
           <motion.img
-            animate={{ rotateZ: 720, opacity: 1, scale: 1 }}
+            animate={{ rotateZ: 1080, opacity: 1, scale: 1 }}
             initial={{ opacity: 0, scale: 0 }}
-            transition={{ delay: 0.5, duration: 1.5 }}
+            transition={{ delay: 0.2, duration: 1.8 }}
             whileHover={{ rotateZ: 180 }}
             src="./../img/swapifyLogo-S-vector.png"
             alt="Swapify S Logo"
@@ -107,7 +107,7 @@ return (
                   waves="light"
                   onClick={renderProps.onClick}
                 >
-                  Get Swapp'n!
+                  Start Swap'n!
                 </Button>
               </motion.a>
             )}
@@ -124,7 +124,7 @@ return (
         <motion.h2
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
-          transition={{ delay: 3, duration: 2 }}
+          transition={{ delay: 2.5, duration: 2 }}
         >
           How Swapify works:{" "}
         </motion.h2>
@@ -133,7 +133,7 @@ return (
         className="row howToRow"
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}
-        transition={{ delay: 3, duration: 2 }}
+        transition={{ delay: 2.5, duration: 2 }}
         whileHover={{}}
       >
         <motion.div
@@ -145,14 +145,14 @@ return (
           }}
           className="row"
         >
-          <div className="col l4 s6 right-align symbol1">
+          <div className="col l4 s12 center symbol1">
             <motion.img
               src="./../img/profileSymbol.png"
               alt="Swapify Logo"
               height="100px"
             />
           </div>
-          <div className="col l6 center">
+          <div className="col l6 s12 center">
             <motion.h4
               animate={{ opacity: 1, x: 0 }}
               initial={{ opacity: 0, x: 1000 }}
@@ -172,16 +172,16 @@ return (
           }}
           className="row"
         >
-          <div className="col l4 s6 right-align symbol2">
+          <div className="col l4 s12 center symbol2">
             <motion.img
               src="./../img/addItemSymbol.png"
               alt="Swapify Logo"
               height="100px"
             />
           </div>
-          <div className="col l6 center">
+          <div className="col l6 s12 center">
             <motion.h4
-              animate={{ opacity: 1, x: 0 }}
+              animate={{ opacity: 1, x: 1 }}
               initial={{ opacity: 0, x: 1000 }}
               transition={{ delay: 3, duration: 1 }}
               className="how2"
@@ -199,21 +199,21 @@ return (
           }}
           className="row"
         >
-          <div className="col l4 s6 right-align symbol3">
+          <div className="col l4 s12 center symbol3">
             <motion.img
               src="./../img/swipeSymbol.png"
               alt="Swapify Logo"
               height="100px"
             />
           </div>
-          <div className="col l6 center">
+          <div className="col l6 s12 center">
             <motion.h4
               animate={{ opacity: 1, x: 0 }}
               initial={{ opacity: 0, x: 1000 }}
               transition={{ delay: 3, duration: 1 }}
               className="how3"
             >
-              Swipe to swap & match
+              Browse & swipe to match
             </motion.h4>
           </div>
         </motion.div>
@@ -226,14 +226,14 @@ return (
           }}
           className="row"
         >
-          <div className="col l4 s6 right-align symbol4">
+          <div className="col l4 s12 center symbol4">
             <motion.img
               src="./../img/swapSymbol2.png"
               alt="Swapify Logo"
               height="100px"
             />
           </div>
-          <div className="col l6 center">
+          <div className="col l6 s12 center">
             <motion.h4
               animate={{ opacity: 1, x: 0 }}
               initial={{ opacity: 0, x: 1000 }}

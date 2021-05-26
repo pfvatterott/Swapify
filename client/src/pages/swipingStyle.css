@@ -35,6 +35,6 @@ button.btn.modal-close{
 }
 
 .preloaderLocation {
-    position: relative;
-    left: -50px !important;
+    margin: auto !important;
+    text-align: center !important;
 }

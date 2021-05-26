@@ -284,14 +284,18 @@ function Swipping() {
                     </Col>
                     <Col m={3} l={3}></Col>
                 </Row>
-                <Row class="center-align">
+                <Row>
+                    <Col s={4} m={5} l={5.5}></Col>
+                    <Col s={1}>
                     <Preloader
-                    className="preloaderLocation"
-                    active={activatePreloader}
-                    color="blue"
-                    flashing={false}
-                    size="big"
-                    />
+                        className="preloaderLocation"
+                        active={activatePreloader}
+                        color="blue"
+                        flashing={false}
+                        size="big"
+                        />
+                    </Col>
+                    <Col s={6}></Col>
                 </Row>
                 <Row>
                     <Col m={3} l={3} xl={1}></Col>

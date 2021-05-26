@@ -1,19 +1,17 @@
 import React from "react";
-import { Button, CollectionItem, Col } from "react-materialize";
+import { Button, Card, CollectionItem, Col, Row } from "react-materialize";
 import API from "../../utils/API";
-<<<<<<< Updated upstream
 import ReactTooltip from 'react-tooltip'; 
-=======
 import DeleteIcon from "@material-ui/icons/Delete";
 import ReactTooltip from 'react-tooltip';
 // import "./style.css";
 
->>>>>>> Stashed changes
-
 const ItemCard = (props) => {
     return (
-        <CollectionItem className=" valign-wrapper">
-                <Col m={2} s={2}>
+
+        <CollectionItem>
+            <Row className="valign-wrapper">
+                <Col m={4} s={6} className="left-align">
                     <img
                         alt=""
                         className="circle"
@@ -21,7 +19,7 @@ const ItemCard = (props) => {
                         src={props.imageURL}
                     />
                 </Col>
-                <Col m={7} s={7}>
+                <Col m={6} s={6} >
                     <span
                         className="title"
                         style={{
@@ -54,7 +52,7 @@ const ItemCard = (props) => {
                     </span>
                 </Col>
 
-                <Col m={1} s={1}>
+                <Col m={1} s={6}>
                     {/* <a
                 className="secondary-content"
                 href={`/swipping/${props.id}/${props.userData.googleId}`}
@@ -72,11 +70,11 @@ const ItemCard = (props) => {
                             alt="swap logo"
                             data-tip="Swap your Item"
                         />
-                        <ReactTooltip place="bottom" type="light" effect="float"/>
+                        <ReactTooltip place="bottom" type="light" effect="float" />
 
                     </a>
                 </Col>
-                <Col m={1} s={1}>
+                <Col m={1} s={6}>
                     <Button
                         className="btn-floating btn-large"
                         onClick={() => {
@@ -90,6 +88,7 @@ const ItemCard = (props) => {
                         <i className="material-icons">delete</i>
                     </Button>
                 </Col>
+            </Row>
         </CollectionItem>
     );
 };

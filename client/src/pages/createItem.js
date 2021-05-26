@@ -5,7 +5,7 @@ import { storage } from "../utils/firebase";
 import { Redirect, useParams, BrowserRouter as Router } from "react-router-dom";
 import Compressor from "compressorjs";
 import Confetti from "react-dom-confetti";
-import { Col, Row, Textarea, Button } from "react-materialize";
+import { Col, Row, Textarea, Button, Preloader } from "react-materialize";
 import "./createItemStyle.css";
 
 
@@ -20,6 +20,7 @@ function Item() {
   const [buttonText, setButtonText] = useState("Preview");
   const [userLocation, setUserLocation] = useState([""]);
   const [wait, setWait] = useState(false);
+  const [ activatePreloader, setActivatePreloader ] = useState(false)
   const { id } = useParams();
   const [userData, setUserData] = useState({
     email: "",
@@ -91,6 +92,7 @@ function Item() {
     }
   }
   const fileUploadHandler = () => {
+    setActivatePreloader(true)
     // Compress image before uploading to firebase
     new Compressor(image, {
       quality: 0.2,
@@ -119,8 +121,8 @@ function Item() {
                 console.log("fileupload handler run");
                 //setButtonText("Preview")
                 setReward(!reward);
+                setActivatePreloader(false)
                 setTimeout(() => setWait(true), 3000);
-
                 // window.location.href="/profile"
               });
           }
@@ -133,6 +135,7 @@ function Item() {
   };
 
   function previewHandler() {
+    setActivatePreloader(true)
     // Compress image before uploading to firebase
     new Compressor(image, {
       quality: 0.2,
@@ -155,6 +158,7 @@ function Item() {
               .getDownloadURL()
               .then((url) => {
                 //saveToDatabase(url);
+                setActivatePreloader(false)
                 setImageURL(url);
               });
           }
@@ -197,7 +201,7 @@ function Item() {
   return (
     // this cant be a form for some reason?
     <div className="container addItem" style={{ marginTop: "50px" }}>
-      {redirect ? <Redirect push to="/" /> : null}
+      {redirect ? <Redirect push to="/" /> : null}                
       <div className="row">
         <div className="col m7 s6 nameInput">
           <Textarea
@@ -271,6 +275,14 @@ function Item() {
 
       <Row>
         <Col s={12} m={12} className="center fullHeight">
+        <Preloader
+        className="preloaderLocation"
+        active={activatePreloader}
+        color="blue"
+        flashing={false}
+        size="big"
+        />
+        <br></br><br></br>
           <Button
             // disabled={!(formObject.author && formObject.title)}
             //onClick={fileUploadHandler}

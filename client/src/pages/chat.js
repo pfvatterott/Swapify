@@ -5,7 +5,6 @@ import MatchesSideBar from "../components/MatchesSideBar"
 import ChatRoom from "../components/ChatRoom"
 import API from "../utils/API"
 import chatContext from "../utils/chatContext";
-import "./chatStyle.css"
 
 
 function ChatApp() {
@@ -63,7 +62,7 @@ function ChatApp() {
     }
 
     return (
-        <div className="chatBackground">
+        <div>
         <chatContext.Provider value={{chatId, recentText, setChat, setNewText }}>
             <Row>
                 <Col s={0} m={4}>

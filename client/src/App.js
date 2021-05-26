@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useLocation } from 'react-router-dom'
 import Welcome from "./pages/welcome"
@@ -26,6 +26,7 @@ function App() {
   const [openRateModal, setOpenRateModal] = useState(false)
   const [rating, setRating] = useState(0)
   const [deletedItemUserId, setDeletedItemUserId] = useState('')
+  const [backgroundClass, setBackgroundClass] = useState("welcomeBackground")
   
   
   setInterval(function () {
@@ -93,8 +94,29 @@ function App() {
 
   }
 
+  console.log(pathname)
+
+  useEffect(() => {
+    console.log(pathway)
+    if (pathname === "/") {
+      setBackgroundClass("welcomeBackground")
+    }
+    else if (pathway[1] === "profile") {
+      setBackgroundClass('profileBackground')
+    }
+    else if (pathway[1] === "chat") {
+      setBackgroundClass("chatBackground")
+    }
+    else if (pathway[1] === "createItem") {
+      setBackgroundClass('createItemBackground')
+    }
+
+    
+    
+  }, [pathname])
+
   return (
-    <div>
+    <div className={backgroundClass}>
       <CustomNavbar></CustomNavbar>
       <Route exact path="/" component={Welcome} />
       <Route path="/profile/:id" component={Profile} />

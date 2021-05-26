@@ -44,7 +44,7 @@ console.log(response);
 };
 
 return (
-  <>
+  <div className="welcomeBackground">
     <div className="hero-image">
       <div className="container center">
         <div className="row opening">
@@ -246,7 +246,7 @@ return (
         </motion.div>
       </motion.div>
     </div>
-  </>
+  </div>
 );
 }
 

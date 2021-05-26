@@ -26,9 +26,9 @@ const ItemCard = (props) => {
             }}>{props.itemName}</span>
         </div>
         <div class="card-content center-align">
-          <a href={`/swipping/${props.id}/${props.userData.googleId}`}><Button id="modalBtn" className="cardSwapButton" onClick={() => API.handleUseItem(props.id)}>Swap Item</Button></a>
+          <a href={`/swipping/${props.id}/${props.userData.googleId}`}><Button id="modalBtn" className="cardSwapButton" onClick={() => API.handleUseItem(props.id)}><div className="swapText">Swap</div></Button></a>
           <br></br>
-          <Button style={{marginTop: "10px"}} className="cardDeleteButton" id="modalBtn" onClick={() => setOpenDeleteModal(true)}>Delete Item</Button>
+          <Button style={{marginTop: "10px"}} className="cardDeleteButton"  onClick={() => setOpenDeleteModal(true)}><i class="material-icons deleteIcon">delete</i></Button>
         </div>
     </div>
     <Modal

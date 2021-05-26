@@ -2,10 +2,11 @@ import React from "react";
 import { Button, CollectionItem, Col } from "react-materialize";
 import API from "../../utils/API";
 import ReactTooltip from 'react-tooltip'; 
+import "./style.css";
 
 const ItemCard = (props) => {
     return (
-        <CollectionItem className=" valign-wrapper">
+        <CollectionItem className="valign-wrapper" >
                 <Col m={2} s={2}>
                     <img
                         alt=""
@@ -48,12 +49,7 @@ const ItemCard = (props) => {
                 </Col>
 
                 <Col m={1} s={1}>
-                    {/* <a
-                className="secondary-content"
-                href={`/swipping/${props.id}/${props.userData.googleId}`}
-            >
-            <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#O3A696" }}>  <img src="/img/swapifyLogoS-vector.png" style={{height: "30px"}} /></Button>
-            </a> */}
+        
                     <a
                         className="secondary-content"
                         href={`/swipping/${props.id}/${props.userData.googleId}`}

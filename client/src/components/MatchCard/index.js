@@ -97,55 +97,38 @@ const MatchCard = (props) => {
                 </a>
             </CollectionItem>
             )}
-{/* 
             <Modal
                 open={openInfoModal}
                 className='center-align'
                 actions={[]}
                 options={{
-                dismissible: false
-                }}>
-                <div className="modalUserItem left center-align">
-                    <img src={props.matchData.userItemPhoto} className="circle modalUserImage"></img>
-                    
-                    <br></br><br></br>
-                    <h5>{props.matchData.userItemName}</h5>
-                </div>
-                <div className="modalOtherItem center-align">
-                    <img src={props.matchData.otherItemImage} className="circle modalUserImage"></img>
-                    
-                    <br></br><br></br>
-                    <h5>{props.matchData.otherItemName}</h5>
-                </div>
-                <br></br><br></br>
-
-                <a><Button modal="close" className="center-align">Close</Button></a>
-            </Modal> */}
-
-            <Modal
-                open={openInfoModal}
-                className='center-align'
-                actions={[]}
-                options={{
-                    dismissible: false
-                }}>
+                    onCloseStart: closeInfoModal
+                }}
+                >
                 <Row>
-                    <Col s={6}>
+                    <Col s={12} m={4}>
                         <img src={props.matchData.userItemPhoto} className="circle modalUserImage"></img>
+                        <h5>{props.matchData.userItemName}</h5>
                     </Col>
-                    <Col s={6}>
+                    <Col s={12} m={4}>
+                        <br></br><br></br>
+                        <img src="./../../img/swapItemIcon.png" className="swapItemIcon"></img>
+                        <br></br><br></br>
+                    </Col>
+                    <Col s={12} m={4}>
                         <img src={props.matchData.otherItemImage} className="circle modalUserImage"></img>
+                        <h5>{props.matchData.otherItemName}</h5>
                     </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                     <Col s={6}>
                     <h5>{props.matchData.userItemName}</h5>
                     </Col>
                     <Col s={6}>
                     <h5>{props.matchData.otherItemName}</h5>
                     </Col>
-                </Row>
-                <a><Button modal="close" onClick={closeInfoModal}>Close</Button></a>
+                </Row> */}
+                <a><Button modal="close" className="closeModalButton" onClick={closeInfoModal}>Close</Button></a>
             </Modal>
 
         </div>

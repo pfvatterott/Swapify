@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal, Row, Col } from 'react-materialize';
+import { Button, Modal, Row, Col, CardPanel } from 'react-materialize';
 import  {motion, useMotionValue, useTransform } from "framer-motion"
 import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
@@ -230,7 +230,6 @@ function Swipping() {
 
     function processDragInfo(x, y) {
         if ((startingDragPoint * 1.8) < x) {
-            console.log("likes")
             handleItemLike()
             setActivateCheckMark(true)
             setTimeout(function () {
@@ -239,7 +238,6 @@ function Swipping() {
             
         }
         else if ((startingDragPoint / 2) > x) {
-            console.log('doesnt like')
             handleItemNotLike()
             setActivateRedXMark(true)
             setTimeout(function () {
@@ -253,8 +251,8 @@ function Swipping() {
             { redirect ? (<Redirect push to="/" />) : null}
             <div className="container center-align" style={{ marginTop: "20px" }}>
                 <Row>
-                    <Col m={3} l={3.5}></Col>
-                    <Col s={12} m={6} l={6.5}>
+                    <Col m={3} l={3}></Col>
+                    <Col s={12} m={6} l={6}>
                         <motion.div style={{ background }} className="swipBackground">
                             <motion.div
                             drag="x"
@@ -276,23 +274,27 @@ function Swipping() {
                             </motion.div>
                         </motion.div>  
                     </Col>
-                    <Col m={3} l={2}></Col>
+                    <Col m={3} l={3}></Col>
                 </Row>
-                <Row className="center-align">
-                    <Col l={3}></Col>
-                    <Col s={12} l={5}>
-                        <h4 style={{ color: "#025159" }}>Set Distance</h4>
-                    </Col>
-                    <Col l={4}></Col>
+                <Row>
                 </Row>
-                <Row className="center-align">
-                    <Col m={3} l={3.5}></Col>
-                    <Col s={12} m={6} l={6.5}>
-                        <DistanceSlider className="center-align" setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+                <Row>
+                    <Col m={3} l={3} xl={1}></Col>
+                    <Col s={12} m={6} l={6} xl={9}>
+                        <h4 style={{ color: "#025159"}}>Set Distance</h4>
                     </Col>
-                    <Col m={3} l={2}></Col>
+                    <Col m={3} l={3} xl={2}></Col>
+                </Row>
+                <Row>
+                    <Col m={3} l={3}></Col>
+                    <Col s={12} m={6} l={6}>
+                        <DistanceSlider setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+                    </Col>
+                    <Col m={3} l={3}></Col>
                 </Row>
                 <Row style={{height: "100px"}}>
+                    <Col m={3} l={3}></Col>
+                    <Col s={12} m={6} l={6}>
                         {/* check Mark */}
                         {activateCheckMark ? ( <motion.img 
                             className="greenCheck"
@@ -303,9 +305,11 @@ function Swipping() {
                          {activateRedXMark ? ( <motion.img 
                             className="greenCheck"
                             src="../../img/redXMark.png"
-                            animate={{ rotate: 360 }}
                             transition={{ duration: .5 }}
                             />) : null}
+                    </Col>
+                    <Col m={3} l={3}></Col>
+                    
                 </Row>
 
             </div>

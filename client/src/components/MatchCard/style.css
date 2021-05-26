@@ -50,7 +50,17 @@
 }
 
 .modalUserImage {
-    height: 100% !important;
-    width: 100% !important;
-    min-height: 100% !important;
+    height: 200px !important;
+    width: 200px !important;
+    min-height: 50px !important;
+}
+
+.swapItemIcon {
+    height: 100px;
+    width: 100px;
+}
+
+.closeModalButton {
+    background-color: #f25d27 !important;
+    font-family: lemon;
 }

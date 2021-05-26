@@ -22,7 +22,13 @@
 }
 
 .greenCheck {
-    height: 70px;
-    position: relative;
-    top: -290px;
+    height: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    display: block;
+    margin: auto; 
 }

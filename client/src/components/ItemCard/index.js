@@ -1,13 +1,14 @@
 import React from "react";
 import { Button, Card, CollectionItem, Col, Row } from "react-materialize";
 import API from "../../utils/API";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ReactTooltip from 'react-tooltip'; 
+import DeleteIcon from "@material-ui/icons/Delete";
 import "./style.css";
 
 const ItemCard = (props) => {
     return (
         <CollectionItem className="valign-wrapper" >
+            <Row>
                 <Col m={2} s={2}>
                     <img
                         alt=""

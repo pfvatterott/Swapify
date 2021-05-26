@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import 'materialize-css';
-import { useLocation } from 'react-router-dom'
+import { useLocation, Redirect } from 'react-router-dom'
 import { Navbar, Icon, NavItem } from "react-materialize";
 import Badge from '@material-ui/core/Badge';
 import API from "../../utils/API";
@@ -8,6 +8,7 @@ import "./style.css";
 
 const CustomNavbar = (props) => {
 const [ newText, setNewText ] = useState(false)
+const [ redirect, setRedirect ] = useState(false)
 const [userData, setUserData] = useState({})
 const [centerLogo, setCenterLogo] = useState(false)
 const [ deleteNavbarLinks, setDeleteNavbarLinks ] = useState(false)
@@ -40,6 +41,10 @@ useEffect(() => {
 useEffect(() => {
   if (id) {
     API.getUser(id).then((res) => {
+      if (res.data.length === 0) {
+        setRedirect(true)
+      }
+      else {
         const newUser = {
             email: res.data[0].email,
             firstName: res.data[0].firstName,
@@ -50,9 +55,10 @@ useEffect(() => {
             rating: res.data[0].rating
         }
         setUserData(newUser)
+      }
     })
   }
-}, [])
+}, [pathname])
 
 function checkForNewTexts() {
     let trueCount = 0;
@@ -78,6 +84,8 @@ function checkForNewTexts() {
 
   if (deleteNavbarLinks === true) {
     return (
+      <div>
+        {redirect ? <Redirect push to="/" /> : null}
       <Navbar
       alignLinks="right"
       brand={
@@ -113,10 +121,13 @@ function checkForNewTexts() {
     >
       
     </Navbar>
+    </div>
     )
   }
   else if (centerLogo === true) {
     return (
+      <div>
+        {redirect ? <Redirect push to="/" /> : null}
       <Navbar
       alignLinks="right"
       brand={
@@ -177,10 +188,13 @@ function checkForNewTexts() {
         )}
       </NavItem>
     </Navbar>
+    </div>
     )
   }
   else {
     return (
+      <div>
+        {redirect ? <Redirect push to="/" /> : null}
     <Navbar
       alignLinks="right"
       brand={
@@ -240,6 +254,7 @@ function checkForNewTexts() {
         )}
       </NavItem>
     </Navbar>
+    </div>
     )
   }
  

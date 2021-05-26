@@ -33,3 +33,8 @@ button.btn.modal-close{
     font-family: lemon!important;
     border-radius: 10px!important;
 }
+
+.preloaderLocation {
+    position: relative;
+    left: -50px !important;
+}

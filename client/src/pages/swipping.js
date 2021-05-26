@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal, Row, Col, CardPanel } from 'react-materialize';
+import { Button, Modal, Row, Col, Preloader } from 'react-materialize';
 import  {motion, useMotionValue, useTransform } from "framer-motion"
 import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
@@ -23,6 +23,7 @@ function Swipping() {
     const [distanceBoundary, setDistanceBoundary] = useState(50)
     const [modalMatchImage1, setModalMatchImage1] = useState('')
     const [modalMatchImage2, setModalMatchImage2] = useState('')
+    const [activatePreloader, setActivatePreloader] = useState(false)
     const { id, item } = useParams()
     const itemData = item
     const [userData, setUserData] = useState({
@@ -52,6 +53,7 @@ function Swipping() {
     
 
     useEffect(() => {
+        setActivatePreloader(true)
         // Sets all user's items to user's current location
         const getCoords = async () => {
             const pos = await new Promise((resolve, reject) => {
@@ -121,12 +123,11 @@ function Swipping() {
                                     setNoMoreItems(true)
                                 }
                                 else {
+                                    setActivatePreloader(false)
                                     setNotUserItems(sortedNotUserItems)
                                     setCurrentItem(sortedNotUserItems[imageNumber])
                                 }
                             }, 1000)
-
-                            
                         })
                      }
                 })
@@ -283,7 +284,14 @@ function Swipping() {
                     </Col>
                     <Col m={3} l={3}></Col>
                 </Row>
-                <Row>
+                <Row class="center-align">
+                    <Preloader
+                    className="preloaderLocation"
+                    active={activatePreloader}
+                    color="blue"
+                    flashing={false}
+                    size="big"
+                    />
                 </Row>
                 <Row>
                     <Col m={3} l={3} xl={1}></Col>

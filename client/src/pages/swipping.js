@@ -100,7 +100,6 @@ function Swipping() {
                 }
 
                 API.getItem(itemData).then((userItemRes) => {
-                    console.log(userItemRes)
                     const sortedNotUserItems = []
                      // Sorting by Location
                      for (let v = 0; v < notUserItemsArray.length; v++) {
@@ -110,18 +109,24 @@ function Swipping() {
                          const userLong = userItemRes.data.itemLocation[1]
 
                         getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
+                            
                             if (distanceResponse < distanceBoundary) {
+                                console.log('push')
                                 sortedNotUserItems.push(notUserItemsArray[v])
                             }
                             // no more items triggers Modal
-                            if (sortedNotUserItems.length === 0) {
-                                console.log(sortedNotUserItems)
-                                setNoMoreItems(true)
-                            }
-                            else {
-                                setNotUserItems(sortedNotUserItems)
-                                setCurrentItem(sortedNotUserItems[imageNumber])
-                            }
+                            setTimeout(function () {
+                                if (sortedNotUserItems.length === 0) {
+                                    console.log(sortedNotUserItems)
+                                    setNoMoreItems(true)
+                                }
+                                else {
+                                    setNotUserItems(sortedNotUserItems)
+                                    setCurrentItem(sortedNotUserItems[imageNumber])
+                                }
+                            }, 1000)
+
+                            
                         })
                      }
                 })

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal, Row, Col, Card, CardTitle, CardPanel } from 'react-materialize';
+import { Button, Modal, Row, Col } from 'react-materialize';
 import  {motion, useMotionValue, useTransform } from "framer-motion"
 import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
@@ -336,8 +336,8 @@ function Swipping() {
                 }}
                 >
                 <h3>It's a match!</h3>
-                <img src={modalMatchImage1} className="circle swapItemImage"></img>
-                <img src={modalMatchImage2} className="circle swapItemImage"></img>
+                <img src={modalMatchImage1} className="circle swapItemImage" alt="user item"></img>
+                <img src={modalMatchImage2} className="circle swapItemImage" alt="other item"></img>
                 <br></br>
                 <div>Head to the chat page or continue swipping!</div>
                 <br></br><br></br>

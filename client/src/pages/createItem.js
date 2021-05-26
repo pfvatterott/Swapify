@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import API from "../utils/API";
-import { Input, TextArea, FormBtn } from "../components/Form";
+import { TextArea, FormBtn } from "../components/Form";
 import { storage } from "../utils/firebase"
-import { Redirect, useParams, BrowserRouter as Router } from 'react-router-dom';
+import { Redirect, useParams } from 'react-router-dom';
 import Compressor from 'compressorjs';
 import Confetti from 'react-dom-confetti';
 import {Col, Row} from 'react-materialize';
@@ -236,7 +236,7 @@ function Item() {
       </form>
 
       <div className="center-align">
-        {imageURL && <img className="responsive-img" src={imageURL} style={{ maxWidth: "50%", height: "auto" }} />}
+        {imageURL && <img className="responsive-img" alt="user item" src={imageURL} style={{ maxWidth: "50%", height: "auto" }} />}
         
       </div>
 

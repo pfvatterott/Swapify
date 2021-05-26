@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Card, CollectionItem, Col } from "react-materialize";
+import { Button, CollectionItem, Col } from "react-materialize";
 import API from "../../utils/API";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ReactTooltip from 'react-tooltip'; 
 
 const ItemCard = (props) => {
@@ -63,6 +62,7 @@ const ItemCard = (props) => {
                             src="/img/S-logoBtn-vector.png"
                             onClick={() => API.handleUseItem(props.id)}
                             style={{ height: "65px" }}
+                            alt="swap logo"
                             data-tip="Swap your Item"
                         />
                         <ReactTooltip place="bottom" type="light" effect="float"/>

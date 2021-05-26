@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
-import { Button, Modal, Row, Col, CardPanel } from 'react-materialize';
+import { Button, Modal, Row, Col, Preloader } from 'react-materialize';
 import  {motion, useMotionValue, useTransform } from "framer-motion"
 import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
@@ -23,6 +23,7 @@ function Swipping() {
     const [distanceBoundary, setDistanceBoundary] = useState(50)
     const [modalMatchImage1, setModalMatchImage1] = useState('')
     const [modalMatchImage2, setModalMatchImage2] = useState('')
+    const [activatePreloader, setActivatePreloader] = useState(false)
     const { id, item } = useParams()
     const itemData = item
     const [userData, setUserData] = useState({
@@ -52,6 +53,7 @@ function Swipping() {
     
 
     useEffect(() => {
+        setActivatePreloader(true)
         // Sets all user's items to user's current location
         const getCoords = async () => {
             const pos = await new Promise((resolve, reject) => {
@@ -100,7 +102,6 @@ function Swipping() {
                 }
 
                 API.getItem(itemData).then((userItemRes) => {
-                    console.log(userItemRes)
                     const sortedNotUserItems = []
                      // Sorting by Location
                      for (let v = 0; v < notUserItemsArray.length; v++) {
@@ -110,18 +111,23 @@ function Swipping() {
                          const userLong = userItemRes.data.itemLocation[1]
 
                         getDistanceFromLatLonInKm(notUserLat, notUserLong, userLat, userLong).then((distanceResponse) => {
+                            
                             if (distanceResponse < distanceBoundary) {
+                                console.log('push')
                                 sortedNotUserItems.push(notUserItemsArray[v])
                             }
                             // no more items triggers Modal
-                            if (sortedNotUserItems.length === 0) {
-                                console.log(sortedNotUserItems)
-                                setNoMoreItems(true)
-                            }
-                            else {
-                                setNotUserItems(sortedNotUserItems)
-                                setCurrentItem(sortedNotUserItems[imageNumber])
-                            }
+                            setTimeout(function () {
+                                if (sortedNotUserItems.length === 0) {
+                                    console.log(sortedNotUserItems)
+                                    setNoMoreItems(true)
+                                }
+                                else {
+                                    setActivatePreloader(false)
+                                    setNotUserItems(sortedNotUserItems)
+                                    setCurrentItem(sortedNotUserItems[imageNumber])
+                                }
+                            }, 1000)
                         })
                      }
                 })
@@ -279,6 +285,17 @@ function Swipping() {
                     <Col m={3} l={3}></Col>
                 </Row>
                 <Row>
+                    <Col s={4} m={5} l={5.5}></Col>
+                    <Col s={1}>
+                    <Preloader
+                        className="preloaderLocation"
+                        active={activatePreloader}
+                        color="blue"
+                        flashing={false}
+                        size="big"
+                        />
+                    </Col>
+                    <Col s={6}></Col>
                 </Row>
                 <Row>
                     <Col m={3} l={3} xl={1}></Col>

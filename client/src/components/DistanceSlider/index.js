@@ -5,8 +5,6 @@ import "./style.css"
 
 
 function DistanceSlider(distance) {
-    const { createSliderWithTooltip } = Slider;
-    const Range = createSliderWithTooltip(Slider.Range);
     const { Handle } = Slider;
 
     const marks = {
@@ -28,8 +26,6 @@ function DistanceSlider(distance) {
         </SliderTooltip>
     );
     };
-
-    const wrapperStyle = { width: 400, margin: 50 };
 
     return (  
     <div>

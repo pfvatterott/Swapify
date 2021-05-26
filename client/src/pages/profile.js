@@ -1,19 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Link, Redirect, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import API from "../utils/API";
 import ItemCard from "../components/ItemCard";
-import CarouselCard from "../components/CarouselCard";
-import MatchCard from "../components/MatchCard";
 import {
   Button,
   Col,
   Row,
-  CollectionItem,
-  Collection,
-  Carousel,
-  Card,
-  Icon,
-  CardTitle,
+  Collection
 } from "react-materialize";
 import ReactTooltip from 'react-tooltip';
 
@@ -24,8 +17,6 @@ import { motion } from "framer-motion";
 //document.body.style = "background: -webkit-gradient(linear, top, bottom, from(#003399), to(#6699cc));background: -webkit-linear-gradient(#025159, #03A696);background: linear-gradient(#025159, #03A696);zoom: 1;margin: 0;padding-top: 2%;padding-bottom: 3%;background-attachment: fixed;"
 
 function Profile() {
-  const [redirect, setRedirect] = useState(false);
-  const [redirectToSwipping, setRedirectToSwipping] = useState(false);
   const [usersItemList, setUsersItemList] = useState([]);
   const [matchList, setMatchList] = useState([]);
   const [userData, setUserData] = useState({
@@ -38,7 +29,6 @@ function Profile() {
     rating: [],
   });
   const [imageArray, setImageArray] = useState([""]);
-  const [rating, setRating] = useState();
   const { id } = useParams();
   const [userRating, setUserRating] = useState(0);
 

@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Redirect, useParams } from 'react-router-dom'
 import { Button, Modal, Row, Col } from 'react-materialize';
+import  {motion, useMotionValue, useTransform } from "framer-motion"
+import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
 let preventFirstRender = false
 
 function Swipping() {
+    let startingDragPoint = {}
     const [redirect, setRedirect] = useState(false);
     const [notUserItems, setNotUserItems] = useState([])
     const [currentItem, setCurrentItem] = useState([])
     const [noMoreItems, setNoMoreItems] = useState(false)
+    const [activateCheckMark, setActivateCheckMark ] = useState(false)
+    const [activateRedXMark, setActivateRedXMark] = useState(false)
     const [imageNumber, setImageNumber] = useState(0)
     const [itIsAMatch, setItIsAMatch] = useState(false)
     const [distanceBoundary, setDistanceBoundary] = useState(50)
@@ -216,32 +221,93 @@ function Swipping() {
         setDistanceBoundary(e)
     }
 
+    const x = useMotionValue(0)
+    const background = useTransform(
+        x,
+        [-100, 0, 100],
+        ["#FF0000", "#FFFFFF", "#00FF00"]
+    )
+
+    function processDragInfo(x, y) {
+        if ((startingDragPoint * 1.8) < x) {
+            console.log("likes")
+            handleItemLike()
+            setActivateCheckMark(true)
+            setTimeout(function () {
+                setActivateCheckMark(false)
+              }, 700)
+            
+        }
+        else if ((startingDragPoint / 2) > x) {
+            console.log('doesnt like')
+            handleItemNotLike()
+            setActivateRedXMark(true)
+            setTimeout(function () {
+                setActivateRedXMark(false)
+              }, 700)
+        }
+    }
+
     return (
         <div>
             { redirect ? (<Redirect push to="/" />) : null}
             <div className="container center-align" style={{ marginTop: "20px" }}>
                 <Row>
-                    <Col s={12}>
-                    <h4>{currentItem.itemName}</h4>
-                    <h5>{currentItem.itemDescription}</h5>
-                    <img className="itemImage" src={currentItem.imageURL} />
+                    <Col m={3} l={3.5}></Col>
+                    <Col s={12} m={6} l={6.5}>
+                        <motion.div style={{ background }} className="swipBackground">
+                            <motion.div
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            style={{ x }}
+                            onDragStart={
+                                (event, info) => startingDragPoint = (info.point.x)
+                            }
+                            onDragEnd={
+                                (event, info) => processDragInfo(info.point.x, info.point.y)
+                            }
+                            >
+                                <Row>
+                                    <Col s={12}>
+                                        <SwipingCard itemInfo={currentItem}/>
+                                    </Col>
+                                </Row>
+                                
+                            </motion.div>
+                        </motion.div>  
                     </Col>
-                </Row>
-                <Row>
-                    <Col s={6}>
-                        <button onClick={handleItemNotLike}>Not Interested</button>
-                    </Col>
-                    <Col s={6}>
-                    <button onClick={handleItemLike}>Interested</button>
-                    </Col>
+                    <Col m={3} l={2}></Col>
                 </Row>
                 <Row className="center-align">
-                    <Col s={3}></Col>
-                    <Col s={6}>
-                    <DistanceSlider className="center-align" setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+                    <Col l={3}></Col>
+                    <Col s={12} l={5}>
+                        <h4 style={{ color: "#025159" }}>Set Distance</h4>
                     </Col>
-                    <Col s={3}></Col>
+                    <Col l={4}></Col>
                 </Row>
+                <Row className="center-align">
+                    <Col m={3} l={3.5}></Col>
+                    <Col s={12} m={6} l={6.5}>
+                        <DistanceSlider className="center-align" setDistanceBoundary={handleDistanceChange} distanceBoundary={distanceBoundary}/>
+                    </Col>
+                    <Col m={3} l={2}></Col>
+                </Row>
+                <Row style={{height: "100px"}}>
+                        {/* check Mark */}
+                        {activateCheckMark ? ( <motion.img 
+                            className="greenCheck"
+                            src="../../img/greenCheckMark.png"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: .5 }}
+                            />) : null}
+                         {activateRedXMark ? ( <motion.img 
+                            className="greenCheck"
+                            src="../../img/redXMark.png"
+                            animate={{ rotate: 360 }}
+                            transition={{ duration: .5 }}
+                            />) : null}
+                </Row>
+
             </div>
             {/* No more items to swap modal */}
             <Modal
@@ -270,8 +336,8 @@ function Swipping() {
                 }}
                 >
                 <h3>It's a match!</h3>
-                <img src={modalMatchImage1} className="circle swapItemImage"></img>
-                <img src={modalMatchImage2} className="circle swapItemImage"></img>
+                <img src={modalMatchImage1} className="circle swapItemImage" alt="user item"></img>
+                <img src={modalMatchImage2} className="circle swapItemImage" alt="other item"></img>
                 <br></br>
                 <div>Head to the chat page or continue swipping!</div>
                 <br></br><br></br>

@@ -5,6 +5,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import ReactTooltip from 'react-tooltip';
 import "./style.css";
 
+
 const ItemCard = (props) => {
     return (
 
@@ -66,6 +67,7 @@ const ItemCard = (props) => {
                             src="/img/S-logoBtn-vector.png"
                             onClick={() => API.handleUseItem(props.id)}
                             style={{ height: "65px" }}
+                            alt="swap logo"
                             data-tip="Swap your Item"
                         />
                         <ReactTooltip place="bottom" type="light" effect="float" />

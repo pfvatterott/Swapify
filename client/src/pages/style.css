@@ -14,7 +14,15 @@
 
 
     .main {
-        margin:100px
+        margin:100px    
     }
 
+.swipBackground {
+    max-width: 500px;
+}
 
+.greenCheck {
+    height: 70px;
+    position: relative;
+    top: -290px;
+}

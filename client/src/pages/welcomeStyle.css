@@ -12,7 +12,7 @@ h4 {
   font-family: lemon;
   color: white
 }
-.how1 {
+/* .how1 {
   color: #f28704;
 }
 .how2 {
@@ -23,10 +23,10 @@ h4 {
 }
 .how4 {
   color: #352B88;
-}
+} */
 
 .opening {
-  padding-top: 100px;
+  padding-top: 75px;
 }
 
 .loginBtn {
@@ -35,11 +35,12 @@ h4 {
 }
 
 .howTo {
-  margin-top: 300px;
+  margin-top: 200px;
 }
 
 .login {
-  margin-top: 200px;
+  margin-top: 150px;
+  padding-top: 50px;
   padding-bottom: 50px;
 }
 
@@ -63,7 +64,7 @@ html {
     url("/img/swap-bike-comp3.jpg");
 
   /* Set a specific height */
-  height: 50%;
+  /* height: 50%; */
 
   /* Position and center the image to scale nicely on all screens */
   background-position: center;
@@ -71,3 +72,16 @@ html {
   background-size: cover;
   position: relative;
 }
+
+
+body {
+  background-color: radial-gradient(white, #d3eee3, #d3eee3);
+  background-image: url("/img/waves.png"), radial-gradient(white, #d3eee3, #d3eee3);
+  background-size: cover;
+  background-position: center;
+  /* min-height: 500px; */
+  height: 100%
+  }
+  /* .main {
+      margin:100px
+  } */

@@ -1,6 +1,6 @@
 .stickyFooter {
   display: flex !important;
-  min-height: 50vh !important;
+  min-height: 3vh !important;
   /* color:#F25D27!important; */
   /* background: #025159!important; */
 }

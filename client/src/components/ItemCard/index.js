@@ -2,16 +2,13 @@ import React from "react";
 import { Button, Card, CollectionItem, Col, Row } from "react-materialize";
 import API from "../../utils/API";
 import DeleteIcon from "@material-ui/icons/Delete";
-import ReactTooltip from 'react-tooltip';
+import ReactTooltip from 'react-tooltip'; 
 import "./style.css";
-
 
 const ItemCard = (props) => {
     return (
-
-        <CollectionItem>
-            <Row className="valign-wrapper">
-                <Col m={4} s={6} className="left-align">
+        <CollectionItem className="valign-wrapper" >
+                <Col m={2} s={2}>
                     <img
                         alt=""
                         className="circle"
@@ -52,13 +49,8 @@ const ItemCard = (props) => {
                     </span>
                 </Col>
 
-                <Col m={1} s={6}>
-                    {/* <a
-                className="secondary-content"
-                href={`/swipping/${props.id}/${props.userData.googleId}`}
-            >
-            <Button className = "btn-floating btn-large" onClick={() => API.handleUseItem(props.id)} style= {{backgroundColor:"#O3A696" }}>  <img src="/img/swapifyLogoS-vector.png" style={{height: "30px"}} /></Button>
-            </a> */}
+
+                <Col m={1} s={1}>
                     <a
                         className="secondary-content"
                         href={`/swipping/${props.id}/${props.userData.googleId}`}

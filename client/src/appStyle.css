@@ -1,3 +1,5 @@
+
+
 .swapItemImage {
     height: 120px;
     width: 120px;
@@ -36,13 +38,14 @@ button.waves-effect.waves-green.btn-flat.modal-close{
 }
 
 .chatBackground {
-    background-color: radial-gradient(white, #d3eee3, #d3eee3);
+    /* background-color: radial-gradient(white, #d3eee3, #d3eee3); */
     background-image: url("/img/waves.png"), radial-gradient(white, #d3eee3, #d3eee3);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
     background-size: cover;
-    
-}
+    background-position: center;
+
+    height: 100%;
+    background-attachment: fixed;
+    }
 
 .createItemBackground {
     background-color: radial-gradient(white, #d3eee3, #d3eee3);

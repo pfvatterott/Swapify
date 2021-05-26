@@ -4,14 +4,16 @@
     width: 90%;
     max-width: 650px;
     margin: 0 auto;
+    
 }
 
 .wrapper {
     max-width: 700px;
+    height: 100% !important;
 }
 
 .chatForm {
-    margin-left: -10px !important
+    margin-left: -10px !important;
 }
 
 .sendButton {

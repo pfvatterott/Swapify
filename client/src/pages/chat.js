@@ -62,9 +62,9 @@ function ChatApp() {
     }
 
     return (
-        <div>
+        <div style={{minHeight: "95vh"}}>
         <chatContext.Provider value={{chatId, recentText, setChat, setNewText }}>
-            <Row>
+            <Row style={{marginBottom:"0px"}}>
                 <Col s={0} m={4}>
                     <MatchesSideBar newText={notNewText} userData={userData}/>
                 </Col>

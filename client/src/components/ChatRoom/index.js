@@ -5,6 +5,7 @@ import API from '../../utils/API'
 import { firebase, firestore } from "../../utils/firebase"
 import ChatMessage from "../ChatMessage"
 import chatContext from "../../utils/chatContext"
+import Confetti from "react-dom-confetti";
 import "./style.css"
 import Rating from 'react-rating'
 
@@ -21,6 +22,7 @@ export default function ChatRoom(props) {
     const messagesEndRef = React.createRef()
     const [openRateModal, setOpenRateModal] = useState(false)
     const [rating, setRating] = useState(0)
+    const [reward, setReward ] = useState(false)
 
     useEffect(() => {
         setMessagesRef(firestore.collection(chatId.matchId || 'empty'))
@@ -74,6 +76,7 @@ export default function ChatRoom(props) {
     }
 
     function swapItems() {
+        setReward(true)
         API.getMatch(chatId.matchId).then((matchResponse) => {
             console.log(matchResponse)
             if (matchResponse.data.item1Owner === userData.googleId) {
@@ -153,6 +156,11 @@ export default function ChatRoom(props) {
             </Row>
         
         <div className="chatControls">
+        <Confetti
+                            id="confetti"
+                            active={reward}
+                            className="right-align"
+                        />
             <Row>
                 <Col s={12}>
                     <form onSubmit={sendMessage}>   

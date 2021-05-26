@@ -135,7 +135,7 @@ function Item() {
   function previewHandler() {
     // Compress image before uploading to firebase
     new Compressor(image, {
-      quality: 0.8,
+      quality: 0.2,
       success(result) {
         // uploads image to firebase
         const randomNumber = Math.floor(Math.random() * 100000000);

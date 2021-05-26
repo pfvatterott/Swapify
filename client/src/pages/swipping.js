@@ -6,6 +6,8 @@ import SwipingCard from "../components/SwipingCard"
 import DistanceSlider from '../components/DistanceSlider'
 import API from "../utils/API";
 import "./style.css"
+import "./swipingStyle.css"
+
 let preventFirstRender = false
 
 function Swipping() {
@@ -316,7 +318,7 @@ function Swipping() {
             {/* No more items to swap modal */}
             <Modal
                 open={noMoreItems}
-                className='center-align'
+                className='center-align modal'
                 actions={[]}
                 options={{
                     dismissible: false
@@ -326,7 +328,7 @@ function Swipping() {
                 <br></br>
                 <div>Add a new item, switch items to swap with, or try back later!</div>
                 <br></br><br></br>
-                <a href={`/profile/${userData.googleId}`}><Button>Back to my Profile</Button></a>
+                <a href={`/profile/${userData.googleId}`}><Button id="modalBtn">Back to my Profile</Button></a>
                 <br></br>
             </Modal>
             
@@ -339,15 +341,15 @@ function Swipping() {
                     dismissible: false
                 }}
                 >
-                <h3>It's a match!</h3>
+                <h3 className="match">It's a match!</h3>
                 <img src={modalMatchImage1} className="circle swapItemImage" alt="user item"></img>
                 <img src={modalMatchImage2} className="circle swapItemImage" alt="other item"></img>
                 <br></br>
                 <div>Head to the chat page or continue swipping!</div>
                 <br></br><br></br>
-                <a href={`/chat/${userData.googleId}`}><Button>Chat Page</Button></a>
+                <a href={`/chat/${userData.googleId}`}><Button id="modalBtn">Chat Page</Button></a>
                 <br></br><br></br>
-                <a><Button modal="close">Continue</Button></a>
+                <a><Button id="modalBtn" modal="close">Continue</Button></a>
                 <br></br>   
             </Modal>
         </div>

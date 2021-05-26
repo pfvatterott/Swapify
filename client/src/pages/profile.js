@@ -17,7 +17,7 @@ import {
 } from "react-materialize";
 import ReactTooltip from 'react-tooltip';
 
-import "./style.css";
+// import "./style.css";
 import "./profileStyle.css";
 import { motion } from "framer-motion";
 
@@ -146,11 +146,13 @@ function Profile() {
         <div className="row">
           <div className="col m12 s12 ">
             <motion.img
-              animate={{ opacity: 1 }}
-              initial={{ opacity: 0 }}
+              animate={{ y: 1, opacity: 1 }}
+              initial={{ y: -50, opacity: 0 }}
               transition={{
-                delay: 0.2,
-                duration: 0.2,
+                delay: 0.5,
+                duration: 0.5,
+                // type: "spring",
+                // stiffness: 50,
               }}
               alt=""
               className="circle z-depth-3"
@@ -244,7 +246,7 @@ function Profile() {
           Your Items
           </h3>
 
-        <Collection style={{ maxHeight: "1000px", overflow: "scroll" }}>
+        <Collection style={{ maxHeight: "1000px", overflowY: "scroll" }}>
           {usersItemList.map((item, index) => (
             <ItemCard
               key={index}

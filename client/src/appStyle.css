@@ -33,7 +33,6 @@ button.waves-effect.waves-green.btn-flat.modal-close{
     background-image: url("/img/waves.png"), radial-gradient(white, #d3eee3, #d3eee3);
     background-size: cover;
     background-position: center;
-    /* min-height: 500px; */
     height: 100%
 }
 
@@ -52,4 +51,12 @@ button.waves-effect.waves-green.btn-flat.modal-close{
     background-image: url("/img/waves.png"), radial-gradient(white, #d3eee3, #d3eee3);
     background-size: cover;
     background-position: center;
+}
+
+.swipingBackground {
+    background-color: radial-gradient(white, #d3eee3, #d3eee3);
+    background-image: url("/img/waves.png"), radial-gradient(white, #d3eee3, #d3eee3);
+    background-size: cover;
+    background-position: center;
+    height: 100%
 }

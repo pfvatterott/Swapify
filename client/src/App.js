@@ -107,6 +107,9 @@ function App() {
     else if (pathway[1] === "createItem") {
       setBackgroundClass('createItemBackground')
     }
+    else if (pathway[1] === "swipping") {
+      setBackgroundClass('swipingBackground')
+    }
   }, [pathname])
 
   return (

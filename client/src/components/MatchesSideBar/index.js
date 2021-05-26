@@ -122,10 +122,10 @@ export default function MatchesSideBar(props) {
                 }}>
                 <h3>No Chats!</h3>
                 <br></br>
-                <div>You don't have any open chats!</div>
+                <div>You don't have any open chats or matches!</div>
                 <div>Go make some matches first!</div>
                 <br></br>
-                <a href={`/profile/${userData.googleId}`}><Button>Go Back</Button></a>
+                <a href={`/profile/${userData.googleId}`}><Button id="modalBtn">Go Back</Button></a>
             </Modal>
         </div>       
     )

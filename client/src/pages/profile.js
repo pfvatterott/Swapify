@@ -10,6 +10,9 @@ import {
 } from "react-materialize";
 import ReactTooltip from 'react-tooltip';
 import { motion } from "framer-motion";
+import ScrollMenu from 'react-horizontal-scrolling-menu';
+import "./profileStyle.css"
+
 
 //document.body.style = "background: -webkit-gradient(linear, top, bottom, from(#003399), to(#6699cc));background: -webkit-linear-gradient(#025159, #03A696);background: linear-gradient(#025159, #03A696);zoom: 1;margin: 0;padding-top: 2%;padding-bottom: 3%;background-attachment: fixed;"
 
@@ -232,9 +235,14 @@ function Profile() {
         >
           Your Items
           </h3>
-
-        <Collection style={{ maxHeight: "1000px", overflowY: "scroll" }}>
-          {usersItemList.map((item, index) => (
+         <Col s={12} style={{paddingTop: "50px"}}>
+        <ScrollMenu
+          
+          arrowLeft={<div style={{ fontSize: "30px", paddingRight: "10px" }}>{" < "}</div>}
+          arrowRight={<div style={{ fontSize: "30px", paddingLeft: "10px" }}>{" > "}</div>}
+          itemStyle={{paddingLeft:"15px"}}
+          itemClassActive={'null'}
+          data={usersItemList.map((item, index) => (
             <ItemCard
               key={index}
               loadItems={loadItems}
@@ -244,22 +252,13 @@ function Profile() {
               itemDescription={item.itemDescription}
               userData={userData}
             />
-
-            // <a href="/swipping" ><button onClick={() => handleUseItem(item._id)} itemId={item._id}>{item.itemName}</button></a>
           ))}
-        </Collection>
+        />
+        </Col>
       </Row>
 
       <Row style={{ height: "400px" }}></Row>
     </div>
-
-      {/* <Carousel>
-                {usersItemList.map((item, index) => (
-
-                    <CarouselCard key={index} loadItems={loadItems} imageURL={item.imageURL} itemName={item.itemName} id={item._id} itemDescription={item.itemDescription} />
-                ))}
-
-            </Carousel> */}
     </div >
   );
 }

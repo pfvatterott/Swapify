@@ -58,7 +58,7 @@ const MatchCard = (props) => {
                     className="circle userItemPicture"
                     src={props.yourImageUrl}
                 /></a>
-                <a className="noHover"><i className="material-icons swapSymbol noHover">autorenew</i></a>
+                <a className="noHover"><i className="material-icons  noHover">autorenew</i></a>
                 <a className="noHover"><img
                     alt=""
                     className="circle itemPicture noHover"
@@ -112,7 +112,7 @@ const MatchCard = (props) => {
                     </Col>
                     <Col s={12} m={4}>
                         <br></br><br></br>
-                        <img src="./../../img/swapItemIcon.png" className="swapItemIcon"></img>
+                        <img src="./../../img/swapO-logo-vector.png" className="swapItemIcon"></img>
                         <br></br><br></br>
                     </Col>
                     <Col s={12} m={4}>

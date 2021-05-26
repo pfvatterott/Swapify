@@ -1,3 +1,35 @@
 li.collection-item.valign-wrapper:hover {
     background-color: #d3d3d3
 }
+
+.itemCard {
+    border-radius: 20px !important;
+    width: 200px;  
+    height: 40px;
+}
+
+.itemCardImage {
+    border-radius: 20px !important;
+  height: 200px;
+  width: 100px;
+}
+
+.cardDeleteButton {
+    position: relative;
+    top: -20px;
+}
+
+.cardSwapButton {
+    position: relative;
+    top: -25px;
+}
+
+.itemCardTitle {
+    position: relative;
+    top: -75px;
+    left: 10px !important;
+}
+
+.menu-item-wrapper {
+    padding-top: 20px;
+}

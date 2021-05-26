@@ -9,9 +9,6 @@ import {
   Collection
 } from "react-materialize";
 import ReactTooltip from 'react-tooltip';
-
-// import "./style.css";
-import "./profileStyle.css";
 import { motion } from "framer-motion";
 
 //document.body.style = "background: -webkit-gradient(linear, top, bottom, from(#003399), to(#6699cc));background: -webkit-linear-gradient(#025159, #03A696);background: linear-gradient(#025159, #03A696);zoom: 1;margin: 0;padding-top: 2%;padding-bottom: 3%;background-attachment: fixed;"

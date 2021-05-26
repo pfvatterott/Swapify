@@ -94,10 +94,7 @@ function App() {
 
   }
 
-  console.log(pathname)
-
   useEffect(() => {
-    console.log(pathway)
     if (pathname === "/") {
       setBackgroundClass("welcomeBackground")
     }
@@ -110,9 +107,6 @@ function App() {
     else if (pathway[1] === "createItem") {
       setBackgroundClass('createItemBackground')
     }
-
-    
-    
   }, [pathname])
 
   return (

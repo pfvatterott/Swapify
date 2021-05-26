@@ -5,13 +5,14 @@
 
 .itemPicture {
     position: relative !important;
-    left: -205px !important;
+    left: -110px !important;
     top: -1px !important
 }
 
 .swapSymbol {
     position: relative !important;
-    left: -115px !important
+    left: -85px !important;
+    height: 40px;
 }
 
 .matchItem {
@@ -26,7 +27,7 @@
 
 .ratingStar {
     position: relative !important;
-    left: -185px !important;
+    left: -90px !important;
     top: -30px !important;
     font-size: 40px !important;
 
@@ -35,7 +36,7 @@
 .ratingNumber {
     font-size: 20px !important;
     position: relative !important;
-    left: -193px !important;
+    left: -98px !important;
     top: -67px !important;
     z-index: 5;
 }

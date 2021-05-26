@@ -270,7 +270,7 @@ function Item() {
       </div>
 
       <Row>
-        <Col s={12} m={12} className="center">
+        <Col s={12} m={12} className="center fullHeight">
           <Button
             // disabled={!(formObject.author && formObject.title)}
             //onClick={fileUploadHandler}

@@ -1,7 +1,14 @@
 import React from "react";
 import { Button, CollectionItem, Col } from "react-materialize";
 import API from "../../utils/API";
+<<<<<<< Updated upstream
 import ReactTooltip from 'react-tooltip'; 
+=======
+import DeleteIcon from "@material-ui/icons/Delete";
+import ReactTooltip from 'react-tooltip';
+// import "./style.css";
+
+>>>>>>> Stashed changes
 
 const ItemCard = (props) => {
     return (

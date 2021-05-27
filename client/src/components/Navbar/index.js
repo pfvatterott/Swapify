@@ -90,7 +90,7 @@ function checkForNewTexts() {
       alignLinks="right"
       brand={
         <a className="brand-logo" href="/">
-          <img src="./../img/swapifyLogoTopDark-vector.png" height="125" alt="swapify logo"/>
+          <img src="./../img/swapifyLogoTopDark-vector.png" height="150" alt="swapify logo"/>
         </a>
       }
       centerChildren

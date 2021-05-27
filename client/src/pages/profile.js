@@ -226,15 +226,15 @@ function Profile() {
         </Col>
       </Row>
       <Row style={{ paddingTop: "10px" }}>
-        <h3
+        <h4
           style={{
             fontFamily: "lemon",
-            color: "#03A696",
+            color: "#f28704",
             paddingBottom: "20px",
           }}
         >
           Your Items
-          </h3>
+          </h4>
          <Col s={12} style={{paddingTop: "50px"}}>
         <ScrollMenu
           

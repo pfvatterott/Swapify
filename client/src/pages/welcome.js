@@ -38,8 +38,8 @@ const googleSuccess = async (response) => {
 }
 
 const googleFailure = (response) => {
-console.log("Google Sign in was unsuccessful");
-alert("please try logging in again");
+console.log("please enable cookies to access Swapify");
+alert("please enable cookies to access Swapify");
 console.log(response);
 };
 
@@ -90,7 +90,7 @@ return (
             onSuccess={googleSuccess}
             onFailure={googleFailure}
             cookiePolicy={"single_host_origin"}
-            isSignedIn={false}
+            isSignedIn={true}
             render={(renderProps) => (
               <motion.a
                 animate={{ opacity: 1 }}
